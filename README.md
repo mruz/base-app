@@ -2,9 +2,8 @@ base-app
 ========
 
 The base application in PhalconPHP
-
-Components:
 ***
+Components:
 * Bootstrap file
 * Config file
 * Frontend/Backend modules
@@ -13,4 +12,7 @@ Components:
  * Arr
  * Debug
  * I18n
+* User
+ * Models
+ * Auth schema mysql
 * Twitter Bootstrap
