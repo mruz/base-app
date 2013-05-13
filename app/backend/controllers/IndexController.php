@@ -22,14 +22,21 @@ class IndexController extends \Phalcon\Mvc\Controller
         if ( ! \Auth::instance()->logged_in('admin'))
             $this->response->redirect('');
         
+        // Check the session lifetime
+        if ($this->session->has('last_active') && time() - $this->session->get('last_active') > $this->config->session->lifetime)
+        {
+            $this->session->destroy();
+        }
+        $this->session->set('last_active', time());
+        
         if($this->session->has('lang'))
         {
-            // set the language from session
+            // Set the language from session
             \I18n::instance()->lang($this->session->get('lang'));
         }
         elseif($this->cookies->has('lang'))
         {
-            // set the language from cookie
+            // Set the language from cookie
             \I18n::instance()->lang($this->cookies->get('lang')->getValue());
         }
     }
