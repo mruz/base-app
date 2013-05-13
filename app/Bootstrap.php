@@ -158,12 +158,9 @@ class Bootstrap
     
     protected function session()
     {
-        $config = $this->_config;
         //Start the session the first time some component request the session service
-        $this->_di->set('session', function() use ($config){
-            $session = new \Phalcon\Session\Adapter\Files(array(
-                'lifetime' => $config->session->lifetime,
-            ));
+        $this->_di->set('session', function(){
+            $session = new \Phalcon\Session\Adapter\Files();
             $session->start();
             return $session;
         });
