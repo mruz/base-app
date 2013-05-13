@@ -17,7 +17,7 @@ Components:
  * Models
  * Auth schema mysql
 * Twitter Bootstrap
-***
+
 Configuration:
 --------
 1. Set base_uri in /app/common/config/config.ini
