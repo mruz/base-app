@@ -1,4 +1,4 @@
-base-app
+base-app 1.1
 ========
 
 The base application in PhalconPHP
@@ -13,6 +13,8 @@ Components:
  * Arr
  * Debug
  * I18n
+ * Email
+ * Image
 * User
  * Models
  * Auth schema mysql

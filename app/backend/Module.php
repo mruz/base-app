@@ -1,21 +1,24 @@
 <?php
+
 /**
  * Backend Module
  * 
  * @package     base-app
  * @category    Module
- * @version     1.0
+ * @version     1.1
  */
-namespace Modules\Backend;
+
+namespace Baseapp\Backend;
 
 class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
 {
+
     public function registerAutoloaders()
     {
         $loader = new \Phalcon\Loader();
 
         $loader->registerNamespaces(array(
-            'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
+            'Baseapp\Backend\Controllers' => __DIR__ . '/controllers/',
         ));
 
         $loader->register();
@@ -25,42 +28,40 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
     {
         //Registering a dispatcher
         $di->set('dispatcher', function() {
-            //Create/Get an EventManager
-            $eventsManager = new \Phalcon\Events\Manager();
-            //Attach a listener
-            $eventsManager->attach("dispatch", function($event, $dispatcher, $exception)
-            {
-                //controller or action doesn't exist
-                if ($event->getType() == 'beforeException')
-                {
-                    switch ($exception->getCode())
-                    {
-                        case \Phalcon\Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
-                        case \Phalcon\Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
-                            $dispatcher->forward(array(
-                                'module' => 'backend',
-                                'controller' => 'index',
-                                'action' => 'notFound'
-                            ));
-                            return false;
-                    }
-                }
-            });
+                    //Create/Get an EventManager
+                    $eventsManager = new \Phalcon\Events\Manager();
+                    //Attach a listener
+                    $eventsManager->attach("dispatch", function($event, $dispatcher, $exception) {
+                                //controller or action doesn't exist
+                                if ($event->getType() == 'beforeException') {
+                                    switch ($exception->getCode()) {
+                                        case \Phalcon\Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+                                        case \Phalcon\Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                                            $dispatcher->forward(array(
+                                                'module' => 'backend',
+                                                'controller' => 'index',
+                                                'action' => 'notFound'
+                                            ));
+                                            return false;
+                                    }
+                                }
+                            });
 
-            $dispatcher = new \Phalcon\Mvc\Dispatcher();
-            //Set default namespace to backend module
-            $dispatcher->setDefaultNamespace("Modules\Backend\Controllers");
-            //Bind the EventsManager to the dispatcher
-            $dispatcher->setEventsManager($eventsManager);
+                    $dispatcher = new \Phalcon\Mvc\Dispatcher();
+                    //Set default namespace to backend module
+                    $dispatcher->setDefaultNamespace("Baseapp\Backend\Controllers");
+                    //Bind the EventsManager to the dispatcher
+                    $dispatcher->setEventsManager($eventsManager);
 
-            return $dispatcher;
-        });
+                    return $dispatcher;
+                });
 
         //Registering the view component
         $di->set('view', function() {
-            $view = new \Phalcon\Mvc\View();
-            $view->setViewsDir(__DIR__ . '/views/');
-            return $view;
-        });
+                    $view = new \Phalcon\Mvc\View();
+                    $view->setViewsDir(__DIR__ . '/views/');
+                    return $view;
+                });
     }
+
 }

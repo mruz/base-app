@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Auth Library
+ * 
+ * @package     base-app
+ * @category    Library
+ * @version     1.1
+ */
+
+namespace Baseapp\Library;
+
 class Auth
 {
     private $_config = array(

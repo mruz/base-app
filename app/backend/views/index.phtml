@@ -1,20 +1,19 @@
 <?php /**
- * Template View
+ * Admin's Template View
  * 
  * @package     base-app
  * @category    View
  * @version     1.1
  */ ?><?php
 
- use \Phalcon\Tag;
- use \Baseapp\Library\I18n; ?>
+ use \Phalcon\Tag,
+     \Baseapp\Library\I18n; ?>
 <!DOCTYPE html>
 <html lang="<?php echo substr(I18n::instance()->lang(), 0, 2) ?>">
     <head>
         <meta charset="utf-8">
         <?php echo Tag::getTitle() ?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="<?php echo $site_desc ?>">
 
         <?php echo Tag::stylesheetLink('css/bootstrap.min.css') ?>
         <style>
@@ -32,7 +31,7 @@
         <link rel="shortcut icon" href="<?php echo $this->url->get('favicon.ico') ?>">
     </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
                     <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">

@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Debug Library
+ * 
+ * @package     base-app
+ * @category    Library
+ * @version     1.1
+ */
+
+namespace Baseapp\Library;
+
 abstract class Debug
 {
     public static $style = array(
