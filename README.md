@@ -7,13 +7,14 @@ Components:
 --------
 * Bootstrap file
 * Config file
+* CLI file
 * Frontend/Backend modules
 * Library
  * Auth
  * Arr
  * Debug
- * I18n
  * Email
+ * I18n
  * Image
 * User
  * Models
