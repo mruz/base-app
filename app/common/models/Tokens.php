@@ -10,7 +10,7 @@
 
 namespace Baseapp\Models;
 
-class Tokens extends Phalcon\Mvc\Model
+class Tokens extends \Phalcon\Mvc\Model
 {
 
     public function getSource()

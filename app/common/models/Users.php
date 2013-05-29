@@ -10,7 +10,7 @@
 
 namespace Baseapp\Models;
 
-class Users extends Phalcon\Mvc\Model
+class Users extends \Phalcon\Mvc\Model
 {
 
     /**
