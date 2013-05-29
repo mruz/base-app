@@ -1,17 +1,22 @@
 <?php
+
 /**
  * User roles Model
  * 
  * @package     base-app
  * @category    Model
- * @version     1.0
+ * @version     1.1
  */
+
+namespace Baseapp\Models;
+
 class RolesUsers extends Phalcon\Mvc\Model
 {
+
     /**
      * Roles Users initialize
      *
-     * @version     1.0
+     * @version     1.1
      */
     public function initialize()
     {
@@ -22,4 +27,5 @@ class RolesUsers extends Phalcon\Mvc\Model
             "foreignKey" => true
         ));
     }
+
 }
