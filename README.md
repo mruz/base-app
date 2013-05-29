@@ -23,5 +23,6 @@ Components:
 
 Configuration:
 --------
-1. Set base_uri in /app/common/config/config.ini
+1. Set base_uri and other settings in /app/common/config/config.ini
 2. Use /auth-schema-mysql.sql to create required tables
+3. Make sure the /app/common/cache and /app/common/logs directories are writable by the web server
