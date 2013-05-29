@@ -1,0 +1,3 @@
+/app/common/logs/*
+/app/common/cache/*
+!.gitignore
