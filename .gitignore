@@ -1,3 +1,4 @@
-/app/common/logs/*
-/app/common/cache/*
+.*
+*~
+!.htaccess
 !.gitignore
