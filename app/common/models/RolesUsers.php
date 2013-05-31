@@ -20,10 +20,10 @@ class RolesUsers extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->belongsTo("user_id", "Users", "id", array(
+        $this->belongsTo("user_id", __NAMESPACE__."\Users", "id", array(
             "foreignKey" => true
         ));
-        $this->belongsTo("role_id", "Roles", "id", array(
+        $this->belongsTo("role_id", __NAMESPACE__."\Roles", "id", array(
             "foreignKey" => true
         ));
     }

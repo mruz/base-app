@@ -20,8 +20,8 @@ class Users extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany("id", "Tokens", "user_id");
-        $this->hasMany("id", "RolesUsers", "user_id");
+        $this->hasMany("id", __NAMESPACE__."\Tokens", "user_id");
+        $this->hasMany("id", __NAMESPACE__."\RolesUsers", "user_id");
     }
 
 }
