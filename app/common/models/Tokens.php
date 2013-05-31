@@ -25,16 +25,16 @@ class Tokens extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->belongsTo("user_id", "Users", "id", array(
+        $this->belongsTo("user_id", __NAMESPACE__."\Users", "id", array(
             "foreignKey" => true
         ));
 
-        // do garbage collection
+        // Do garbage collection
         if (mt_rand(1, 100) === 1)
             $this->delete_expired();
 
         // This object has expired
-        if ($this->expires < time())
+        if ($this->_exists() && $this->expires < time())
             $this->delete();
     }
 

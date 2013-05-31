@@ -20,7 +20,7 @@ class Roles extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany("id", "RolesUsers", "role_id");
+        $this->hasMany("id", __NAMESPACE__."\RolesUsers", "role_id");
     }
 
 }
