@@ -10,7 +10,10 @@
 
 namespace Baseapp\Library;
 
-use Baseapp\Library\Arr;
+use Baseapp\Models\Users;
+use Baseapp\Models\Roles;
+use Baseapp\Models\RolesUsers;
+use Baseapp\Models\Tokens;
 
 class Auth
 {
@@ -34,9 +37,7 @@ class Auth
     public static function instance()
     {
         if( empty(self::$_instance) )
-        {
             self::$_instance = new Auth;
-        }
 
         return self::$_instance;
     }
@@ -104,10 +105,10 @@ class Auth
         if ($user)
         {
             // Find related records for a particular user
-            foreach ($user->getRolesUsers() as $roleuser)
+            foreach ($user->getRelated('Baseapp\Models\RolesUsers') as $roleuser)
             {
                 // Get related role
-                $role = $roleuser->roles->toArray();
+                $role = $roleuser->getRelated('Baseapp\Models\Roles')->toArray();
                 $roles [$role['name']]= $role['id'];
             }
         }
@@ -124,12 +125,10 @@ class Auth
     public function get_user()
     {
         $user = $this->_session->get($this->_config['session_key']);
-        
+
+        // Check for "remembered" login
         if ( ! $user)
-        {
-            // Check for "remembered" login
             $user = $this->auto_login();
-        }
 
         return $user;
     }
@@ -145,9 +144,7 @@ class Auth
         $user = $this->_session->get($this->_config['session_key']);
         
         if ( ! $user)
-        {
             return NULL;
-        }
         else
         {
             // Get user's data from db
@@ -158,7 +155,7 @@ class Auth
             session_regenerate_id();
 
             // Store user in session
-            $user = Arr::to_object(Arr::merge(get_object_vars($user), array('roles' => $roles)));
+            $user = json_decode(json_encode(array_merge(get_object_vars($user), array('roles' => $roles)) ));
             $this->_session->set($this->_config['session_key'], $user);
             
             return $user;
@@ -191,19 +188,20 @@ class Auth
     {
         if ($this->_cookies->has('authautologin'))
         {
-            $cookie_token = $this->_cookies->get('authautologin')->getValue();
+            $cookie_token = $this->_cookies->get('authautologin')->getValue('string');
             
-            // Load the token and user
+            // Load the token
             $token = Tokens::findFirst(array('token=:token:', 'bind' => array('token' => $cookie_token)));
-            $user = $token->getUsers();
             
-            // If the token and user exists
+            // If the token exists
             if ($token && $user)
             {
+                // Load the user and his roles
+                $user = $token->getRelated('Baseapp\Models\Users');
                 $roles = $this->get_roles($user);
                 
                 // If user has login role and tokens match, perform a login
-                if (Arr::get($roles, 'login') && $token->user_agent === sha1(\Phalcon\DI::getDefault()->getShared('request')->getUserAgent()))
+                if (isset($roles['login']) && $token->user_agent === sha1(\Phalcon\DI::getDefault()->getShared('request')->getUserAgent()))
                 {
                     // Save the token to create a new unique token
                     $token->token = $this->create_token();
@@ -219,7 +217,7 @@ class Auth
                     session_regenerate_id();
 
                     // Store user in session
-                    $user = Arr::to_object(Arr::merge(get_object_vars($user), array('roles' => $roles)));
+                    $user = json_decode(json_encode(array_merge(get_object_vars($user), array('roles' => $roles)) ));
                     $this->_session->set($this->_config['session_key'], $user);
 
                     // Automatic login was successful
@@ -228,6 +226,11 @@ class Auth
 
                 // Token is invalid
                 $token->delete();
+            }
+            else
+            {
+                $this->_cookies->set('authautologin', "", time() - 3600);
+                $this->_cookies->delete('authautologin');
             }
         }
 
@@ -256,14 +259,12 @@ class Auth
         {
             $roles = $this->get_roles($user);
             
+            // Create a hashed password
             if (is_string($password))
-            {
-                // Create a hashed password
                 $password = $this->hash($password);
-            }
 
             // If user have login role and the passwords match, perform a login
-            if (Arr::get($roles, 'login') && $user->password === $password)
+            if (isset($roles['login']) && $user->password === $password)
             {
                 if ($remember === TRUE)
                 {
@@ -287,7 +288,7 @@ class Auth
                 session_regenerate_id();
 
                 // Store user in session
-                $user = Arr::to_object(Arr::merge(get_object_vars($user), array('roles' => $roles)));
+                $user = json_decode(json_encode(array_merge(get_object_vars($user), array('roles' => $roles)) ));
                 $this->_session->set($this->_config['session_key'], $user);
 
                 return TRUE;
@@ -309,9 +310,10 @@ class Auth
     {
         if ($this->_cookies->has('authautologin'))
         {
-            $cookie_token = $this->_cookies->get('authautologin')->getValue();
-            
+            $cookie_token = $this->_cookies->get('authautologin')->getValue('string');
+
             // Delete the autologin cookie to prevent re-login
+            $this->_cookies->set('authautologin', "", time() - 3600);
             $this->_cookies->delete('authautologin');
 
             // Clear the autologin token from the database
@@ -327,15 +329,14 @@ class Auth
             }
             else
             {
-                $token->delete();
+                if ($token)
+                    $token->delete();
             }
         }
         
+        // Destroy the session completely
         if ($destroy === TRUE)
-        {
-            // Destroy the session completely
             $this->_session->destroy();
-        }
         else
         {
             // Remove the user from the session
