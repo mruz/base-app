@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Library;
+
 abstract class Arr {
 
     /**

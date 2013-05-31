@@ -10,6 +10,8 @@
 
 namespace Baseapp\Library;
 
+use Baseapp\Library\Arr;
+
 class Auth
 {
     private $_config = array(
