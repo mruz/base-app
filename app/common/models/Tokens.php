@@ -34,7 +34,7 @@ class Tokens extends \Phalcon\Mvc\Model
             $this->delete_expired();
 
         // This object has expired
-        if ($this->_exists() && $this->expires < time())
+        if (property_exists($this, 'expires') && $this->expires < time())
             $this->delete();
     }
 
