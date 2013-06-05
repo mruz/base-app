@@ -194,7 +194,7 @@ class Auth
             $token = Tokens::findFirst(array('token=:token:', 'bind' => array('token' => $cookie_token)));
             
             // If the token exists
-            if ($token && $user)
+            if ($token)
             {
                 // Load the user and his roles
                 $user = $token->getRelated('Baseapp\Models\Users');
