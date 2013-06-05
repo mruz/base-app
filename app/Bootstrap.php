@@ -4,13 +4,13 @@
  * Bootstrap
  * 
  * @package     base-app
- * @category    Bootstrap
+ * @category    Application
  * @version     1.1
  */
 use \Baseapp\Library\Debug;
 use \Baseapp\Library\I18n;
 
-class Bootstrap
+class Bootstrap extends \Phalcon\Mvc\Application
 {
 
     private $_di;
@@ -21,16 +21,10 @@ class Bootstrap
      * 
      * @param $di
      */
-    public function __construct($di)
+    public function __construct(\Phalcon\DiInterface $di)
     {
         $this->_di = $di;
-    }
 
-    /**
-     * Runs the application performing all initializations
-     */
-    public function run()
-    {
         $loaders = array(
             'config',
             'loader',
@@ -41,37 +35,32 @@ class Bootstrap
             'crypt',
             'session',
             'cookie',
-            //'cache',
+            'cache',
             'url',
             'router',
         );
 
-        try {
-            foreach ($loaders as $service)
-                $this->$service();
+        // Register services
+        foreach ($loaders as $service)
+            $this->$service();
 
-            $application = new \Phalcon\Mvc\Application();
-            $application->setDI($this->_di);
+        // Register modules
+        $this->registerModules(array(
+            'frontend' => array(
+                'className' => 'Baseapp\Frontend\Module',
+                'path' => ROOT_PATH . '/app/frontend/Module.php'
+            ),
+            'backend' => array(
+                'className' => 'Baseapp\Backend\Module',
+                'path' => ROOT_PATH . '/app/backend/Module.php'
+            )
+        ));
 
-            $application->registerModules(array(
-                'frontend' => array(
-                    'className' => 'Baseapp\Frontend\Module',
-                    'path' => ROOT_PATH . '/app/frontend/Module.php'
-                ),
-                'backend' => array(
-                    'className' => 'Baseapp\Backend\Module',
-                    'path' => ROOT_PATH . '/app/backend/Module.php'
-                )
-            ));
+        // Register the app itself as a service
+        $this->_di->set('app', $this);
 
-            return $application->handle()->getContent();
-        } catch (\Phalcon\Exception $e) {
-            $this->log($e);
-        } catch (\PDOException $e) {
-            $this->log($e);
-        } catch (\Exception $e) {
-            $this->log($e);
-        }
+        // Sets the parent Di
+        parent::setDI($this->_di);
     }
 
     protected function loader()
@@ -207,7 +196,7 @@ class Bootstrap
                         'action' => 'index',
                         'id' => 2,
                     ));
-                    
+
                     $router->add('/:controller[/]?', array(
                         'module' => 'frontend',
                         'controller' => 1,
@@ -248,9 +237,44 @@ class Bootstrap
                 });
     }
 
-    protected function log(Exception $e)
+    /**
+     * Does a HMVC request in the application
+     *
+     * @param array $location
+     * @param array $data
+     * @return mixed
+     */
+    public function request($location, $data = null)
     {
-        if ($this->_config->log->file) {
+        $dispatcher = clone $this->getDI()->get('dispatcher');
+
+        if (isset($location['controller']))
+            $dispatcher->setControllerName($location['controller']);
+        else
+            $dispatcher->setControllerName('index');
+
+        if (isset($location['action']))
+            $dispatcher->setActionName($location['action']);
+        else
+            $dispatcher->setActionName('index');
+
+        if (isset($location['params']))
+            $dispatcher->setActionName($location['params']);
+        else
+            $dispatcher->setParams(array());
+
+        $dispatcher->dispatch();
+
+        $response = $dispatcher->getReturnedValue();
+        if ($response instanceof \Phalcon\Http\ResponseInterface)
+            return $response->getContent();
+
+        return $response;
+    }
+
+    public static function log(Exception $e)
+    {
+        if (\Phalcon\DI::getDefault()->getShared('config')->log->file) {
             $logger = new \Phalcon\Logger\Adapter\File(ROOT_PATH . '/app/common/logs/' . date('Ymd') . '.log', array('mode' => 'a+'));
             $logger->error(get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage());
             $logger->info($e->getFile() . '[' . $e->getLine() . ']');
@@ -258,7 +282,7 @@ class Bootstrap
             $logger->close();
         }
 
-        if ($this->_config->log->debug) {
+        if (\Phalcon\DI::getDefault()->getShared('config')->log->debug) {
             echo Debug::dump(get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(), 'Message');
             echo Debug::dump($e->getFile() . '[' . $e->getLine() . ']', 'File');
             echo Debug::dump($e->getTrace(), 'Trace');
@@ -266,11 +290,13 @@ class Bootstrap
             $view = new \Phalcon\Mvc\View();
             $view->setViewsDir(ROOT_PATH . '/app/frontend/views/');
             $view->setMainView('error');
+            echo $view->getRender(NULL, NULL);
         }
     }
 
 }
 
+// Global translation function
 if (!function_exists('__')) {
 
     function __($string, array $values = NULL)
