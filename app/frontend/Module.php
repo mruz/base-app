@@ -59,6 +59,21 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $di->set('view', function() {
                     $view = new \Phalcon\Mvc\View();
                     $view->setViewsDir(__DIR__ . '/views/');
+                    $view->registerEngines(
+                        array(
+                            ".phtml" => '\Phalcon\Mvc\View\Engine\Php',
+                            ".volt" => function($view, $di) {
+                                $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
+
+                                $volt->setOptions(array(
+                                        'compiledPath' => ROOT_PATH . '/app/common/cache/volt/',
+                                        'compiledSeparator' => '_'
+                                ));
+                                
+                                return $volt;
+                            }
+                        )
+                    );
                     return $view;
                 });
     }

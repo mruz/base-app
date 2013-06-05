@@ -63,8 +63,6 @@ class IndexController extends \Phalcon\Mvc\Controller
     {
         Tag::setTitle(__('Home'));
         $this->site_desc = __('Home');
-        
-        \Baseapp\Library\Image::factory('img/glyphicons-halflings.png')->render();
     }
 
     /**
