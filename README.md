@@ -1,13 +1,12 @@
-base-app 1.1
-========
+# base-app 1.1
 
-The base application in PhalconPHP
+##### The base application in PhalconPHP
+Use this application as a way to quick start any new project.
 ***
-Components:
---------
+### Components:
 * Bootstrap file
 * Config file
-* CLI file
+* Console file
 * Frontend/Backend modules
 * Library
  * Auth
@@ -16,13 +15,13 @@ Components:
  * Email
  * I18n
  * Image
+ * Tool
 * User
  * Models
  * Auth schema mysql
 * Twitter Bootstrap
 
-Configuration:
---------
-1. Set base_uri and other settings in /app/common/config/config.ini
-2. Use /auth-schema-mysql.sql to create required tables
-3. Make sure the /app/common/cache and /app/common/logs directories are writable by the web server
+### Configuration:
+1. Set *base_uri* and other settings in */app/common/config/config.ini*
+2. Use */auth-schema-mysql.sql* to create required tables
+3. Make sure the */app/common/cache* and */app/common/logs* directories are writable by the web server
