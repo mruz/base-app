@@ -1,5 +1,7 @@
 /* app.css */
-
+h1,h2,h3,h4 { font-family: "Open Sans", Helvetica, Arial; font-weight: normal; }
+footer {margin-top: 20px; }
+.navbar-fixed-bottom { position: static; }
 /* Responsive
 -------------------------------------------------- */
 /* Large desktop */

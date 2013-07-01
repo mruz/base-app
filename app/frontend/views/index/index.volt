@@ -1,16 +1,8 @@
-<?php /**
- * Home View
- * 
- * @package     base-app
- * @category    View
- * @version     1.1
- */ ?><?php
- 
- use \Phalcon\Tag; ?>
-<h1><?php echo __('The base application in PhalconPHP') ?></h1>
-<p><?php echo __('Use this application as a way to quick start any new project.') ?></p>
+{# Home View | base-app | 1.2 #}
+<h1>{{ __('The base application in PhalconPHP') }}</h1>
+<p>{{ __('Use this application as a way to quick start any new project.') }}</p>
 <hr />
-<h3><?php echo __('Components') ?>:</h3>
+<h3>{{ __('Components') }}:</h3>
 <ul>
     <li>Bootstrap file</li>
     <li>Config file</li>
@@ -36,8 +28,3 @@
     <li>Twitter Bootstrap</li>
 </ul>
 <hr />
-<h3><?php echo __('Language') ?>:</h3>
-<ul>
-    <li><?php echo Tag::linkTo('lang/set/en-gb', __('English')) ?></li>
-    <li><?php echo Tag::linkTo('lang/set/pl-pl', __('Polish')) ?></li>
-</ul>

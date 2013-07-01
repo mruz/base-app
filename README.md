@@ -1,4 +1,4 @@
-# base-app 1.1
+# base-app 1.2
 
 ##### The base application in PhalconPHP
 Use this application as a way to quick start any new project.
@@ -9,13 +9,13 @@ Use this application as a way to quick start any new project.
 * Console file
 * Frontend/Backend modules
 * Library
- * Auth
- * Arr
- * Debug
- * Email
- * I18n
- * Image
- * Tool
+ * [Arr](https://github.com/mruz/base-app/wiki/Arr)
+ * [Auth](https://github.com/mruz/base-app/wiki/Auth)
+ * [Debug](https://github.com/mruz/base-app/wiki/Debug)
+ * [Email](https://github.com/mruz/base-app/wiki/Email)
+ * [I18n](https://github.com/mruz/base-app/wiki/I18n)
+ * [Image](http://kohanaframework.org/3.3/guide/image/using)
+ * [Tool](https://github.com/mruz/base-app/wiki/Tool)
 * User
  * Models
  * Auth schema mysql

@@ -1,34 +1,25 @@
-<?php /**
- * Admin's Template View
- * 
- * @package     base-app
- * @category    View
- * @version     1.1
- */ ?><?php
-
- use \Phalcon\Tag,
-     \Baseapp\Library\I18n; ?>
+{# Admin's Template View | base-app | 1.2 #}
 <!DOCTYPE html>
-<html lang="<?php echo substr(I18n::instance()->lang(), 0, 2) ?>">
+<html lang="{{ substr(i18n.lang(), 0, 2) }}">
     <head>
         <meta charset="utf-8">
-        <?php echo Tag::getTitle() ?>
+        {{ getTitle() }}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <?php echo Tag::stylesheetLink('css/bootstrap.min.css') ?>
+        {{ stylesheetLink('css/bootstrap.min.css') }}
         <style>
             body { padding-top: 45px; }
         </style>
-        <?php echo Tag::stylesheetLink('css/bootstrap-responsive.min.css') ?>
-        <?php echo Tag::stylesheetLink('css/app.css') ?>
+        {{ stylesheetLink('css/bootstrap-responsive.min.css') }}
+        {{ stylesheetLink('css/app.css') }}
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
-        <?php echo Tag::javascriptInclude('js/html5shiv.js') ?>
+        {{ javascriptInclude('js/html5shiv.js') }}
         <![endif]-->
 
         <!-- Fav and touch icons -->
-        <link rel="shortcut icon" href="<?php echo $this->url->get('favicon.ico') ?>">
+        <link rel="shortcut icon" href="{{ url.get('favicon.ico') }}">
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -39,10 +30,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <?php echo Tag::linkTo(array(NULL, $this->config->site->name, 'class' => 'brand')) ?>
+                    {{ linkTo([NULL, config.site.name, 'class' : 'brand']) }}
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li class="active"><?php echo Tag::linkTo(NULL, __('Home')) ?></li>
+                            <li class="active">{{ linkTo(NULL, __('Home')) }}</li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
@@ -50,10 +41,10 @@
         </div>
 
         <div class="container">
-            <?php echo $this->view->getContent() ?>
+            {{ content() }}
         </div> <!-- /container -->
 
-        <?php echo Tag::javascriptInclude('js/jquery.min.js') ?>
-        <?php echo Tag::javascriptInclude('js/bootstrap.min.js') ?>
+        {{ javascriptInclude('js/jquery.min.js') }}
+        {{ javascriptInclude('js/bootstrap.min.js') }}
     </body>
 </html>

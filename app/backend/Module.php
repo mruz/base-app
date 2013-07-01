@@ -5,7 +5,7 @@
  * 
  * @package     base-app
  * @category    Module
- * @version     1.1
+ * @version     1.2
  */
 
 namespace Baseapp\Backend;
@@ -60,21 +60,39 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $di->set('view', function() {
                     $view = new \Phalcon\Mvc\View();
                     $view->setViewsDir(__DIR__ . '/views/');
-                    $view->registerEngines(
-                        array(
-                            ".phtml" => '\Phalcon\Mvc\View\Engine\Php',
-                            ".volt" => function($view, $di) {
-                                $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
+                    $view->registerEngines(array(
+                        ".phtml" => '\Phalcon\Mvc\View\Engine\Php',
+                        ".volt" => function($view, $di) {
+                            $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
 
-                                $volt->setOptions(array(
-                                        'compiledPath' => ROOT_PATH . '/app/common/cache/volt/',
-                                        'compiledSeparator' => '_'
-                                ));
-                                
-                                return $volt;
-                            }
-                        )
-                    );
+                            $volt->setOptions(array(
+                                'compiledPath' => function($templatePath) {
+                                    $templatePath = strstr($templatePath, '/app');
+                                    $dirName = dirname($templatePath);
+
+                                    if (!is_dir(ROOT_PATH . '/app/common/cache/volt' . $dirName)) {
+                                        mkdir(ROOT_PATH . '/app/common/cache/volt' . $dirName, 0777, TRUE);
+                                    }
+                                    return ROOT_PATH . '/app/common/cache/volt' . $dirName . '/' . basename($templatePath, '.volt') . '.php';
+                                },
+                                'compileAlways' => TRUE
+                            ));
+
+                            $compiler = $volt->getCompiler();
+
+                            $compiler->addExtension(new \Baseapp\Extension\VoltPHPFunctions());
+
+                            $compiler->addFunction('debug', function($resolvedArgs) {
+                                        return '\Baseapp\Library\Debug::vars(' . $resolvedArgs . ')';
+                                    });
+                                    
+                            $compiler->addFilter('isset', function($resolvedArgs) {
+                                        return '(isset(' . $resolvedArgs . ') ? ' . $resolvedArgs . ' : NULL)';
+                                    });
+                                    
+                            return $volt;
+                        }
+                    ));
                     return $view;
                 });
     }

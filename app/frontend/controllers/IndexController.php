@@ -5,13 +5,13 @@
  * 
  * @package     base-app
  * @category    Controller
- * @version     1.1
+ * @version     1.2
  */
 
 namespace Baseapp\Frontend\Controllers;
 
-use \Phalcon\Tag,
-    \Baseapp\Library\I18n;
+use \Baseapp\Library\I18n,
+    \Baseapp\Library\Auth;
 
 class IndexController extends \Phalcon\Mvc\Controller
 {
@@ -22,7 +22,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Initialize
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function initialize()
     {
@@ -38,30 +38,48 @@ class IndexController extends \Phalcon\Mvc\Controller
         // Set the language from cookie
         elseif ($this->cookies->has('lang'))
             I18n::instance()->lang($this->cookies->get('lang')->getValue());
+
+        $this->view->setVar('i18n', I18n::instance());
+        $this->view->setVar('auth', Auth::instance());
     }
 
     /**
      * Before Action
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function beforeExecuteRoute($dispatcher)
     {
         // Set default title and description
-        Tag::setTitle('Index');
-        $this->site_desc = 'Index';
+        $this->tag->setTitle('Default');
+        $this->site_desc = 'Default';
+        
+        // Add css and js to assets collection
+        $this->assets
+            ->collection('headerCss')
+            ->setTargetPath(ROOT_PATH . '/public/min/')
+            ->setPrefix('min/')
+
+            ->addCss('css/app.css');
+        
+        $this->assets
+            ->collection('footerJs')
+            ->setTargetPath(ROOT_PATH . '/public/min/')
+            ->setPrefix('min/')
+                
+            ->addJs('js/plugins/flashclose.js');
     }
 
     /**
      * Index Action 
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function indexAction()
     {
-        Tag::setTitle(__('Home'));
+        $this->tag->setTitle(__('Home'));
         $this->site_desc = __('Home');
     }
 
@@ -69,19 +87,32 @@ class IndexController extends \Phalcon\Mvc\Controller
      * After Action
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function afterExecuteRoute($dispatcher)
     {
-        Tag::appendTitle(' | base-app');
+        // Set final title and description
+        $this->tag->appendTitle(' | base-app');
         $this->view->setVar('site_desc', mb_substr($this->filter->sanitize($this->site_desc, 'string'), 0, 200, 'utf-8'));
+        
+        // Minify css and js collection
+        $this->assets
+            ->collection('headerCss')
+            ->join(FALSE)
+            ->addFilter(new \Phalcon\Assets\Filters\Cssmin());
+        
+        $this->assets
+            ->collection('footerJs')
+            ->join(FALSE)
+            ->addFilter(new \Phalcon\Assets\Filters\Jsmin());
+                
     }
 
     /**
      * Not found Action 
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function notFoundAction()
     {
