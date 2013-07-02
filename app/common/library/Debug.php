@@ -127,7 +127,7 @@ abstract class Debug
      * @param   array    array of styles
      * @return  array
      */
-    private function get_style(array $styles)
+    private static function get_style(array $styles)
     {
         $arr = array();
         foreach ($styles as $type => $style)
@@ -150,7 +150,7 @@ abstract class Debug
      * @param   string   name of variable
      * @return  string
      */
-    private function _get_info_var ($var, $name = '', $indent = 0)
+    private static function _get_info_var ($var, $name = '', $indent = 0)
     {
         static $methods = array ();
         $indent > 0 or $methods = array ();
