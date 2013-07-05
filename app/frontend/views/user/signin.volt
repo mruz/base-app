@@ -1,17 +1,24 @@
 <h1>{{ __('Sign in') }}</h1><hr />
 {{ flashSession.output() }}
 {{ form(NULL, 'class' : 'form-horizontal') }}
-<div class="control-group">
-    <label class="control-label" for="username">{{ __('Username') }}:</label>
+{% set field = 'username' %}
+<div class="control-group{{ errors is defined and errors.filter(field) ? ' error' : (_POST[field]|isset ? ' success' : '') }}">
+    <label class="control-label" for={{ field }}>{{ __(field|capitalize) }}:</label>
     <div class="controls">
-    {{ textField([ 'username', 'class' : 'span2', 'placeholder' : __('Username') ]) }}
-    <span class="help-inline"></span>
+    {{ textField([ field, 'class' : 'span2', 'placeholder' : __(field|capitalize) ]) }}
+    {% if errors is defined and errors.filter(field) %}
+        <span class="help-inline">{{ current(errors.filter(field)).getMessage() }}</span>
+    {% endif %}
     </div>
 </div>
-<div class="control-group">
-    <label class="control-label" for="password">{{ __('Password') }}:</label>
+{% set field = 'password' %}
+<div class="control-group{{ errors is defined and errors.filter(field) ? ' error' : (_POST[field]|isset ? ' success' : '') }}">
+    <label class="control-label" for={{ field }}>{{ __(field|capitalize) }}:</label>
     <div class="controls">
-    {{ passwordField([ 'password', 'class' : 'span2', 'placeholder' : __('Password') ]) }}
+    {{ passwordField([ field, 'class' : 'span2', 'placeholder' : __(field|capitalize) ]) }}
+    {% if errors is defined and errors.filter(field) %}
+        <span class="help-inline">{{ current(errors.filter(field)).getMessage() }}</span>
+    {% endif %}
     </div>
 </div>
 <div class="control-group">
@@ -22,7 +29,9 @@
     </div>
 </div>
 <div class="form-actions">
-    {{ submitButton([ 'name' : 'submit_signin', 'class' : 'btn', __('Sign in') ]) }}
+    <p>{{ submitButton([ 'name' : 'submit_signin', 'class' : 'btn', __('Sign in') ]) }}</p>
+    <p class="muted">
+        {{  __("Don't have an account?") }} {{ linkTo([ 'user/signup', __('Sign up') ~ ' »' ]) }}
+    </p>
 </div>
 {{ endForm() }}
-{{ linkTo([ 'user/signup', __('Sign up') ]) }}

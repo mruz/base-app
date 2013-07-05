@@ -1,31 +1,57 @@
 <h1>{{ __('Sign up') }}</h1><hr />
 {{ flashSession.output() }}
 {{ form(NULL, 'class' : 'form-horizontal') }}
-<div class="control-group{#{ errors is defined and errors.filter('username') ? ' error' : _POST['username']|isset ? ' success' : '' }#}">
-    <label class="control-label" for="username">{{ __('Username') }}:</label>
+{% set field = 'username' %}
+<div class="control-group{{ errors is defined and errors.filter(field) ? ' error' : (_POST[field]|isset ? ' success' : '') }}">
+    <label class="control-label" for={{ field }}>{{ __(field|capitalize) }}:</label>
     <div class="controls">
-    {{ textField([ 'username', 'class' : 'span2', 'placeholder' : __('Username') ]) }}
-    <span class="help-inline">{#{ errors is defined and errors.filter('username') }#}</span>
+    {{ textField([ field, 'class' : 'span2', 'placeholder' : __(field|capitalize) ]) }}
+    {% if errors is defined and errors.filter(field) %}
+        <span class="help-inline">{{ current(errors.filter(field)).getMessage() }}</span>
+    {% endif %}
     </div>
 </div>
-<div class="control-group">
-    <label class="control-label" for="password">{{ __('Password') }}:</label>
+{% set field = 'password' %}
+<div class="control-group{{ errors is defined and errors.filter(field) ? ' error' : (_POST[field]|isset ? ' success' : '') }}">
+    <label class="control-label" for={{ field }}>{{ __(field|capitalize) }}:</label>
     <div class="controls">
-    {{ passwordField([ 'password', 'class' : 'span2', 'placeholder' : __('Password') ]) }}
+    {{ passwordField([ field, 'class' : 'span2', 'placeholder' : __(field|capitalize) ]) }}
+    {% if errors is defined and errors.filter(field) %}
+        <span class="help-inline">{{ current(errors.filter(field)).getMessage() }}</span>
+    {% endif %}
     </div>
 </div>
-<div class="control-group">
-    <label class="control-label" for="username">{{ __('Email') }}:</label>
+{% set field = 'repeatPassword' %}
+<div class="control-group{{ errors is defined and errors.filter(field) ? ' error' : (_POST[field]|isset ? ' success' : '') }}">
+    <label class="control-label" for={{ field }}>{{ __(field|label) }}:</label>
     <div class="controls">
-    {{ textField([ 'email', 'class' : 'span2', 'placeholder' : __('Email') ]) }}
-    <span class="help-inline"></span>
+    {{ passwordField([ field, 'class' : 'span2', 'placeholder' : __(field|label) ]) }}
+    {% if errors is defined and errors.filter(field) %}
+        <span class="help-inline">{{ current(errors.filter(field)).getMessage() }}</span>
+    {% endif %}
+    </div>
+</div>
+{% set field = 'email' %}
+<div class="control-group{{ errors is defined and errors.filter(field) ? ' error' : (_POST[field]|isset ? ' success' : '') }}">
+    <label class="control-label" for={{ field }}>{{ __(field|capitalize) }}:</label>
+    <div class="controls">
+    {{ textField([ field, 'class' : 'span2', 'placeholder' : __(field|capitalize) ]) }}
+    {% if errors is defined and errors.filter(field) %}
+        <span class="help-inline">{{ current(errors.filter(field)).getMessage() }}</span>
+    {% endif %}
+    </div>
+</div>
+{% set field = 'repeatEmail' %}
+<div class="control-group{{ errors is defined and errors.filter(field) ? ' error' : (_POST[field]|isset ? ' success' : '') }}">
+    <label class="control-label" for={{ field }}>{{ __(field|label) }}:</label>
+    <div class="controls">
+    {{ textField([ field, 'class' : 'span2', 'placeholder' : __(field|label) ]) }}
+    {% if errors is defined and errors.filter(field) %}
+        <span class="help-inline">{{ current(errors.filter(field)).getMessage() }}</span>
+    {% endif %}
     </div>
 </div>
 <div class="form-actions">
     {{ submitButton([ 'name' : 'submit_signin', 'class' : 'btn', __('Sign up') ]) }}
 </div>
 {{ endForm() }}
-
-{#{ debug(_POST) }}
-{{ debug(json_encode(errors.filter('email')) ) }}}
-{{ debug(errors) }#}

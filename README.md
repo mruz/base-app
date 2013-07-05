@@ -7,6 +7,7 @@ Use this application as a way to quick start any new project.
 * Bootstrap file
 * Config file
 * Console file
+* Volt template
 * Frontend/Backend modules
 * Library
  * [Arr](https://github.com/mruz/base-app/wiki/Arr)
@@ -24,4 +25,10 @@ Use this application as a way to quick start any new project.
 ### Configuration:
 1. Set *base_uri* and other settings in */app/common/config/config.ini*
 2. Use */auth-schema-mysql.sql* to create required tables
-3. Make sure the */app/common/cache* and */app/common/logs* directories are writable by the web server
+3. Make sure that these directories are writable by the web server:
+ * `/app/common/logs`
+ * `/app/common/cache`
+ * `/app/common/cache/volt`
+ * `/public/min/css`
+ * `/public/min/js`
+ * `/public/min/js/plugins`

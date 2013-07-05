@@ -42,11 +42,21 @@ class Users extends \Phalcon\Mvc\Model
         $validation = new \Phalcon\Validation();
         
         $validation->add('username', new \Phalcon\Validation\Validator\PresenceOf());
+        $validation->add('username', new \Phalcon\Validation\Validator\StringLength(array(
+            'min' => 5,
+        )));
         
         $validation->add('password', new \Phalcon\Validation\Validator\PresenceOf());
+        $validation->add('repeatPassword', new \Phalcon\Validation\Validator\Confirmation(array(
+            'with' => 'password'
+        )));
+        
         $validation->add('email', new \Phalcon\Validation\Validator\PresenceOf());
-
         $validation->add('email', new \Phalcon\Validation\Validator\Email());
+        
+        $validation->add('repeatEmail', new \Phalcon\Validation\Validator\Confirmation(array(
+            'with' => 'email'
+        )));
 
         $messages = $validation->validate($_POST);
         
@@ -56,18 +66,18 @@ class Users extends \Phalcon\Mvc\Model
         }
         else
         {
-//            $date = date('Y-m-d H:i:s');
-//            $user = new Users();
-//            $user->username = $this->request->getPost('username');
-//            $user->password = Auth::instance()->hash($this->request->getPost('password'));
-//            $user->email = $this->request->getPost('email');
-//            $user->date = $date;
-//            $user->create();
-//            
-//            $hash = $user->hash = md5($this->request->getPost('email').$user->id.$date);
-//            $user->update();
-//            
-//            // send e-mail with url to confirm
+            $date = date('Y-m-d H:i:s');
+            $user = new Users();
+            $user->username = $this->request->getPost('username');
+            $user->password = Auth::instance()->hash($this->request->getPost('password'));
+            $user->email = $this->request->getPost('email');
+            $user->date = $date;
+            $user->create();
+            
+            $hash = $user->hash = md5($user->id.$user->email.$date.$this->config->auth->hash_key);
+            $user->update();
+            
+            // send e-mail with url to confirm
             
             return TRUE;
         }

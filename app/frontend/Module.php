@@ -88,6 +88,10 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
                             $compiler->addFilter('isset', function($resolvedArgs) {
                                         return '(isset(' . $resolvedArgs . ') ? ' . $resolvedArgs . ' : NULL)';
                                     });
+                                    
+                            $compiler->addFilter('label', function($resolvedArgs) {
+                                        return '\Baseapp\Library\Tool::label(' . $resolvedArgs . ')';
+                                    });
 
                             return $volt;
                         }
