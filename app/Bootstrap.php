@@ -5,9 +5,8 @@
  * 
  * @package     base-app
  * @category    Application
- * @version     1.1
+ * @version     1.2
  */
-use \Baseapp\Library\Debug;
 use \Baseapp\Library\I18n;
 
 class Bootstrap extends \Phalcon\Mvc\Application
@@ -69,7 +68,8 @@ class Bootstrap extends \Phalcon\Mvc\Application
         $loader = new \Phalcon\Loader();
         $loader->registerNamespaces(array(
             'Baseapp\Models' => ROOT_PATH . '/app/common/models/',
-            'Baseapp\Library' => ROOT_PATH . '/app/common/library/'
+            'Baseapp\Library' => ROOT_PATH . '/app/common/library/',
+            'Baseapp\Extension' => ROOT_PATH . '/app/common/extension/'
         ))->register();
     }
 
@@ -168,6 +168,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
         $this->_di->set('url', function() use ($config) {
                     $url = new \Phalcon\Mvc\Url();
                     $url->setBaseUri($config->app->base_uri);
+                    $url->setStaticBaseUri($config->app->static_uri);
                     return $url;
                 });
     }
@@ -283,14 +284,38 @@ class Bootstrap extends \Phalcon\Mvc\Application
         }
 
         if (\Phalcon\DI::getDefault()->getShared('config')->log->debug) {
-            echo Debug::dump(get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(), 'Message');
-            echo Debug::dump($e->getFile() . '[' . $e->getLine() . ']', 'File');
-            echo Debug::dump($e->getTrace(), 'Trace');
+            $debug = new \Phalcon\Debug();
+            $debug->onUncaughtException($e);
         } else {
-            $view = new \Phalcon\Mvc\View();
+            $di = new \Phalcon\DI\FactoryDefault();
+            $view = new \Phalcon\Mvc\View\Simple();
+            $view->setDI($di);
             $view->setViewsDir(ROOT_PATH . '/app/frontend/views/');
-            $view->setMainView('error');
-            echo $view->getRender(NULL, NULL);
+            $view->registerEngines(array(
+                ".phtml" => "Phalcon\Mvc\View\Engine\Php",
+                ".volt" => function($view, $di) {
+                    $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
+
+                    $volt->setOptions(array(
+                        'compiledPath' => function($templatePath) {
+                            $templatePath = strstr($templatePath, '/app');
+                            $dirName = dirname($templatePath);
+
+                            if (!is_dir(ROOT_PATH . '/app/common/cache/volt' . $dirName)) {
+                                mkdir(ROOT_PATH . '/app/common/cache/volt' . $dirName, 0777, TRUE);
+                            }
+                            return ROOT_PATH . '/app/common/cache/volt' . $dirName . '/' . basename($templatePath, '.volt') . '.php';
+                        },
+                        'compileAlways' => TRUE
+                    ));
+
+                    $compiler = $volt->getCompiler();
+                    $compiler->addExtension(new \Baseapp\Extension\VoltPHPFunctions());
+
+                    return $volt;
+                }
+            ));
+            echo $view->render('error');
         }
     }
 

@@ -5,7 +5,7 @@
  * 
  * @package     base-app
  * @category    Library
- * @version     1.1
+ * @version     1.2
  */
 
 namespace Baseapp\Library;
@@ -250,6 +250,10 @@ class Auth
         if ( ! is_object($user))
         {
             $username = $user;
+            
+            // Username not specified
+            if ( ! $username)
+                return NULL;
 
             // Load the user
             $user = Users::findFirst(array('username=:username:', 'bind' => array('username' => $username)));
@@ -293,9 +297,14 @@ class Auth
 
                 return TRUE;
             }
+            else
+            {
+                // Login failed
+                return FALSE;
+            }
         }
-        // Login failed
-        return FALSE;
+        // No user found
+        return NULL;
     }
     
     /**

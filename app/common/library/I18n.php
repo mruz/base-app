@@ -5,7 +5,7 @@
  * 
  * @package     base-app
  * @category    Library
- * @version     1.1
+ * @version     1.2
  */
 
 namespace Baseapp\Library;
@@ -15,7 +15,6 @@ class I18n
 
     private $_config = array(
         'lang' => 'en-gb',
-        'source' => 'en-gb',
         'dir' => '/app/common/i18n/'
     );
     protected $_cache = array();
@@ -61,13 +60,12 @@ class I18n
         $parts = explode('-', $lang);
         $path = implode(DIRECTORY_SEPARATOR, $parts);
 
-        if ($lang != $this->_config['source'])
-            if (file_exists(ROOT_PATH . $this->_config['dir'] . $path . '.php'))
-                $messages = require ROOT_PATH . $this->_config['dir'] . $path . '.php';
-            elseif (file_exists(ROOT_PATH . $this->_config['dir'] . $lang . '.php'))
-                $messages = require ROOT_PATH . $this->_config['dir'] . $lang . '.php';
-            elseif (file_exists(ROOT_PATH . $this->_config['dir'] . $parts[0] . '.php'))
-                $messages = require ROOT_PATH . $this->_config['dir'] . $parts[0] . '.php';
+        if (file_exists(ROOT_PATH . $this->_config['dir'] . $path . '.php'))
+            $messages = require ROOT_PATH . $this->_config['dir'] . $path . '.php';
+        elseif (file_exists(ROOT_PATH . $this->_config['dir'] . $lang . '.php'))
+            $messages = require ROOT_PATH . $this->_config['dir'] . $lang . '.php';
+        elseif (file_exists(ROOT_PATH . $this->_config['dir'] . $parts[0] . '.php'))
+            $messages = require ROOT_PATH . $this->_config['dir'] . $parts[0] . '.php';
 
         $translate = new \Phalcon\Translate\Adapter\NativeArray(array(
             "content" => isset($messages) ? $messages : array()
@@ -75,13 +73,16 @@ class I18n
 
         return $this->_cache[$lang] = $translate;
     }
+    
+    public function getCache()
+    {
+        return $this->_cache;
+    }
 
     public function _($string, array $values = NULL)
     {
-        if ($this->_config['lang'] != $this->_config['source']) {
-            $translate = $this->load($this->_config['lang']);
-            $string = $translate->_($string, $values);
-        }
+        $translate = $this->load($this->_config['lang']);
+        $string = $translate->_($string, $values);
 
         return empty($values) ? $string : strtr($string, $values);
     }

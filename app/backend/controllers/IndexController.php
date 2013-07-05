@@ -5,13 +5,12 @@
  * 
  * @package     base-app
  * @category    Controller
- * @version     1.1
+ * @version     1.2
  */
 
 namespace Baseapp\Backend\Controllers;
 
-use \Phalcon\Tag,
-    \Baseapp\Library\Auth,
+use \Baseapp\Library\Auth,
     \Baseapp\Library\I18n;
 
 class IndexController extends \Phalcon\Mvc\Controller
@@ -21,7 +20,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Initialize
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function initialize()
     {
@@ -41,47 +40,50 @@ class IndexController extends \Phalcon\Mvc\Controller
         // Set the language from cookie
         elseif ($this->cookies->has('lang'))
             I18n::instance()->lang($this->cookies->get('lang')->getValue());
+        
+        $this->view->setVar('i18n', I18n::instance());
+        $this->view->setVar('auth', Auth::instance());
     }
 
     /**
      * Before Action
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function beforeExecuteRoute($dispatcher)
     {
         // Set default title
-        Tag::setTitle('Index');
+        $this->tag->setTitle('Index');
     }
 
     /**
      * Index Action 
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function indexAction()
     {
-        Tag::setTitle(__('Admin panel'));
+        $this->tag->setTitle(__('Admin panel'));
     }
 
     /**
      * After Action
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function afterExecuteRoute($dispatcher)
     {
-        Tag::appendTitle(' | admin');
+        $this->tag->appendTitle(' | admin');
     }
 
     /**
      * Not found Action 
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.2
      */
     public function notfoundAction()
     {

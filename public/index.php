@@ -5,7 +5,7 @@
  * 
  * @package     base-app
  * @category    Running
- * @version     1.1
+ * @version     1.2
  */
 error_reporting(E_ALL);
 

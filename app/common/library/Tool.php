@@ -12,6 +12,20 @@ namespace Baseapp\Library;
 
 class Tool
 {
+
+    /**
+     * Replace CamelCase and Underscores to spaces
+     * 
+     * @param   string  $str
+     * @param   char    $space
+     * @return  string
+     */
+    public static function label($str, $space = ' ')
+    {
+        $str = preg_replace('/(?<=\\w)(?=[A-Z])/', $space . "$1", $str);
+        return $space === ' ' ? ucfirst(trim(str_replace('_', ' ', $str))) : strtolower($str);
+    }
+
     /**
      * Prepare HTML pagination.
      *
@@ -70,49 +84,49 @@ class Tool
             $links[$i] = $i;
 
         //prepare div and ul
-        $html = '<div class="'.$class.'"><ul>';
+        $html = '<div class="' . $class . '"><ul>';
 
         //prepare First button
-	if ($page->current != $page->first)
-            $html .= '<li>'.\Phalcon\Tag::linkTo(array($url.$hook, 'rel' => 'first', __('First'))).'</li>';
+        if ($page->current != $page->first)
+            $html .= '<li>' . \Phalcon\Tag::linkTo(array($url . $hook, 'rel' => 'first', __('First'))) . '</li>';
         else
-            $html .= '<li class="disabled"><span>'.__('First').'</span></li>';
-        
+            $html .= '<li class="disabled"><span>' . __('First') . '</span></li>';
+
         $char = strpos($url, '?') !== FALSE ? '&amp;' : '?';
-        
+
         //prepare Previous button
-	if ($page->current > $page->before)
-            $html .= '<li>'.\Phalcon\Tag::linkTo(array($url.$char.'page='.$page->before.$hook, 'rel' => 'prev', 'title' => __('Previous'), '«')).'</li>';
-	else
+        if ($page->current > $page->before)
+            $html .= '<li>' . \Phalcon\Tag::linkTo(array($url . $char . 'page=' . $page->before . $hook, 'rel' => 'prev', 'title' => __('Previous'), '«')) . '</li>';
+        else
             $html .= '<li class="disabled"><span>«</span></li>';
 
         //prepare Pages
         $pages = array();
-        foreach ($links as $number => $content)
-        {
+        foreach ($links as $number => $content) {
             if ($number === $page->current)
-                $pages[] = '<li class="active"><span>'.$content.'</span></li>';
+                $pages[] = '<li class="active"><span>' . $content . '</span></li>';
             else
-                $pages[] = '<li'.($content == '&hellip;' ? ' class="disabled"' : '').'>'.\Phalcon\Tag::linkTo(array($url.$char.'page='.$number.$hook, $content)).'</li>';
+                $pages[] = '<li' . ($content == '&hellip;' ? ' class="disabled"' : '') . '>' . \Phalcon\Tag::linkTo(array($url . $char . 'page=' . $number . $hook, $content)) . '</li>';
         }
 
         $html .= implode('', $pages);
-            
+
         //prepare Next button
-	if ($page->current < $page->next)
-            $html .= '<li>'.\Phalcon\Tag::linkTo(array($url.$char.'page='.$page->next.$hook, 'rel' => 'next', 'title' => __('Next'), '»')).'</li>';
-	else
+        if ($page->current < $page->next)
+            $html .= '<li>' . \Phalcon\Tag::linkTo(array($url . $char . 'page=' . $page->next . $hook, 'rel' => 'next', 'title' => __('Next'), '»')) . '</li>';
+        else
             $html .= '<li class="disabled"><span>»</span></li>';
 
         //prepare Last button
-	if ($page->current != $page->last)
-            $html .= '<li>'.\Phalcon\Tag::linkTo(array($url.$char.'page='.$page->last.$hook, 'rel' => 'last', __('Last'))).'</li>';
-	else
-            $html .= '<li class="disabled"><span>'.__('Last').'</span></li>';
-        
+        if ($page->current != $page->last)
+            $html .= '<li>' . \Phalcon\Tag::linkTo(array($url . $char . 'page=' . $page->last . $hook, 'rel' => 'last', __('Last'))) . '</li>';
+        else
+            $html .= '<li class="disabled"><span>' . __('Last') . '</span></li>';
+
         //close ul and div
         $html .= '</ul></div>';
-        
+
         return $html;
     }
+
 }
