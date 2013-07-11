@@ -31,16 +31,16 @@
 <br />
 <h3>{{ __('Configuration') }}:</h3>
 <ol>
-    <li>Set base_uri and other settings in /app/common/config/config.ini</li>
-    <li>Use /auth-schema-mysql.sql to create required tables</li>
+    <li>Set <em>base_uri</em> and other settings in <code>/app/common/config/config.ini</code></li>
+    <li>Use <code>/auth-schema-mysql.sql</code> to create required tables</li>
     <li>Make sure that these directories are writable by the web server:
         <ul>
-            <li>/app/common/logs</li>
-            <li>/app/common/cache</li>
-            <li>/app/common/cache/volt</li>
-            <li>/public/min/css</li>
-            <li>/public/min/js</li>
-            <li>/public/min/js/plugins</li>
+            <li><code>/app/common/logs</code></li>
+            <li><code>/app/common/cache</code></li>
+            <li><code>/app/common/cache/volt</code></li>
+            <li><code>/public/min/css</code></li>
+            <li><code>/public/min/js</code></li>
+            <li><code>/public/min/js/plugins</code></li>
         </ul>
     </li>
 </ol>
