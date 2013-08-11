@@ -26,21 +26,21 @@
             <li>Auth schema mysql</li>
         </ul>
     </li>
-    <li>Twitter Bootstrap</li>
+    <li>Twitter Bootstrap v3</li>
 </ul>
 <br />
 <h3>{{ __('Configuration') }}:</h3>
 <ol>
-    <li>Set base_uri and other settings in /app/common/config/config.ini</li>
-    <li>Use /auth-schema-mysql.sql to create required tables</li>
+    <li>Set <em class="text-info">base_uri</em> and other settings in <em class="text-info">/app/common/config/config.ini</em></li>
+    <li>Use <em class="text-info">/auth-schema-mysql.sql</em> to create required tables</li>
     <li>Make sure that these directories are writable by the web server:
         <ul>
-            <li>/app/common/logs</li>
-            <li>/app/common/cache</li>
-            <li>/app/common/cache/volt</li>
-            <li>/public/min/css</li>
-            <li>/public/min/js</li>
-            <li>/public/min/js/plugins</li>
+            <li><em class="text-info">/app/common/logs</em></li>
+            <li><em class="text-info">/app/common/cache</em></li>
+            <li><em class="text-info">/app/common/cache/volt</em></li>
+            <li><em class="text-info">/public/min/css</em></li>
+            <li><em class="text-info">/public/min/js</em></li>
+            <li><em class="text-info">/public/min/js/plugins</em></li>
         </ul>
     </li>
 </ol>

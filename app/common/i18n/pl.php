@@ -42,6 +42,7 @@ return array(
     "Edit" => "Edytuj",
     "Content" => "Zawartość",
     "Description" => "Opis",
+    "Don't have an account?" => "Nie masz konta?",
     "Fill the fields" => "Uzupełnij pola",
     "Last login" => "Ostatnie logowanie",
     "Logins" => "Logowań",

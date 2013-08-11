@@ -23,7 +23,7 @@ class Tool
     public static function label($str, $space = ' ')
     {
         $str = preg_replace('/(?<=\\w)(?=[A-Z])/', $space . "$1", $str);
-        return $space === ' ' ? ucfirst(trim(str_replace('_', ' ', $str))) : strtolower($str);
+        return $space === ' ' ? ucfirst(trim(str_replace('_', ' ', strtolower($str)) )) : $str;
     }
 
     /**

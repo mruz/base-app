@@ -56,18 +56,10 @@ class IndexController extends \Phalcon\Mvc\Controller
         $this->site_desc = 'Default';
         
         // Add css and js to assets collection
-        $this->assets
-            ->collection('headerCss')
-            ->setTargetPath(ROOT_PATH . '/public/min/')
-            ->setPrefix('min/')
-
+        $this->assets->collection('css')
             ->addCss('css/app.css');
-        
-        $this->assets
-            ->collection('footerJs')
-            ->setTargetPath(ROOT_PATH . '/public/min/')
-            ->setPrefix('min/')
-                
+
+        $this->assets->collection('js')
             ->addJs('js/plugins/flashclose.js');
     }
 
@@ -96,16 +88,19 @@ class IndexController extends \Phalcon\Mvc\Controller
         $this->view->setVar('site_desc', mb_substr($this->filter->sanitize($this->site_desc, 'string'), 0, 200, 'utf-8'));
         
         // Minify css and js collection
-        $this->assets
-            ->collection('headerCss')
-            ->join(FALSE)
-            ->addFilter(new \Phalcon\Assets\Filters\Cssmin());
-        
-        $this->assets
-            ->collection('footerJs')
-            ->join(FALSE)
-            ->addFilter(new \Phalcon\Assets\Filters\Jsmin());
-                
+//        $this->assets
+//            ->collection('css')
+//            ->setTargetPath(ROOT_PATH . '/min/')
+//            ->setPrefix('min/')
+//            ->join(FALSE)
+//            ->addFilter(new \Phalcon\Assets\Filters\Cssmin());
+//        
+//        $this->assets
+//            ->collection('js')
+//            ->setTargetPath(ROOT_PATH . '/min/')
+//            ->setPrefix('min/')
+//            ->join(FALSE)
+//            ->addFilter(new \Phalcon\Assets\Filters\Jsmin());
     }
 
     /**
