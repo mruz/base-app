@@ -26,21 +26,21 @@
             <li>Auth schema mysql</li>
         </ul>
     </li>
-    <li>Twitter Bootstrap</li>
+    <li>Twitter Bootstrap v3</li>
 </ul>
 <br />
 <h3>{{ __('Configuration') }}:</h3>
 <ol>
-    <li>Set <em>base_uri</em> and other settings in <code>/app/common/config/config.ini</code></li>
-    <li>Use <code>/auth-schema-mysql.sql</code> to create required tables</li>
+    <li>Set <em class="text-info">base_uri</em> and other settings in <em class="text-info">/app/common/config/config.ini</em></li>
+    <li>Use <em class="text-info">/auth-schema-mysql.sql</em> to create required tables</li>
     <li>Make sure that these directories are writable by the web server:
         <ul>
-            <li><code>/app/common/logs</code></li>
-            <li><code>/app/common/cache</code></li>
-            <li><code>/app/common/cache/volt</code></li>
-            <li><code>/public/min/css</code></li>
-            <li><code>/public/min/js</code></li>
-            <li><code>/public/min/js/plugins</code></li>
+            <li><em class="text-info">/app/common/logs</em></li>
+            <li><em class="text-info">/app/common/cache</em></li>
+            <li><em class="text-info">/app/common/cache/volt</em></li>
+            <li><em class="text-info">/public/min/css</em></li>
+            <li><em class="text-info">/public/min/js</em></li>
+            <li><em class="text-info">/public/min/js/plugins</em></li>
         </ul>
     </li>
 </ol>

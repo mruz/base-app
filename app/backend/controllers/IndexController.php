@@ -55,6 +55,13 @@ class IndexController extends \Phalcon\Mvc\Controller
     {
         // Set default title
         $this->tag->setTitle('Index');
+        
+        // Add css and js to assets collection
+        $this->assets->collection('css')
+            ->addCss('css/app.css');
+
+        $this->assets->collection('js')
+            ->addJs('js/plugins/flashclose.js');
     }
 
     /**
