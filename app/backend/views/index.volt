@@ -17,11 +17,13 @@
         <link rel="shortcut icon" href="{{ url.getStatic('favicon.ico') }}">
     </head>
     <body>
-        <header class="navbar navbar-fixed-top">
+        <header class="navbar navbar-default navbar-fixed-top">
             <div class="container">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                {{ linkTo([NULL, config.site.name, 'class' : 'navbar-brand']) }}
-                <div class="nav-collapse collapse navbar-responsive-collapse">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                    {{ linkTo([NULL, config.site.name, 'class' : 'navbar-brand']) }}
+                </div>
+                <div class="collapse navbar-collapse navbar-responsive-collapse">
                     <ul class="nav navbar-nav">
                         <li>{{ linkTo(NULL, __('Home')) }}</li>
                         <li class="active">{{ linkTo('admin', __('Admin panel')) }}</li>
@@ -53,23 +55,21 @@
             {{ content() }}
         </div>
         
-        <footer>
-            <div class="navbar navbar-toolbar navbar-fixed-bottom">
-                <div class="container">
-                    <p class="navbar-text">
-                        {{ linkTo(NULL, config.site.name) }} &copy; {{ date('Y') }}
-                        <span class="text-muted"> | Phalcon {{ version() }}</span>
-                    </p>
-                    <ul class="nav navbar-nav pull-right">
-                        <li class="dropdown">
-                            {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', __('Language') ~ '<b class="caret"></b>' ]) }}
-                            <ul class="dropdown-menu">
-                                <li>{{ linkTo('lang/set/en-gb', __('English')) }}</li>
-                                <li>{{ linkTo('lang/set/pl-pl', __('Polish')) }}</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+        <footer class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container">
+                <p class="navbar-text">
+                    {{ linkTo(NULL, config.site.name) }} &copy; {{ date('Y') }}
+                    <span class="text-muted"> | Phalcon {{ version() }}</span>
+                </p>
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown">
+                        {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', __('Language') ~ '<b class="caret"></b>' ]) }}
+                        <ul class="dropdown-menu">
+                            <li>{{ linkTo('lang/set/en-gb', __('English')) }}</li>
+                            <li>{{ linkTo('lang/set/pl-pl', __('Polish')) }}</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </footer>
         

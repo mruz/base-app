@@ -1,4 +1,4 @@
 /* app.css */
 footer { margin-top: 80px; }
-.navbar-btn { margin-top: 0; }
+.navbar-btn { margin-top: 0; margin-bottom: 0; }
 .navbar-fixed-bottom { position: static; }
