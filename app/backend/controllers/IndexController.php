@@ -57,11 +57,8 @@ class IndexController extends \Phalcon\Mvc\Controller
         $this->tag->setTitle('Index');
         
         // Add css and js to assets collection
-        $this->assets->collection('css')
-            ->addCss('css/app.css');
-
-        $this->assets->collection('js')
-            ->addJs('js/plugins/flashclose.js');
+        $this->assets->addCss('css/app.css');
+        $this->assets->addJs('js/plugins/flashclose.js');
     }
 
     /**
@@ -84,6 +81,20 @@ class IndexController extends \Phalcon\Mvc\Controller
     public function afterExecuteRoute($dispatcher)
     {
         $this->tag->appendTitle(' | admin');
+        
+        // Minify css and js collection
+        foreach ($this->assets->getCss() as $resource){
+            $min = new \Phalcon\Assets\Filters\Cssmin();
+            $resource->setTargetUri('min/' . $resource->getPath());
+            if (md5($min->filter($resource->getContent())) != md5_file(ROOT_PATH . '/public/min/' . $resource->getPath()))
+                file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
+        }
+        foreach ($this->assets->getJs() as $resource){
+            $min = new \Phalcon\Assets\Filters\Jsmin();
+            $resource->setTargetUri('min/' . $resource->getPath());
+            if (md5($min->filter($resource->getContent())) != md5_file(ROOT_PATH . '/public/min/' . $resource->getPath()))
+                file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
+        }
     }
 
     /**
