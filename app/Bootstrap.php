@@ -130,11 +130,11 @@ class Bootstrap extends \Phalcon\Mvc\Application
     {
         $this->_di->set('flashSession', function() {
                     $flash = new \Phalcon\Flash\Session(array(
-                        'warning' => 'alert',
+                        'warning' => 'alert alert-warning',
                         'notice' => 'alert alert-info',
                         'success' => 'alert alert-success',
-                        'error' => 'alert alert-error',
-                        'block' => 'alert alert-block',
+                        'error' => 'alert alert-danger',
+                        'dismissable' => 'alert alert-dismissable',
                     ));
                     return $flash;
                 });
