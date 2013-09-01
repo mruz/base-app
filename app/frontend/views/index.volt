@@ -11,7 +11,7 @@
         <style>
             body { padding-top: 70px; }
         </style>
-        {{ assets.outputCss('css') }}
+        {{ assets.outputCss() }}
 
         <!-- Fav and touch icons -->
         <link rel="shortcut icon" href="{{ url.getStatic('favicon.ico') }}">
@@ -86,6 +86,6 @@
         {{ javascriptInclude('js/respond.js') }}
         <![endif]-->
         
-        {{ assets.outputJs('js') }}
+        {{ assets.outputJs() }}
     </body>
 </html>

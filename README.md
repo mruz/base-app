@@ -20,7 +20,7 @@ Use this application as a way to quick start any new project.
 * User
  * Models
  * Auth schema mysql
-* Twitter Bootstrap v3
+* Twitter Bootstrap 3.0.0
 
 ### Configuration:
 1. Set *base_uri* and other settings in */app/common/config/config.ini*
