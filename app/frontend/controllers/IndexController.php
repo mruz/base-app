@@ -87,10 +87,12 @@ class IndexController extends \Phalcon\Mvc\Controller
         // Minify css and js collection
         foreach ($this->assets->getCss() as $resource){
             $min = new \Phalcon\Assets\Filters\Cssmin();
+            $resource->setTargetUri('min/' . $resource->getPath());
             file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
         }
         foreach ($this->assets->getJs() as $resource){
             $min = new \Phalcon\Assets\Filters\Jsmin();
+            $resource->setTargetUri('min/' . $resource->getPath());
             file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
         }
     }
