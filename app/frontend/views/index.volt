@@ -25,13 +25,13 @@
                 </div>
                 <div class="collapse navbar-collapse navbar-responsive-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active">{{ linkTo(NULL, __('Home')) }}</li>
+                        <li class="active">{{ linkTo(NULL, '<span class="glyphicon glyphicon-home"></span> ' ~ __('Home')) }}</li>
                     </ul>
                     {% if ! auth.logged_in() %}
                         {{ form('user/signin', 'class' : 'navbar-form pull-right') }}
                         {{ textField([ 'username', 'class' : 'form-control', 'style' : 'width: 200px', 'placeholder' : __('Username') ]) }}
                         {{ passwordField([ 'password', 'class' : 'form-control', 'style' : 'width: 200px', 'placeholder' : __('Password') ]) }}
-                        {{ submitButton([ 'name' : 'submit_signin', 'class' : 'btn btn-default navbar-btn', __('Sign in') ]) }}
+                        <button type="submit" name="submit_signin" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> {{ __('Sign in') }}</button>
                         {{ endForm() }}
                     {% else %}
                         <ul class="nav navbar-nav pull-right">
@@ -39,12 +39,12 @@
                                 {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', auth.get_user().username ~ '<b class="caret"></b>' ]) }}
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">{{ auth.get_user().email }}</li>
-                                    <li>{{ linkTo('user', __('Account')) }}</li>
+                                    <li>{{ linkTo('user', '<span class="glyphicon glyphicon-user"></span> ' ~ __('Account')) }}</li>
                                     {% if auth.logged_in('admin') %}
-                                        <li>{{ linkTo('admin', __('Admin panel')) }}</li>
+                                        <li>{{ linkTo('admin', '<span class="glyphicon glyphicon-wrench"></span> ' ~ __('Admin panel')) }}</li>
                                     {% endif %}
                                     <li class="divider"></li>
-                                    <li>{{ linkTo('user/signout', __('Sign out')) }}</li>
+                                    <li>{{ linkTo('user/signout', '<span class="glyphicon glyphicon-log-out"></span> ' ~ __('Sign out')) }}</li>
                                 </ul>
                             </li>
                         </ul>

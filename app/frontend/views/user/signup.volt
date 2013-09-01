@@ -54,7 +54,7 @@
 <hr />
 <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-        {{ submitButton([ 'name' : 'submit_signin', 'class' : 'btn btn-default', __('Sign up') ]) }}
+        <button type="submit" name="submit_signup" class="btn btn-default"><span class="glyphicon glyphicon-lock"></span> {{ __('Sign up') }}</button>
     </div>
 </div>
 {{ endForm() }}

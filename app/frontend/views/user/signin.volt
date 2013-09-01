@@ -31,7 +31,7 @@
 <hr />
 <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-        <p>{{ submitButton([ 'name' : 'submit_signin', 'class' : 'btn btn-default', __('Sign in') ]) }}</p>
+        <p><button type="submit" name="submit_signin" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> {{ __('Sign in') }}</button></p>
         <p class="text-muted">
             {{  __("Don't have an account?") }} {{ linkTo([ 'user/signup', __('Sign up') ~ ' »' ]) }}
         </p>

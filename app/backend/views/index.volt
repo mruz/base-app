@@ -25,8 +25,8 @@
                 </div>
                 <div class="collapse navbar-collapse navbar-responsive-collapse">
                     <ul class="nav navbar-nav">
-                        <li>{{ linkTo(NULL, __('Home')) }}</li>
-                        <li class="active">{{ linkTo('admin', __('Admin panel')) }}</li>
+                        <li>{{ linkTo(NULL, '<span class="glyphicon glyphicon-home"></span> ' ~ __('Home')) }}</li>
+                        <li class="active">{{ linkTo('admin', '<span class="glyphicon glyphicon-wrench"></span> ' ~ __('Admin panel')) }}</li>
                     </ul>
                     {% if ! auth.logged_in() %}
                         {{ form('user/signin', 'class' : 'navbar-form pull-right') }}
@@ -40,9 +40,9 @@
                                 {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', auth.get_user().username ~ '<b class="caret"></b>' ]) }}
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">{{ auth.get_user().email }}</li>
-                                    <li>{{ linkTo('user', __('Account')) }}</li>
+                                    <li>{{ linkTo('user', '<span class="glyphicon glyphicon-user"></span> ' ~ __('Account')) }}</li>
                                     <li class="divider"></li>
-                                    <li>{{ linkTo('user/signout', __('Sign out')) }}</li>
+                                    <li>{{ linkTo('user/signout', '<span class="glyphicon glyphicon-log-out"></span> ' ~ __('Sign out')) }}</li>
                                 </ul>
                             </li>
                         </ul>
