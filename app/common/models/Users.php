@@ -10,6 +10,8 @@
 
 namespace Baseapp\Models;
 
+use Baseapp\Library\Auth;
+
 class Users extends \Phalcon\Mvc\Model
 {
 
@@ -79,6 +81,7 @@ class Users extends \Phalcon\Mvc\Model
             
             // send e-mail with url to confirm
             
+            unset($_POST);
             return TRUE;
         }
     }
