@@ -74,6 +74,7 @@ class Users extends \Phalcon\Mvc\Model
             $user->password = Auth::instance()->hash($this->request->getPost('password'));
             $user->email = $this->request->getPost('email');
             $user->date = $date;
+            $user->logins = 0;
             $user->create();
             
             $hash = $user->hash = md5($user->id.$user->email.$date.$this->config->auth->hash_key);
