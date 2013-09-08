@@ -1,0 +1,119 @@
+/* Ubuntu & Open Sans font family */
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url(../../fonts/Ubuntu.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(../../fonts/OpenSans.woff) format('woff');
+}
+
+/* Responsive fonts */
+/* Extra small devices (phones, up to 480px) */
+/* No media query since this is the default in Bootstrap */
+body { 
+    font-size: 13px;
+    line-height: 1.3em;
+    font-family: 'Open Sans', Helvetica, Arial;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Ubuntu', Helvetica, Arial;
+    font-weight: normal;
+    line-height: 1.4;
+    margin: 10px 0 0;
+}
+
+h1 { font-size: 1.8em; }
+h2 { font-size: 1.6em; }
+h3 { font-size: 1.4em; }
+h4 { font-size: 1.2em; }
+h5 { font-size: 1.1em; }
+h6 { font-size: 1em; }
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    h1 { font-size: 2.4em; }
+    h2 { font-size: 2em; }
+    h3 { font-size: 1.8em; }
+    h4 { font-size: 1.4em; }
+    h5 { font-size: 1.2em; }
+    h6 { font-size: 1.1em; }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    body { font-size: 14px; line-height: 1.4; }
+    h1, h2, h3, h4, h5, h6 { line-height: 1.5; }
+    h1 { font-size: 3em; }
+    h2 { font-size: 2.4em; }
+    h3 { font-size: 2em; }
+    h4 { font-size: 1.4em; }
+    h5 { font-size: 1.2em; }
+    h6 { font-size: 1.1em; }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    h1 { font-size: 3.6em; }
+    h2 { font-size: 3em; }
+    h3 { font-size: 2.4em; }
+    h4 { font-size: 1.8em; }
+    h5 { font-size: 1.4em; }
+    h6 { font-size: 1.2em; }
+}
+
+
+/*
+ Default 
+@media (min-width: 980px) {
+    h1 { font-size: 3em; }
+    h2 { font-size: 2.4em; }
+    h3 { font-size: 2em; }
+    h4 { font-size: 1.4em; }
+    h5 { font-size: 1.2em; }
+    h6 { font-size: 1.1em; }
+}
+
+ Large desktop 
+@media (min-width: 1200px) {
+    h1 { font-size: 3.6em; }
+    h2 { font-size: 3em; }
+    h3 { font-size: 2.4em; }
+    h4 { font-size: 1.8em; }
+    h5 { font-size: 1.4em; }
+    h6 { font-size: 1.2em; }
+}
+
+ Portrait tablet to landscape and desktop 
+@media (min-width: 768px) and (max-width: 979px) {
+    h1 { font-size: 2.4em; }
+    h2 { font-size: 2em; }
+    h3 { font-size: 1.8em; }
+    h4 { font-size: 1.4em; }
+    h5 { font-size: 1.2em; }
+    h6 { font-size: 1.1em; }
+}
+
+ Landscape phone to portrait tablet 
+@media (max-width: 767px) {
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.8em; }
+    h3 { font-size: 1.6em; }
+    h4 { font-size: 1.2em; }
+    h5 { font-size: 1.15em; }
+    h6 { font-size: 1.05em; }
+}
+
+ Landscape phones and down 
+@media (max-width: 480px) {
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.6em; }
+    h3 { font-size: 1.4em; }
+    h4 { font-size: 1.2em; }
+    h5 { font-size: 1.1em; }
+    h6 { font-size: 1em; }
+}*/

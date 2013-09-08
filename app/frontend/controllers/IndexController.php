@@ -56,6 +56,7 @@ class IndexController extends \Phalcon\Mvc\Controller
         $this->site_desc = 'Default';
         
         // Add css and js to assets collection
+        $this->assets->addCss('css/fonts.css');
         $this->assets->addCss('css/app.css');
         $this->assets->addJs('js/plugins/flashclose.js');
     }
