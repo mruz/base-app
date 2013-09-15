@@ -3,11 +3,12 @@
 ##### The base application in PhalconPHP
 Use this application as a way to quick start any new project.
 ***
-### Components:
+### Features:
 * Bootstrap file
 * Config file
 * Console file
-* Volt template
+* HMVC support
+* Volt templates
 * Frontend/Backend modules
 * Library
  * [Arr](https://github.com/mruz/base-app/wiki/Arr)
@@ -32,3 +33,18 @@ Use this application as a way to quick start any new project.
  * `/public/min/css`
  * `/public/min/js`
  * `/public/min/js/plugins`
+
+### Example usage:
+##### auth in views 
+```
+{% if auth.logged_in() %}
+    {{ auth.get_user().username }}
+{% endif %}
+```
+
+##### easy translation with __() function
+```
+{% if auth.logged_in('admin') %}
+    {{ linkTo('admin', __('Admin panel')) }}</li>
+{% endif %}
+```
