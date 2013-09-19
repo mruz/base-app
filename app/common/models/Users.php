@@ -45,7 +45,7 @@ class Users extends \Phalcon\Mvc\Model
         
         $validation->add('username', new \Phalcon\Validation\Validator\PresenceOf());
         $validation->add('username', new \Phalcon\Validation\Validator\StringLength(array(
-            'min' => 5,
+            'min' => 4,
         )));
         
         $validation->add('password', new \Phalcon\Validation\Validator\PresenceOf());

@@ -72,6 +72,7 @@ return array(
     "Have a nice day!" => "Miłego dnia!",
     "Hello :user" => "Witaj :user",
     "Home" => "Główna",
+    "See working :link, user/pass: :users." => "Zobacz działający :link, użytkownik/hasło: :users.",
     "The base application in PhalconPHP" => "Bazowa aplikacja w PhalconPHP",
     "Use this application as a way to quick start any new project." => "Użyj tej aplikacji jako sposobu na szybki start każdego nowego projektu.",
 );
