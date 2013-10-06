@@ -37,9 +37,9 @@
     <li>Use <em class="text-info">/auth-schema-mysql.sql</em> to create required tables</li>
     <li>Make sure that these directories are writable by the web server:
         <ul>
-            <li><em class="text-info">/app/common/logs</em></li>
-            <li><em class="text-info">/app/common/cache</em></li>
-            <li><em class="text-info">/public/min</em></li>
+            <li><code>/app/common/logs</code></li>
+            <li><code>/app/common/cache</code></li>
+            <li><code>/public/min</code></li>
         </ul>
     </li>
 </ol>
