@@ -14,24 +14,11 @@ class Tool
 {
 
     /**
-     * Replace CamelCase and Underscores to spaces
-     * 
-     * @param   string  $str
-     * @param   char    $space
-     * @return  string
-     */
-    public static function label($str, $space = ' ')
-    {
-        $str = preg_replace('/(?<=\\w)(?=[A-Z])/', $space . "$1", $str);
-        return $space === ' ' ? ucfirst(trim(str_replace('_', ' ', strtolower($str)))) : $str;
-    }
-
-    /**
      * Minify css and js collection
      * 
      * @return  void
      */
-    public function minify()
+    public function assetsMinification()
     {
         foreach ($this->assets->getCss() as $resource) {
 
@@ -56,6 +43,19 @@ class Tool
             if (md5($min->filter($resource->getContent())) != md5_file(ROOT_PATH . '/public/min/' . $resource->getPath()))
                 file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
         }
+    }
+    
+    /**
+     * Replace CamelCase and Underscores to spaces
+     * 
+     * @param   string  $str
+     * @param   char    $space
+     * @return  string
+     */
+    public static function label($str, $space = ' ')
+    {
+        $str = preg_replace('/(?<=\\w)(?=[A-Z])/', $space . "$1", $str);
+        return $space === ' ' ? ucfirst(trim(str_replace('_', ' ', strtolower($str)))) : $str;
     }
 
     /**

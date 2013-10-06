@@ -83,7 +83,7 @@ class IndexController extends \Phalcon\Mvc\Controller
         $this->tag->appendTitle(' | admin');
         
         // Minify css and js collection
-        \Baseapp\Library\Tool::minify();
+        \Baseapp\Library\Tool::assetsMinification();
     }
 
     /**

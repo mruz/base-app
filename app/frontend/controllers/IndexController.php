@@ -86,7 +86,7 @@ class IndexController extends \Phalcon\Mvc\Controller
         $this->view->setVar('site_desc', mb_substr($this->filter->sanitize($this->site_desc, 'string'), 0, 200, 'utf-8'));
         
         // Minify css and js collection
-        \Baseapp\Library\Tool::minify();
+        \Baseapp\Library\Tool::assetsMinification();
     }
     
     /**
