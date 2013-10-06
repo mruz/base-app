@@ -64,36 +64,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
                         ".volt" => function($view, $di) {
                             $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
 
-                            $volt->setOptions(array(
-                                'compiledPath' => function($templatePath) {
-                                    $templatePath = strstr($templatePath, '/app');
-                                    $dirName = dirname($templatePath);
-
-                                    if (!is_dir(ROOT_PATH . '/app/common/cache/volt' . $dirName)) {
-                                        mkdir(ROOT_PATH . '/app/common/cache/volt' . $dirName, 0777, TRUE);
-                                    }
-                                    return ROOT_PATH . '/app/common/cache/volt' . $dirName . '/' . basename($templatePath, '.volt') . '.php';
-                                },
-                                'compileAlways' => TRUE
-                            ));
-
-                            $compiler = $volt->getCompiler();
-
-                            $compiler->addExtension(new \Baseapp\Extension\VoltPHPFunctions());
-
-                            $compiler->addFunction('debug', function($resolvedArgs) {
-                                        return '\Baseapp\Library\Debug::vars(' . $resolvedArgs . ')';
-                                    });
-
-                            $compiler->addFilter('isset', function($resolvedArgs) {
-                                        return '(isset(' . $resolvedArgs . ') ? ' . $resolvedArgs . ' : NULL)';
-                                    });
-
-                            $compiler->addFilter('label', function($resolvedArgs) {
-                                        return '\Baseapp\Library\Tool::label(' . $resolvedArgs . ')';
-                                    });
-
-                            return $volt;
+                            return \Baseapp\Library\Tool::registerVolt($volt);
                         }
                     ));
                     return $view;

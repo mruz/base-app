@@ -296,23 +296,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
                 ".volt" => function($view, $di) {
                     $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
 
-                    $volt->setOptions(array(
-                        'compiledPath' => function($templatePath) {
-                            $templatePath = strstr($templatePath, '/app');
-                            $dirName = dirname($templatePath);
-
-                            if (!is_dir(ROOT_PATH . '/app/common/cache/volt' . $dirName)) {
-                                mkdir(ROOT_PATH . '/app/common/cache/volt' . $dirName, 0777, TRUE);
-                            }
-                            return ROOT_PATH . '/app/common/cache/volt' . $dirName . '/' . basename($templatePath, '.volt') . '.php';
-                        },
-                        'compileAlways' => TRUE
-                    ));
-
-                    $compiler = $volt->getCompiler();
-                    $compiler->addExtension(new \Baseapp\Extension\VoltPHPFunctions());
-
-                    return $volt;
+                    return \Baseapp\Library\Tool::registerVolt($volt);
                 }
             ));
             echo $view->render('error');
