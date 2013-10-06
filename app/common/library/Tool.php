@@ -23,7 +23,39 @@ class Tool
     public static function label($str, $space = ' ')
     {
         $str = preg_replace('/(?<=\\w)(?=[A-Z])/', $space . "$1", $str);
-        return $space === ' ' ? ucfirst(trim(str_replace('_', ' ', strtolower($str)) )) : $str;
+        return $space === ' ' ? ucfirst(trim(str_replace('_', ' ', strtolower($str)))) : $str;
+    }
+
+    /**
+     * Minify css and js collection
+     * 
+     * @return  void
+     */
+    public function minify()
+    {
+        foreach ($this->assets->getCss() as $resource) {
+
+            $min = new \Phalcon\Assets\Filters\Cssmin();
+            $resource->setTargetUri('min/' . $resource->getPath());
+
+            if (!is_dir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath())))
+                mkdir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath()), 0777, TRUE);
+
+            if (md5($min->filter($resource->getContent())) != md5_file(ROOT_PATH . '/public/min/' . $resource->getPath()))
+                file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
+        }
+        
+        foreach ($this->assets->getJs() as $resource) {
+
+            $min = new \Phalcon\Assets\Filters\Jsmin();
+            $resource->setTargetUri('min/' . $resource->getPath());
+
+            if (!is_dir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath())))
+                mkdir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath()), 0777, TRUE);
+
+            if (md5($min->filter($resource->getContent())) != md5_file(ROOT_PATH . '/public/min/' . $resource->getPath()))
+                file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
+        }
     }
 
     /**
@@ -128,5 +160,5 @@ class Tool
 
         return $html;
     }
-
+    
 }

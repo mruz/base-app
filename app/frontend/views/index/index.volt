@@ -39,10 +39,7 @@
         <ul>
             <li><em class="text-info">/app/common/logs</em></li>
             <li><em class="text-info">/app/common/cache</em></li>
-            <li><em class="text-info">/app/common/cache/volt</em></li>
-            <li><em class="text-info">/public/min/css</em></li>
-            <li><em class="text-info">/public/min/js</em></li>
-            <li><em class="text-info">/public/min/js/plugins</em></li>
+            <li><em class="text-info">/public/min</em></li>
         </ul>
     </li>
 </ol>

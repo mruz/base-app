@@ -29,10 +29,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 3. Make sure that these directories are writable by the web server:
  * `/app/common/logs`
  * `/app/common/cache`
- * `/app/common/cache/volt`
- * `/public/min/css`
- * `/public/min/js`
- * `/public/min/js/plugins`
+ * `/public/min`
 
 ### Links:
 * [Github repo](https://github.com/mruz/base-app)
