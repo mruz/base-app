@@ -5,7 +5,7 @@
  * 
  * @package     base-app
  * @category    Library
- * @version     1.1
+ * @version     1.2
  */
 
 namespace Baseapp\Library;
@@ -13,7 +13,7 @@ namespace Baseapp\Library;
 require_once __DIR__ . '/Email/class.phpmailer.php';
 
 
-class Email extends \PHPMailer // Phalcon\Mvc\User\Component
+class Email extends \PHPMailer
 {
     private $_config  = array();
 
@@ -33,12 +33,7 @@ class Email extends \PHPMailer // Phalcon\Mvc\User\Component
     
     public function getTemplate($name, $params = array())
     {
-        $parameters = array_merge(array(
-            'site_name' => \Phalcon\DI::getDefault()->getShared('config')->site->name,
-            'site_url' => \Phalcon\DI::getDefault()->getShared('config')->site->url
-        ), $params);
-
-        return \Phalcon\DI::getDefault()->getShared('view')->getRender('email', $name, $parameters, function($view){
+        return \Phalcon\DI::getDefault()->getShared('view')->getRender('email', $name, $params, function($view){
             $view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
         });
         return $view->getContent();
