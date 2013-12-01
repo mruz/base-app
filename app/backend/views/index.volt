@@ -19,7 +19,7 @@
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                        {{ linkTo([NULL, config.site.name, 'class' : 'navbar-brand']) }}
+                        {{ linkTo([NULL, config.app.name, 'class' : 'navbar-brand']) }}
                     </div>
                     <div class="collapse navbar-collapse" id="header-collapse">
                         <ul class="nav navbar-nav">
@@ -58,7 +58,7 @@
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#footer-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
                     <p class="navbar-text">
-                        {{ linkTo(NULL, config.site.name) }} &copy; {{ date('Y') }}
+                        {{ linkTo(NULL, config.app.name) }} &copy; {{ date('Y') }}
                         <span class="text-muted"> | Phalcon {{ version() }}</span>
                     </p>
                 </div>
