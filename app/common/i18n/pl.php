@@ -24,6 +24,9 @@ return array(
     
     
     //Flash
+    "Activation cannot be completed. Invalid username or hash." => "Aktywacja nie może być zakończona. Nieprawidłowa nazwa użytkownika lub hash.",
+    "Activation has already been completed." => "Aktywacja została już zakończona.",
+    "Activation completed. Please log in." => "Aktywacja zakończona. Zaloguj się.",
     "Check Email to activate your account." => "Sprawdź Email w celu aktywacji konta.",
     "Close" => "Zamknij",
     "Error" => "Błąd",
@@ -66,12 +69,15 @@ return array(
     
     //App
     "Account" => "Konto",
+    "Activation" => "Aktywacja",
     "Admin panel" => "Panel administratora",
+    "Before you can log in, you first need to activate your account." => "Zanim będzie można się zalogować, trzeba najpierw aktywować swoje konto.",
     "Configuration" => "Konfiguracja",
     "Components" => "Komponenty",
     "Have a nice day!" => "Miłego dnia!",
     "Hello :user" => "Witaj :user",
     "Home" => "Główna",
+    "To activate your account, click on this link:" => "Aby aktywować konto, kliknij na ten link:",
     "See working :link, user/pass: :users." => "Zobacz działający :link, użytkownik/hasło: :users.",
     "The base application in PhalconPHP" => "Bazowa aplikacja w PhalconPHP",
     "Use this application as a way to quick start any new project." => "Użyj tej aplikacji jako sposobu na szybki start każdego nowego projektu.",

@@ -10,8 +10,10 @@
 
 namespace Baseapp\Frontend\Controllers;
 
-use Baseapp\Library\Auth,
-    \Baseapp\Models\Users;
+use \Baseapp\Library\Auth,
+    \Baseapp\Models\Users,
+    \Baseapp\Models\Roles,
+    \Baseapp\Models\RolesUsers;
 
 class UserController extends IndexController
 {
@@ -63,7 +65,7 @@ class UserController extends IndexController
                         __("Please correct the errors."));
             } else {
                 $referer = $this->request->getHTTPReferer();
-                if (strpos($referer, $this->request->getHttpHost() . "/") !== false) {
+                if (strpos($referer, $this->request->getHttpHost() . "/") !== FALSE && $this->router->getControllerName() != 'user' && $this->router->getActionName() != 'signin') {
                     return $this->response->setHeader("Location", $referer);
                 } else {
                     return $this->dispatcher->forward(array('controller' => 'index', 'action' => 'index'));
@@ -108,6 +110,50 @@ class UserController extends IndexController
     {
         Auth::instance()->logout();
         $this->response->redirect(NULL);
+    }
+
+    /**
+     * Activation Action
+     *
+     * @package     base-app
+     * @version     1.2
+     */
+    public function activationAction()
+    {
+        $this->view->pick('msg');
+        $this->tag->setTitle(__('Activation'));
+        $this->view->setVar('title', __('Activation'));
+
+        $params = $this->router->getParams();
+        $user = Users::findFirst(array('username=:user:', 'bind' => array('user' => $params[0])));
+
+        if ($user && md5($user->id . $user->email . $user->password . $this->config->auth->hash_key) == $params[1]) {
+            $roles = Auth::instance()->get_roles($user);
+
+            if ($roles['login']) {
+                $this->flashSession->notice(
+                        $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                        '<strong>' . __('Notice') . '!</strong> ' .
+                        __("Activation has already been completed."));
+            } else {
+                $role = new RolesUsers();
+                $role->user_id = $user->id;
+                $role->role_id = Roles::findFirst(array('name="login"'))->id;
+                $role->create();
+
+                $this->flashSession->success(
+                        $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                        '<strong>' . __('Success') . '!</strong> ' .
+                        __("Activation completed. Please log in."));
+
+                $this->view->setVar('redirect', 'user/signin');
+            }
+        } else {
+            $this->flashSession->error(
+                    $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                    '<strong>' . __('Error') . '!</strong> ' .
+                    __("Activation cannot be completed. Invalid username or hash."));
+        }
     }
 
 }
