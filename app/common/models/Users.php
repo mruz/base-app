@@ -10,8 +10,8 @@
 
 namespace Baseapp\Models;
 
-use Baseapp\Library\Auth,
-    Baseapp\Library\Email;
+use \Baseapp\Library\Auth,
+    \Baseapp\Library\Email;
 
 class Users extends \Phalcon\Mvc\Model
 {
@@ -35,12 +35,12 @@ class Users extends \Phalcon\Mvc\Model
     {
         $this->hasMany("id", __NAMESPACE__ . "\Tokens", "user_id", array(
             'foreignKey' => array(
-                'acrion' => \Phalcon\Mvc\Model\Relation::ACTION_CASCADE
+                'action' => \Phalcon\Mvc\Model\Relation::ACTION_CASCADE
             )
         ));
         $this->hasMany("id", __NAMESPACE__ . "\RolesUsers", "user_id", array(
             'foreignKey' => array(
-                'acrion' => \Phalcon\Mvc\Model\Relation::ACTION_CASCADE
+                'action' => \Phalcon\Mvc\Model\Relation::ACTION_CASCADE
             )
         ));
     }
