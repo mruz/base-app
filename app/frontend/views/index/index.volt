@@ -17,9 +17,9 @@
             <li><a href="https://github.com/mruz/base-app/wiki/Arr" target="_blank">Arr</a></li>
             <li><a href="https://github.com/mruz/base-app/wiki/Auth" target="_blank">Auth</a></li>
             <li><a href="https://github.com/mruz/base-app/wiki/Debug" target="_blank">Debug</a></li>
-            <li>Email</li>
-            <li>I18n</li>
-            <li>Tool</li>
+            <li><a href="https://github.com/mruz/base-app/wiki/Email" target="_blank">Email</a></li>
+            <li><a href="https://github.com/mruz/base-app/wiki/I18n" target="_blank">I18n</a></li>
+            <li><a href="https://github.com/mruz/base-app/wiki/Tool" target="_blank">Tool</a></li>
         </ul>
     </li>
     <li>User
@@ -45,6 +45,7 @@
 </ol>
 <h3>{{ __('Links') }}:</h3>
 <ul>
+    <li><a href="http://phalconphp.com" target="_blank">Phalcon PHP</a></li>
     <li><a href="https://github.com/mruz/base-app" target="_blank">Github repo</a></li>
     <li><a href="https://github.com/mruz/base-app/issues" target="_blank">Issues</a></li>
     <li><a href="http://mruz.pl/base-app" target="_blank">Example</a></li>
