@@ -49,6 +49,6 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 ##### easy translation with __() function
 ```
 {% if auth.logged_in('admin') %}
-    {{ linkTo('admin', __('Admin panel')) }}</li>
+    {{ __('Hello :user', [':user' : auth.get_user().username]) }}
 {% endif %}
 ```
