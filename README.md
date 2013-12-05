@@ -21,7 +21,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 * User
  * Models
  * Auth schema mysql
-* Twitter Bootstrap 3.0.2
+* Twitter Bootstrap 3.0.3
 
 ### Configuration:
 1. Set *base_uri* and other settings in */app/common/config/config.ini*
