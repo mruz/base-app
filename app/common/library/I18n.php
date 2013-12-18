@@ -2,10 +2,10 @@
 
 /**
  * Lang Library
- * 
+ *
  * @package     base-app
  * @category    Library
- * @version     1.2
+ * @version     1.3
  */
 
 namespace Baseapp\Library;
@@ -32,14 +32,14 @@ class I18n
     private function __construct()
     {
         // Overwrite _config from config.ini
-        if ($_config = \Phalcon\DI::getDefault()->getShared('config')->lang)
+        if ($_config = \Phalcon\DI::getDefault()->getShared('config')->i18n)
             foreach ($_config as $key => $value)
                 $this->_config[$key] = $value;
     }
 
     private function __clone()
     {
-        
+
     }
 
     public function lang($lang = NULL)
@@ -73,7 +73,7 @@ class I18n
 
         return $this->_cache[$lang] = $translate;
     }
-    
+
     public function getCache()
     {
         return $this->_cache;

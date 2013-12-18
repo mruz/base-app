@@ -2,10 +2,10 @@
 
 /**
  * Tool Library
- * 
+ *
  * @package     base-app
  * @category    Library
- * @version     1.1
+ * @version     1.3
  */
 
 namespace Baseapp\Library;
@@ -15,39 +15,37 @@ class Tool
 
     /**
      * Minify css and js collection
-     * 
+     *
      * @return  void
      */
     public function assetsMinification()
     {
-        foreach ($this->assets->getCss() as $resource) {
+        $config = \Phalcon\DI::getDefault()->getShared('config');
 
-            $min = new \Phalcon\Assets\Filters\Cssmin();
-            $resource->setTargetUri('min/' . $resource->getPath());
+        foreach (array('Css', 'Js') as $asset) {
+            $get = 'get' . $asset;
+            $filter = '\Phalcon\Assets\Filters\\' . $asset . 'min';
+            foreach (\Phalcon\DI::getDefault()->getShared('assets')->$get() as $resource) {
 
-            if (!is_dir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath())))
-                mkdir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath()), 0777, TRUE);
+                $min = new $filter();
+                $resource->setTargetUri('min/' . $resource->getPath());
 
-            if (md5($min->filter($resource->getContent())) != md5_file(ROOT_PATH . '/public/min/' . $resource->getPath()))
-                file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
-        }
-        
-        foreach ($this->assets->getJs() as $resource) {
+                if ($config->app->env != 'production') {
+                    if (!is_dir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath())))
+                        mkdir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath()), 0777, TRUE);
 
-            $min = new \Phalcon\Assets\Filters\Jsmin();
-            $resource->setTargetUri('min/' . $resource->getPath());
-
-            if (!is_dir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath())))
-                mkdir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath()), 0777, TRUE);
-
-            if (md5($min->filter($resource->getContent())) != md5_file(ROOT_PATH . '/public/min/' . $resource->getPath()))
-                file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
+                    if ($config->app->env == 'development' || !file_exists(ROOT_PATH . '/public/min/' . $resource->getPath()))
+                        file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
+                    elseif (md5($min->filter($resource->getContent())) != md5_file(ROOT_PATH . '/public/min/' . $resource->getPath()))
+                        file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
+                }
+            }
         }
     }
-    
+
     /**
      * Replace CamelCase and Underscores to spaces
-     * 
+     *
      * @param   string  $str
      * @param   char    $space
      * @return  string
@@ -62,7 +60,7 @@ class Tool
      * Prepare HTML pagination.
      *
      * First Previous 1 2 3 ... 22 23 24 25 26 [27] 28 29 30 31 32 ... 48 49 50 Next Last
-     * 
+     *
      * @param   string   $url       URL with pagination
      * @param   object   $page      Phalcon Paginator object
      * @param   string   $hook      Hook in URL to adding, eg #pages
@@ -161,38 +159,46 @@ class Tool
         return $html;
     }
 
-    
-    public static function registerVolt($volt)
+    public static function registerEngines($view, $di)
     {
-        $volt->setOptions(array(
-            'compiledPath' => function($templatePath) {
-                $templatePath = strstr($templatePath, '/app');
-                $dirName = dirname($templatePath);
+        $config = \Phalcon\DI::getDefault()->getShared('config');
 
-                if (!is_dir(ROOT_PATH . '/app/common/cache/volt' . $dirName)) {
-                    mkdir(ROOT_PATH . '/app/common/cache/volt' . $dirName, 0777, TRUE);
+        $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
+        $volt->setOptions(array(
+            // Don't check on 'production' for differences between the template file and its compiled path
+            // Compile always on 'development', on 'staging' only checks for changes in the children templates
+            'stat' => $config->app->env == 'production' ? FALSE : TRUE,
+            'compileAlways' => $config->app->env == 'delelopment' ? TRUE : FALSE,
+            'compiledPath' => function($templatePath) {
+                list($junk, $path) = explode(ROOT_PATH, $templatePath);
+                $dir = dirname($path);
+                $file = basename($path, '.volt');
+
+                if (!is_dir(ROOT_PATH . '/app/common/cache/volt' . $dir)) {
+                    mkdir(ROOT_PATH . '/app/common/cache/volt' . $dir, 0777, TRUE);
                 }
-                return ROOT_PATH . '/app/common/cache/volt' . $dirName . '/' . basename($templatePath, '.volt') . '.php';
-            },
-            'compileAlways' => TRUE
+                return ROOT_PATH . '/app/common/cache/volt' . $dir . '/' . $file . '.phtml';
+            }
         ));
 
         $compiler = $volt->getCompiler();
-
         $compiler->addExtension(new \Baseapp\Extension\VoltPHPFunctions());
 
         $compiler->addFunction('debug', function($resolvedArgs) {
                     return '\Baseapp\Library\Debug::vars(' . $resolvedArgs . ')';
                 });
-
         $compiler->addFilter('isset', function($resolvedArgs) {
                     return '(isset(' . $resolvedArgs . ') ? ' . $resolvedArgs . ' : NULL)';
                 });
-
         $compiler->addFilter('label', function($resolvedArgs) {
                     return '\Baseapp\Library\Tool::label(' . $resolvedArgs . ')';
                 });
 
-        return $volt;
+        return array(
+            // Try to load .phtml file from ViewsDir first,
+            ".phtml" => "Phalcon\Mvc\View\Engine\Php",
+            ".volt" => $volt,
+        );
     }
+
 }

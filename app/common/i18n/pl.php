@@ -2,27 +2,23 @@
 
 /**
  * Polish Language
- * 
+ *
  * @package     base-app
  * @category    Lang
- * @version     1.2
+ * @version     1.3
  */
 return array(
     //Validation
     ":field PresenceOf" => "Pole <em>:field</em> nie może być puste",
     ":field Identical :accepted" => "Pole <em>:field</em> musi być takie same jak <em>:accepted</em>",
     ":field Email" => "Pole <em>:field</em> musi być adresem email",
-    
     ":field Regex" => "Pole <em>:field</em> nie spełnia wymaganego formatu",
     ":field StringLength :min" => "Pole <em>:field</em> musi mieć co najmniej <em>:min</em> znaków",
     ":field StringLength :max" => "Pole <em>:field</em> nie może przekraczać <em>:max</em> znaków",
     ":field Between :min :max" => "Pole <em>:field</em> musi być pomiędzy <em>:min</em> a <em>:max</em>",
     ":field Confirmation :with" => "Pole <em>:field</em> musi być takie same jak <em>:with</em>",
-    
     ":field Unique" => "Field Pole <em>:field</em> musi być unikalne",
     ":field URL" => "Pole <em>:field</em> musi być adresem url",
-    
-    
     //Flash
     "Activation cannot be completed. Invalid username or hash." => "Aktywacja nie może być zakończona. Nieprawidłowa nazwa użytkownika lub hash.",
     "Activation has already been completed." => "Aktywacja została już zakończona.",
@@ -31,6 +27,7 @@ return array(
     "Close" => "Zamknij",
     "Error" => "Błąd",
     "Error :code" => "Błąd :code",
+    "Look at the log:" => "Spójrz na log:",
     "No access" => "Brak dostępu",
     "Page not found." => "Nie znaleziono strony.",
     "Please correct the errors." => "Proszę poprawić błędy.",
@@ -39,7 +36,6 @@ return array(
     "Success" => "Sukces",
     "Warning" => "Ostrzeżenie",
     "You don't have access to this page." => "Nie masz dostępu do tej strony.",
-    
     //Labels and forms
     "Add" => "Dodaj",
     "Edit" => "Edytuj",
@@ -60,13 +56,10 @@ return array(
     "Sign up" => "Zarejestruj",
     "Title" => "Tytuł",
     "Username" => "Nazwa użytkownika",
-    
-    
     //Lang
     "English" => "Angielski",
     "Language" => "Język",
     "Polish" => "Polski",
-    
     //App
     "Account" => "Konto",
     "Activation" => "Aktywacja",

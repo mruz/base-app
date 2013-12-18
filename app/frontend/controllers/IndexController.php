@@ -2,10 +2,10 @@
 
 /**
  * Frontend Index Controller
- * 
+ *
  * @package     base-app
  * @category    Controller
- * @version     1.2
+ * @version     1.3
  */
 
 namespace Baseapp\Frontend\Controllers;
@@ -22,7 +22,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Initialize
      *
      * @package     base-app
-     * @version     1.2
+     * @version     1.3
      */
     public function initialize()
     {
@@ -47,14 +47,14 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Before Action
      *
      * @package     base-app
-     * @version     1.2
+     * @version     1.3
      */
     public function beforeExecuteRoute($dispatcher)
     {
         // Set default title and description
         $this->tag->setTitle('Default');
         $this->site_desc = 'Default';
-        
+
         // Add css and js to assets collection
         $this->assets->addCss('css/fonts.css');
         $this->assets->addCss('css/app.css');
@@ -62,10 +62,10 @@ class IndexController extends \Phalcon\Mvc\Controller
     }
 
     /**
-     * Index Action 
+     * Index Action
      *
      * @package     base-app
-     * @version     1.2
+     * @version     1.3
      */
     public function indexAction()
     {
@@ -77,23 +77,23 @@ class IndexController extends \Phalcon\Mvc\Controller
      * After Action
      *
      * @package     base-app
-     * @version     1.2
+     * @version     1.3
      */
     public function afterExecuteRoute($dispatcher)
     {
         // Set final title and description
         $this->tag->appendTitle(' | base-app');
         $this->view->setVar('site_desc', mb_substr($this->filter->sanitize($this->site_desc, 'string'), 0, 200, 'utf-8'));
-        
+
         // Minify css and js collection
         \Baseapp\Library\Tool::assetsMinification();
     }
-    
+
     /**
-     * Not found Action 
+     * Not found Action
      *
      * @package     base-app
-     * @version     1.2
+     * @version     1.3
      */
     public function notFoundAction()
     {

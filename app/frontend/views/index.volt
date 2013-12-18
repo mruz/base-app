@@ -1,4 +1,4 @@
-{# Template View | base-app | 1.2 #}
+{# Template View | base-app | 1.3 #}
 <!DOCTYPE html>
 <html lang="{{ substr(i18n.lang(), 0, 2) }}">
     <head>
@@ -11,7 +11,7 @@
         {{ assets.outputCss() }}
 
         <!-- Fav and touch icons -->
-        <link rel="shortcut icon" href="{{ url.getStatic('favicon.ico') }}">
+        <link rel="icon" type="image/x-icon" href="{{ url.getStatic('favicon.ico') }}">
     </head>
     <body>
         <div id="wrap">
@@ -81,15 +81,15 @@
                 </div>
             </div>
         </footer>
-        
+
         {{ javascriptInclude('js/jquery.min.js') }}
         {{ javascriptInclude('js/bootstrap.min.js') }}
-        
+
         <!-- Enable responsive features in IE8 -->
         <!--[if lt IE 9]>
         {{ javascriptInclude('js/respond.js') }}
         <![endif]-->
-        
+
         {{ assets.outputJs() }}
     </body>
 </html>

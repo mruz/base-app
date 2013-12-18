@@ -1,4 +1,4 @@
-{# Admin Template View | base-app | 1.2 #}
+{# Admin Template View | base-app | 1.3 #}
 <!DOCTYPE html>
 <html lang="{{ substr(i18n.lang(), 0, 2) }}">
     <head>
@@ -33,17 +33,17 @@
                             {{ submitButton([ 'name' : 'submit_signin', 'class' : 'btn btn-default navbar-btn', __('Sign in') ]) }}
                             {{ endForm() }}
                         {% else %}
-                            <ul class="nav navbar-nav pull-right">
-                                <li class="dropdown">
+                        <ul class="nav navbar-nav pull-right">
+                            <li class="dropdown">
                                     {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', auth.get_user().username ~ '<b class="caret"></b>' ]) }}
-                                    <ul class="dropdown-menu">
-                                        <li class="dropdown-header">{{ auth.get_user().email }}</li>
-                                        <li>{{ linkTo('user', '<span class="glyphicon glyphicon-user"></span> ' ~ __('Account')) }}</li>
-                                        <li class="divider"></li>
-                                        <li>{{ linkTo('user/signout', '<span class="glyphicon glyphicon-log-out"></span> ' ~ __('Sign out')) }}</li>
-                                    </ul>
-                                </li>
-                            </ul>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-header">{{ auth.get_user().email }}</li>
+                                    <li>{{ linkTo('user', '<span class="glyphicon glyphicon-user"></span> ' ~ __('Account')) }}</li>
+                                    <li class="divider"></li>
+                                    <li>{{ linkTo('user/signout', '<span class="glyphicon glyphicon-log-out"></span> ' ~ __('Sign out')) }}</li>
+                                </ul>
+                            </li>
+                        </ul>
                         {% endif%}
                     </div>
                 </div>
@@ -78,15 +78,15 @@
                 </div>
             </div>
         </footer>
-        
+
         {{ javascriptInclude('js/jquery.min.js') }}
         {{ javascriptInclude('js/bootstrap.min.js') }}
-        
+
         <!-- Enable responsive features in IE8 -->
         <!--[if lt IE 9]>
         {{ javascriptInclude('js/respond.js') }}
         <![endif]-->
-        
+
         {{ assets.outputJs() }}
     </body>
 </html>

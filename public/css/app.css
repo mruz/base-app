@@ -1,17 +1,17 @@
 /*!
  * app.css
- * base-app 1.2
+ * base-app 1.3
  */
 
 #wrap > .container {
-  padding: 60px 15px 0;
+    padding: 60px 15px 0;
 }
 
 .navbar-inverse label {
     color: #999;
 }
 
-.navbar-fixed-bottom { 
+.navbar-fixed-bottom {
     position: static;
 }
 
@@ -23,21 +23,21 @@
     html,
     body {
         height: 100%;
-        /*The html and body elements cannot have any padding or margin.*/ 
+        /*The html and body elements cannot have any padding or margin.*/
     }
 
-    /*Wrapper for page content to push down footer*/ 
+    /*Wrapper for page content to push down footer*/
     #wrap {
         min-height: 100%;
         height: auto !important;
         height: 100%;
-        /*Negative indent footer by its height*/ 
+        /*Negative indent footer by its height*/
         margin: 0 auto -50px;
-        /*Pad bottom by footer height*/ 
+        /*Pad bottom by footer height*/
         padding: 0 0 50px;
     }
 
-    /*Set the fixed height of the footer here*/ 
+    /*Set the fixed height of the footer here*/
     footer {
         height: 50px;
         background-color: #f5f5f5;

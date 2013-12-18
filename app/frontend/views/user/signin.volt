@@ -1,3 +1,4 @@
+{# User sign in | base-app | 1.3 #}
 <h1>{{ __('Sign in') }}</h1><hr />
 {{ flashSession.output() }}
 {{ form(NULL, 'class' : 'form-horizontal') }}

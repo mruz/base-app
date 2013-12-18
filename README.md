@@ -1,4 +1,4 @@
-# base-app 1.2
+# base-app 1.3
 
 ##### The base application in PhalconPHP
 Use this application as a way to quick start any new project.
@@ -11,6 +11,10 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 * HMVC support
 * Volt template
 * Frontend/Backend modules
+* Environment
+ * _development_ - display debug, always compile template files, always minify assets
+ * _staging_ - log debug, notify admin, only checks for changes in the children templates, checks for changes and minify assets
+ * _production_ - log debug, notify admin, don't check for differences, don't create missing files, compiled and minified files must exist before!
 * Library
  * [Arr](https://github.com/mruz/base-app/wiki/Arr)
  * [Auth](https://github.com/mruz/base-app/wiki/Auth)

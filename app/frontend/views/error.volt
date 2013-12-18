@@ -1,4 +1,4 @@
-{# Error View | base-app | 1.2 #}
+{# Error View | base-app | 1.3 #}
 <!DOCTYPE html>
 <html lang="en">
     <head>

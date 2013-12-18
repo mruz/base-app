@@ -2,10 +2,10 @@
 
 /**
  * User Model
- * 
+ *
  * @package     base-app
  * @category    Model
- * @version     1.2
+ * @version     1.3
  */
 
 namespace Baseapp\Models;
@@ -29,7 +29,7 @@ class Users extends \Phalcon\Mvc\Model
     /**
      * User initialize
      *
-     * @version     1.2
+     * @version     1.3
      */
     public function initialize()
     {
@@ -48,7 +48,7 @@ class Users extends \Phalcon\Mvc\Model
     /**
      * Sign up User method
      *
-     * @version     1.2
+     * @version     1.3
      */
     public function signup()
     {

@@ -2,10 +2,9 @@
 
 /**
  * index.php
- * 
+ *
  * @package     base-app
- * @category    Running
- * @version     1.2
+ * @version     1.3
  */
 error_reporting(E_ALL);
 

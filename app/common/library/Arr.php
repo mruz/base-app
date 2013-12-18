@@ -2,7 +2,8 @@
 
 namespace Baseapp\Library;
 
-abstract class Arr {
+abstract class Arr
+{
 
     /**
      * @var  string  default delimiter for path()
@@ -48,13 +49,10 @@ abstract class Arr {
      */
     public static function is_array($value)
     {
-        if (is_array($value))
-        {
+        if (is_array($value)) {
             // Definitely an array
             return TRUE;
-        }
-        else
-        {
+        } else {
             // Possibly a Traversable object, functionally the same as an array
             return (is_object($value) AND $value instanceof Traversable);
         }
@@ -82,27 +80,21 @@ abstract class Arr {
      */
     public static function path($array, $path, $default = NULL, $delimiter = NULL)
     {
-        if ( ! Arr::is_array($array))
-        {
+        if (!Arr::is_array($array)) {
             // This is not an array!
             return $default;
         }
 
-        if (is_array($path))
-        {
+        if (is_array($path)) {
             // The path has already been separated into keys
             $keys = $path;
-        }
-        else
-        {
-            if (array_key_exists($path, $array))
-            {
+        } else {
+            if (array_key_exists($path, $array)) {
                 // No need to do extra processing
                 return $array[$path];
             }
 
-            if ($delimiter === NULL)
-            {
+            if ($delimiter === NULL) {
                 // Use the default delimiter
                 $delimiter = Arr::$delimiter;
             }
@@ -117,86 +109,66 @@ abstract class Arr {
             $keys = explode($delimiter, $path);
         }
 
-        do
-        {
+        do {
             $key = array_shift($keys);
 
-            if (ctype_digit($key))
-            {
+            if (ctype_digit($key)) {
                 // Make the key an integer
                 $key = (int) $key;
             }
 
-            if (isset($array[$key]))
-            {
-                if ($keys)
-                {
-                    if (Arr::is_array($array[$key]))
-                    {
+            if (isset($array[$key])) {
+                if ($keys) {
+                    if (Arr::is_array($array[$key])) {
                         // Dig down into the next part of the path
                         $array = $array[$key];
-                    }
-                    else
-                    {
+                    } else {
                         // Unable to dig deeper
                         break;
                     }
-                }
-                else
-                {
+                } else {
                     // Found the path requested
                     return $array[$key];
                 }
-            }
-            elseif ($key === '*')
-            {
+            } elseif ($key === '*') {
                 // Handle wildcards
 
                 $values = array();
-                foreach ($array as $arr)
-                {
-                    if ($value = Arr::path($arr, implode('.', $keys)))
-                    {
+                foreach ($array as $arr) {
+                    if ($value = Arr::path($arr, implode('.', $keys))) {
                         $values[] = $value;
                     }
                 }
 
-                if ($values)
-                {
+                if ($values) {
                     // Found the values requested
                     return $values;
-                }
-                else
-                {
+                } else {
                     // Unable to dig deeper
                     break;
                 }
-            }
-            else
-            {
+            } else {
                 // Unable to dig deeper
                 break;
             }
-        }
-        while ($keys);
+        } while ($keys);
 
         // Unable to find the value requested
         return $default;
     }
 
     /**
-    * Set a value on an array by path.
-    *
-    * @see Arr::path()
-    * @param array   $array     Array to update
-    * @param string  $path      Path
-    * @param mixed   $value     Value to set
-    * @param string  $delimiter Path delimiter
-    */
-    public static function set_path( & $array, $path, $value, $delimiter = NULL)
+     * Set a value on an array by path.
+     *
+     * @see Arr::path()
+     * @param array   $array     Array to update
+     * @param string  $path      Path
+     * @param mixed   $value     Value to set
+     * @param string  $delimiter Path delimiter
+     */
+    public static function set_path(& $array, $path, $value, $delimiter = NULL)
     {
-        if ( ! $delimiter)
-        {
+        if (!$delimiter) {
             // Use the default delimiter
             $delimiter = Arr::$delimiter;
         }
@@ -205,18 +177,15 @@ abstract class Arr {
         $keys = explode($delimiter, $path);
 
         // Set current $array to inner-most array path
-        while (count($keys) > 1)
-        {
+        while (count($keys) > 1) {
             $key = array_shift($keys);
 
-            if (ctype_digit($key))
-            {
+            if (ctype_digit($key)) {
                 // Make the key an integer
                 $key = (int) $key;
             }
 
-            if ( ! isset($array[$key]))
-            {
+            if (!isset($array[$key])) {
                 $array[$key] = array();
             }
 
@@ -243,8 +212,7 @@ abstract class Arr {
             return array();
 
         $array = array();
-        for ($i = $step; $i <= $max; $i += $step)
-        {
+        for ($i = $step; $i <= $max; $i += $step) {
             $array[$i] = $i;
         }
 
@@ -269,13 +237,9 @@ abstract class Arr {
      */
     public static function get($array, $key, $default = NULL, $empty = '')
     {
-        if (array_key_exists($key, $array)
-            OR ($array instanceof ArrayAccess AND $array->offsetExists($key)))
-        {
+        if (array_key_exists($key, $array) OR ($array instanceof ArrayAccess AND $array->offsetExists($key))) {
             return $array[$key] == '' ? $empty : $array[$key];
-        }
-        else
-        {
+        } else {
             return $default;
         }
     }
@@ -286,7 +250,7 @@ abstract class Arr {
      *
      *     // Get the values "username", "password" from $_POST
      *     $auth = Arr::extract($_POST, array('username', 'password'));
-     *     
+     *
      *     // Get the value "level1.level2a" from $data
      *     $data = array('level1' => array('level2a' => 'value 1', 'level2b' => 'value 2'));
      *     Arr::extract($data, array('level1.level2a', 'password'));
@@ -299,8 +263,7 @@ abstract class Arr {
     public static function extract($array, array $paths, $default = NULL)
     {
         $found = array();
-        foreach ($paths as $path)
-        {
+        foreach ($paths as $path) {
             Arr::set_path($found, $path, Arr::path($array, $path, $default));
         }
 
@@ -323,10 +286,8 @@ abstract class Arr {
     {
         $values = array();
 
-        foreach ($array as $row)
-        {
-            if (isset($row[$key]))
-            {
+        foreach ($array as $row) {
+            if (isset($row[$key])) {
                 // Found a value in this row
                 $values[] = $row[$key];
             }
@@ -346,7 +307,7 @@ abstract class Arr {
      * @param   mixed   $val    array value
      * @return  array
      */
-    public static function unshift( array & $array, $key, $val)
+    public static function unshift(array & $array, $key, $val)
     {
         $array = array_reverse($array, TRUE);
         $array[$key] = $val;
@@ -381,23 +342,15 @@ abstract class Arr {
      */
     public static function map($callbacks, $array, $keys = NULL)
     {
-        foreach ($array as $key => $val)
-        {
-            if (is_array($val))
-            {
+        foreach ($array as $key => $val) {
+            if (is_array($val)) {
                 $array[$key] = Arr::map($callbacks, $array[$key]);
-            }
-            elseif ( ! is_array($keys) OR in_array($key, $keys))
-            {
-                if (is_array($callbacks))
-                {
-                    foreach ($callbacks as $cb)
-                    {
+            } elseif (!is_array($keys) OR in_array($key, $keys)) {
+                if (is_array($callbacks)) {
+                    foreach ($callbacks as $cb) {
                         $array[$key] = call_user_func($cb, $array[$key]);
                     }
-                }
-                else
-                {
+                } else {
                     $array[$key] = call_user_func($callbacks, $array[$key]);
                 }
             }
@@ -428,61 +381,37 @@ abstract class Arr {
      */
     public static function merge($array1, $array2)
     {
-        if (Arr::is_assoc($array2))
-        {
-            foreach ($array2 as $key => $value)
-            {
-                if (is_array($value)
-                    AND isset($array1[$key])
-                    AND is_array($array1[$key])
-                )
-                {
+        if (Arr::is_assoc($array2)) {
+            foreach ($array2 as $key => $value) {
+                if (is_array($value) AND isset($array1[$key]) AND is_array($array1[$key])
+                ) {
                     $array1[$key] = Arr::merge($array1[$key], $value);
-                }
-                else
-                {
+                } else {
                     $array1[$key] = $value;
                 }
             }
-        }
-        else
-        {
-            foreach ($array2 as $value)
-            {
-                if ( ! in_array($value, $array1, TRUE))
-                {
+        } else {
+            foreach ($array2 as $value) {
+                if (!in_array($value, $array1, TRUE)) {
                     $array1[] = $value;
                 }
             }
         }
 
-        if (func_num_args() > 2)
-        {
-            foreach (array_slice(func_get_args(), 2) as $array2)
-            {
-                if (Arr::is_assoc($array2))
-                {
-                    foreach ($array2 as $key => $value)
-                    {
-                        if (is_array($value)
-                            AND isset($array1[$key])
-                            AND is_array($array1[$key])
-                        )
-                        {
+        if (func_num_args() > 2) {
+            foreach (array_slice(func_get_args(), 2) as $array2) {
+                if (Arr::is_assoc($array2)) {
+                    foreach ($array2 as $key => $value) {
+                        if (is_array($value) AND isset($array1[$key]) AND is_array($array1[$key])
+                        ) {
                             $array1[$key] = Arr::merge($array1[$key], $value);
-                        }
-                        else
-                        {
+                        } else {
                             $array1[$key] = $value;
                         }
                     }
-                }
-                else
-                {
-                    foreach ($array2 as $value)
-                    {
-                        if ( ! in_array($value, $array1, TRUE))
-                        {
+                } else {
+                    foreach ($array2 as $value) {
+                        if (!in_array($value, $array1, TRUE)) {
                             $array1[] = $value;
                         }
                     }
@@ -512,17 +441,13 @@ abstract class Arr {
      */
     public static function overwrite($array1, $array2)
     {
-        foreach (array_intersect_key($array2, $array1) as $key => $value)
-        {
+        foreach (array_intersect_key($array2, $array1) as $key => $value) {
             $array1[$key] = $value;
         }
 
-        if (func_num_args() > 2)
-        {
-            foreach (array_slice(func_get_args(), 2) as $array2)
-            {
-                foreach (array_intersect_key($array2, $array1) as $key => $value)
-                {
+        if (func_num_args() > 2) {
+            foreach (array_slice(func_get_args(), 2) as $array2) {
+                foreach (array_intersect_key($array2, $array1) as $key => $value) {
                     $array1[$key] = $value;
                 }
             }
@@ -550,26 +475,21 @@ abstract class Arr {
         $command = $params = NULL;
 
         // command[param,param]
-        if (preg_match('/^([^\(]*+)\((.*)\)$/', $str, $match))
-        {
+        if (preg_match('/^([^\(]*+)\((.*)\)$/', $str, $match)) {
             // command
             $command = $match[1];
 
-            if ($match[2] !== '')
-            {
+            if ($match[2] !== '') {
                 // param,param
                 $params = preg_split('/(?<!\\\\),/', $match[2]);
                 $params = str_replace('\,', ',', $params);
             }
-        }
-        else
-        {
+        } else {
             // command
             $command = $str;
         }
 
-        if (strpos($command, '::') !== FALSE)
-        {
+        if (strpos($command, '::') !== FALSE) {
             // Create a static method callable command
             $command = explode('::', $command, 2);
         }
@@ -598,20 +518,13 @@ abstract class Arr {
         $is_assoc = Arr::is_assoc($array);
 
         $flat = array();
-        foreach ($array as $key => $value)
-        {
-            if (is_array($value))
-            {
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
                 $flat = array_merge($flat, Arr::flatten($value));
-            }
-            else
-            {
-                if ($is_assoc)
-                {
+            } else {
+                if ($is_assoc) {
                     $flat[$key] = $value;
-                }
-                else
-                {
+                } else {
                     $flat[] = $value;
                 }
             }
@@ -619,106 +532,87 @@ abstract class Arr {
         return $flat;
     }
 
-   /**
-    * Convert input into stdClass or array
-    * 
-    * @param   mixed   $input  The array we want to convert
-    * @param   bool    $assoc  Convert to array
-    * 
-    * @return  mixed
-    */
-   function to_object($input, $assoc = FALSE)
-   {
-       // First we convert the array to a json string
-       $json = json_encode($input);
+    /**
+     * Convert input into stdClass or array
+     *
+     * @param   mixed   $input  The array we want to convert
+     * @param   bool    $assoc  Convert to array
+     *
+     * @return  mixed
+     */
+    function to_object($input, $assoc = FALSE)
+    {
+        // First we convert the array to a json string
+        $json = json_encode($input);
 
-       // The we convert the json string to stdClass or array
-       $return = json_decode($json, $assoc);
+        // The we convert the json string to stdClass or array
+        $return = json_decode($json, $assoc);
 
-       return $return;
-   }
-   
-   /**
-    * Return all of the rows in the result as an array. 
-    * 
-    * @param   object   $results    The results from model
-    * @param   string   $key        Column for associative keys
-    * @param   mixed    $values     Column for values, array of values
-    * @param   bool     $translate  Translate output
-    * 
-    * @return  array
-    */
-   public static function from_model($results, $key = NULL, $values = NULL, $translate = NULL)
+        return $return;
+    }
+
+    /**
+     * Return all of the rows in the result as an array.
+     *
+     * @param   object   $results    The results from model
+     * @param   string   $key        Column for associative keys
+     * @param   mixed    $values     Column for values, array of values
+     * @param   bool     $translate  Translate output
+     *
+     * @return  array
+     */
+    public static function from_model($results, $key = NULL, $values = NULL, $translate = NULL)
     {
         $array = array();
-        
-        if( ! count($results))
-        {
+
+        if (!count($results)) {
             return $array;
         }
-        if($results instanceof Phalcon\Mvc\Model)
+        if ($results instanceof Phalcon\Mvc\Model)
             return get_object_vars($results);
-        
-        if ($key === NULL AND $values === NULL)
-        {
+
+        if ($key === NULL AND $values === NULL) {
             // Indexed rows
-            foreach ($results as $object)
-            {
+            foreach ($results as $object) {
                 $array[] = get_object_vars($object);
             }
-        }
-        elseif ($key === NULL)
-        {
+        } elseif ($key === NULL) {
             // Indexed columns
-            foreach ($results as $object)
-            {
+            foreach ($results as $object) {
                 $array[] = $object->$values;
             }
-        }
-        elseif ($values === NULL)
-        {
+        } elseif ($values === NULL) {
             // Associative rows
-            foreach ($results as $object)
-            {
+            foreach ($results as $object) {
                 $array[$object->$key] = get_object_vars($object);
             }
-        }
-        elseif (is_array($values))
-        {
+        } elseif (is_array($values)) {
             // Custom columns
-            foreach ($results as $object)
-            {
+            foreach ($results as $object) {
                 $arr_keys = array_keys($values);
-                
-                if(count($values == 2) && $arr_keys[0] == '_key' && $arr_keys[1] == '_value')
-                {
+
+                if (count($values == 2) && $arr_keys[0] == '_key' && $arr_keys[1] == '_value') {
                     $array[$object->$key][$object->$values['_key']] = $object->$values['_value'];
-                }
-                else
-                {
-                    foreach ($values as $val_key => $val_value)
-                    {
-                        if (is_int($val_key))
-                        {
+                } else {
+                    foreach ($values as $val_key => $val_value) {
+                        if (is_int($val_key)) {
                             $array[$object->$key][$val_value] = $object->$val_value;
-                        }
-                        else
-                        {
+                        } else {
                             $array[$object->$key][$val_key] = $object->$val_value;
                         }
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             // Associative columns
-            foreach ($results as $object)
-            {
+            foreach ($results as $object) {
                 $array[$object->$key] = $translate ? __($object->$values) : $object->$values;
             }
         }
 
         return $array;
     }
-} // End arr
+
+}
+
+// End arr

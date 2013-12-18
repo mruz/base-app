@@ -5,7 +5,7 @@
  * 
  * @package     Donook
  * @category    Task
- * @version     1.1
+ * @version     1.3
  */
 class CronTask extends \Phalcon\CLI\Task
 {
@@ -14,7 +14,7 @@ class CronTask extends \Phalcon\CLI\Task
      * Initialize
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.3
      */
     public function initialize()
     {
@@ -25,7 +25,7 @@ class CronTask extends \Phalcon\CLI\Task
      * Main Action 
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.3
      */
     public function mainAction()
     {
@@ -36,7 +36,7 @@ class CronTask extends \Phalcon\CLI\Task
      * Not found Action 
      *
      * @package     base-app
-     * @version     1.1
+     * @version     1.3
      */
     public function notFoundAction()
     {

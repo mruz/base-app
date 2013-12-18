@@ -2,10 +2,10 @@
 
 /**
  * Token Model
- * 
+ *
  * @package     base-app
  * @category    Model
- * @version     1.2
+ * @version     1.3
  */
 
 namespace Baseapp\Models;
@@ -21,11 +21,11 @@ class Tokens extends \Phalcon\Mvc\Model
     /**
      * Token initialize
      *
-     * @version     1.2
+     * @version     1.3
      */
     public function initialize()
     {
-        $this->belongsTo("user_id", __NAMESPACE__."\Users", "id", array(
+        $this->belongsTo("user_id", __NAMESPACE__ . "\Users", "id", array(
             "foreignKey" => true
         ));
 
@@ -41,7 +41,7 @@ class Tokens extends \Phalcon\Mvc\Model
     /**
      * Deletes all expired tokens
      *
-     * @version     1.2
+     * @version     1.3
      */
     public function delete_expired()
     {

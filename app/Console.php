@@ -5,7 +5,7 @@
  * 
  * @package     base-app
  * @category    CLI
- * @version     1.1
+ * @version     1.3
  */
 // Everything is relative to the application root now.
 chdir(dirname(__DIR__));

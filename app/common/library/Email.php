@@ -2,10 +2,10 @@
 
 /**
  * Email Library
- * 
+ *
  * @package     base-app
  * @category    Library
- * @version     1.2
+ * @version     1.3
  */
 
 namespace Baseapp\Library;

@@ -2,12 +2,14 @@
 
 /**
  * Bootstrap
- * 
+ *
  * @package     base-app
  * @category    Application
- * @version     1.2
+ * @version     1.3
  */
-use \Baseapp\Library\I18n;
+use \Baseapp\Library\I18n,
+    \Baseapp\Library\Debug,
+    \Baseapp\Library\Email;
 
 class Bootstrap extends \Phalcon\Mvc\Application
 {
@@ -17,27 +19,14 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
     /**
      * Constructor
-     * 
+     *
      * @param $di
      */
     public function __construct(\Phalcon\DiInterface $di)
     {
         $this->_di = $di;
 
-        $loaders = array(
-            'config',
-            'loader',
-            'timezone',
-            'lang',
-            'db',
-            'flash',
-            'crypt',
-            'session',
-            'cookie',
-            'cache',
-            'url',
-            'router',
-        );
+        $loaders = array('config', 'loader', 'timezone', 'lang', 'db', 'flash', 'crypt', 'session', 'cookie', 'cache', 'url', 'router');
 
         // Register services
         foreach ($loaders as $service)
@@ -64,7 +53,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
     protected function loader()
     {
-        //Register an autoloader
+        // Register an autoloader
         $loader = new \Phalcon\Loader();
         $loader->registerNamespaces(array(
             'Baseapp\Models' => ROOT_PATH . '/app/common/models/',
@@ -98,144 +87,144 @@ class Bootstrap extends \Phalcon\Mvc\Application
         $config = $this->_config;
 
         $this->_di->set('crypt', function() use ($config) {
-                    $crypt = new \Phalcon\Crypt();
-                    $crypt->setKey($config->crypt->key);
-                    return $crypt;
-                });
+            $crypt = new \Phalcon\Crypt();
+            $crypt->setKey($config->crypt->key);
+            return $crypt;
+        });
     }
 
     protected function cookie()
     {
         $this->_di->set('cookies', function() {
-                    $cookies = new \Phalcon\Http\Response\Cookies();
-                    return $cookies;
-                });
+            $cookies = new \Phalcon\Http\Response\Cookies();
+            return $cookies;
+        });
     }
 
     protected function db()
     {
         $config = $this->_config;
-        //Set the database service
+        // Set the database service
         $this->_di->set('db', function() use ($config) {
-                    return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-                        "host" => $config->database->host,
-                        "username" => $config->database->username,
-                        "password" => $config->database->password,
-                        "dbname" => $config->database->dbname
-                    ));
-                });
+            return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+                "host" => $config->database->host,
+                "username" => $config->database->username,
+                "password" => $config->database->password,
+                "dbname" => $config->database->dbname
+            ));
+        });
     }
 
     protected function flash()
     {
         $this->_di->set('flashSession', function() {
-                    $flash = new \Phalcon\Flash\Session(array(
-                        'warning' => 'alert alert-warning',
-                        'notice' => 'alert alert-info',
-                        'success' => 'alert alert-success',
-                        'error' => 'alert alert-danger',
-                        'dismissable' => 'alert alert-dismissable',
-                    ));
-                    return $flash;
-                });
+            $flash = new \Phalcon\Flash\Session(array(
+                'warning' => 'alert alert-warning',
+                'notice' => 'alert alert-info',
+                'success' => 'alert alert-success',
+                'error' => 'alert alert-danger',
+                'dismissable' => 'alert alert-dismissable',
+            ));
+            return $flash;
+        });
     }
 
     protected function session()
     {
-        //Start the session the first time some component request the session service
+        // Start the session the first time some component request the session service
         $this->_di->set('session', function() {
-                    $session = new \Phalcon\Session\Adapter\Files();
-                    $session->start();
-                    return $session;
-                });
+            $session = new \Phalcon\Session\Adapter\Files();
+            $session->start();
+            return $session;
+        });
     }
 
     protected function cache()
     {
         $config = $this->_config;
         $this->_di->set('cache', function() use ($config) {
-                    // Get the parameters
-                    $frontCache = new \Phalcon\Cache\Frontend\Data(array('lifetime' => $config->cache->lifetime));
-                    $cache = new \Phalcon\Cache\Backend\File($frontCache, array('cacheDir' => ROOT_PATH . '/app/common/cache/'));
+            // Get the parameters
+            $frontCache = new \Phalcon\Cache\Frontend\Data(array('lifetime' => $config->cache->lifetime));
+            $cache = new \Phalcon\Cache\Backend\File($frontCache, array('cacheDir' => ROOT_PATH . '/app/common/cache/'));
 
-                    return $cache;
-                });
+            return $cache;
+        });
     }
 
     protected function url()
     {
         $config = $this->_config;
         $this->_di->set('url', function() use ($config) {
-                    $url = new \Phalcon\Mvc\Url();
-                    $url->setBaseUri($config->app->base_uri);
-                    $url->setStaticBaseUri($config->app->static_uri);
-                    return $url;
-                });
+            $url = new \Phalcon\Mvc\Url();
+            $url->setBaseUri($config->app->base_uri);
+            $url->setStaticBaseUri($config->app->static_uri);
+            return $url;
+        });
     }
 
     protected function router()
     {
-        //Setting up the static router
+        // Setting up the static router
         $this->_di->set('router', function() {
-                    $router = new \Phalcon\Mvc\Router(FALSE);
+            $router = new \Phalcon\Mvc\Router(FALSE);
 
-                    $router->setDefaultModule('frontend');
-                    $router->setDefaultController('index');
-                    $router->setDefaultAction('index');
+            $router->setDefaultModule('frontend');
+            $router->setDefaultController('index');
+            $router->setDefaultAction('index');
 
 
-                    $router->add('/:controller/:action/:params', array(
-                        'module' => 'frontend',
-                        'controller' => 1,
-                        'action' => 2,
-                        'params' => 3,
-                    ));
+            $router->add('/:controller/:action/:params', array(
+                'module' => 'frontend',
+                'controller' => 1,
+                'action' => 2,
+                'params' => 3,
+            ));
 
-                    $router->add('/:controller/:int', array(
-                        'module' => 'frontend',
-                        'controller' => 1,
-                        'action' => 'index',
-                        'id' => 2,
-                    ));
+            $router->add('/:controller/:int', array(
+                'module' => 'frontend',
+                'controller' => 1,
+                'action' => 'index',
+                'id' => 2,
+            ));
 
-                    $router->add('/:controller[/]?', array(
-                        'module' => 'frontend',
-                        'controller' => 1,
-                        'action' => 'index'
-                    ));
+            $router->add('/:controller[/]?', array(
+                'module' => 'frontend',
+                'controller' => 1,
+                'action' => 'index'
+            ));
 
-                    $router->add('/', array(
-                        'module' => 'frontend',
-                        'controller' => 'index',
-                        'action' => 'index'
-                    ));
+            $router->add('/', array(
+                'module' => 'frontend',
+                'controller' => 'index',
+                'action' => 'index'
+            ));
 
-                    $router->add('/admin/:controller/:action/:params', array(
-                        'module' => 'backend',
-                        'controller' => 1,
-                        'action' => 2,
-                        'params' => 3,
-                    ));
+            $router->add('/admin/:controller/:action/:params', array(
+                'module' => 'backend',
+                'controller' => 1,
+                'action' => 2,
+                'params' => 3,
+            ));
 
-                    $router->add('/admin/:controller[/]?', array(
-                        'module' => 'backend',
-                        'controller' => 1,
-                        'action' => 'index',
-                    ));
+            $router->add('/admin/:controller[/]?', array(
+                'module' => 'backend',
+                'controller' => 1,
+                'action' => 'index',
+            ));
 
-                    $router->add('/admin[/]?', array(
-                        'module' => 'backend',
-                        'controller' => 'index',
-                        'action' => 'index',
-                    ));
+            $router->add('/admin[/]?', array(
+                'module' => 'backend',
+                'controller' => 'index',
+                'action' => 'index',
+            ));
 
-                    $router->notFound(array(
-                        'controller' => 'index',
-                        'action' => 'notFound'
-                    ));
+            $router->notFound(array(
+                'controller' => 'index',
+                'action' => 'notFound'
+            ));
 
-                    return $router;
-                });
+            return $router;
+        });
     }
 
     /**
@@ -275,31 +264,35 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
     public static function log(Exception $e)
     {
-        if (\Phalcon\DI::getDefault()->getShared('config')->log->file) {
+        $config = \Phalcon\DI::getDefault()->getShared('config');
+
+        if ($config->app->env == "development") {
+            // Display debug output
+            $debug = new \Phalcon\Debug();
+            $debug->onUncaughtException($e);
+        } else {
+            // Display pretty view of the error
+            $di = new \Phalcon\DI\FactoryDefault();
+            $view = new \Phalcon\Mvc\View\Simple();
+            $view->setDI($di);
+            $view->setViewsDir(ROOT_PATH . '/app/frontend/views/');
+            $view->registerEngines(\Baseapp\Library\Tool::registerEngines($view, $di));
+            echo $view->render('error');
+
+            // Log errors to file
             $logger = new \Phalcon\Logger\Adapter\File(ROOT_PATH . '/app/common/logs/' . date('Ymd') . '.log', array('mode' => 'a+'));
             $logger->error(get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage());
             $logger->info($e->getFile() . '[' . $e->getLine() . ']');
             $logger->debug("Trace: \n" . $e->getTraceAsString() . "\n");
             $logger->close();
-        }
 
-        if (\Phalcon\DI::getDefault()->getShared('config')->log->debug) {
-            $debug = new \Phalcon\Debug();
-            $debug->onUncaughtException($e);
-        } else {
-            $di = new \Phalcon\DI\FactoryDefault();
-            $view = new \Phalcon\Mvc\View\Simple();
-            $view->setDI($di);
-            $view->setViewsDir(ROOT_PATH . '/app/frontend/views/');
-            $view->registerEngines(array(
-                ".phtml" => "Phalcon\Mvc\View\Engine\Php",
-                ".volt" => function($view, $di) {
-                    $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
-
-                    return \Baseapp\Library\Tool::registerVolt($volt);
-                }
-            ));
-            echo $view->render('error');
+            // Send email with errors to admin
+            $email = new Email();
+            $log = Debug::dump(get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(), 'Message') .
+                    Debug::dump($e->getFile() . '[' . $e->getLine() . ']', 'File') .
+                    Debug::dump($e->getTrace(), 'Trace');
+            $email->prepare(__('Something is wrong!'), $config->app->admin, 'error', array('log' => $log));
+            $email->Send();
         }
     }
 

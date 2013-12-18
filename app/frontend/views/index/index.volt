@@ -1,4 +1,4 @@
-{# Home View | base-app | 1.2 #}
+{# Home View | base-app | 1.3 #}
 <h1>{{ __('The base application in PhalconPHP') }}</h1>
 <p>{{ __('Use this application as a way to quick start any new project.') }}</p>
 <p>{{ __('See working :link, user/pass: :users.', [':link' : '<a href="http://mruz.pl/base-app">base-app</a>', ':users' : 'user user, admin admin']) }}
@@ -12,6 +12,13 @@
     <li>HMVC support</li>
     <li>Volt template</li>
     <li>Frontend/Backend modules</li>
+    <li>Environment
+        <ul>
+            <li><em>development</em> - display debug, always compile template files, always minify assets</li>
+            <li><em>staging</em> - log debug, notify admin, only checks for changes in the children templates, checks for changes and minify assets</li>
+            <li><em>production</em> - log debug, notify admin, don't check for differences, don't create missing files, compiled and minified files must exist before!</li>
+        </ul>
+    </li>
     <li>Library
         <ul>
             <li><a href="https://github.com/mruz/base-app/wiki/Arr" target="_blank">Arr</a></li>

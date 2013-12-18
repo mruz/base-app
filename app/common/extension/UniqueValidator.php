@@ -2,10 +2,10 @@
 
 /**
  * Unique Validator
- * 
+ *
  * @package     base-app
  * @category    Extension
- * @version     1.2
+ * @version     1.3
  */
 
 namespace Baseapp\Extension;
