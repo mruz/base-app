@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Cron CLI Task
- * 
+ * Main CLI Task
+ *
  * @package     Donook
  * @category    Task
  * @version     1.3
  */
-class CronTask extends \Phalcon\CLI\Task
+
+namespace Baseapp\Cli\Tasks;
+
+class MainTask extends \Phalcon\CLI\Task
 {
 
     /**
@@ -18,22 +21,22 @@ class CronTask extends \Phalcon\CLI\Task
      */
     public function initialize()
     {
-        
+
     }
 
     /**
-     * Main Action 
+     * Main Action
      *
      * @package     base-app
      * @version     1.3
      */
     public function mainAction()
     {
-        echo "main\n";
+        echo "mainTask/mainAction\n";
     }
 
     /**
-     * Not found Action 
+     * Not found Action
      *
      * @package     base-app
      * @version     1.3

@@ -10,7 +10,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 * Console file
 * HMVC support
 * Volt template
-* Frontend/Backend modules
+* Frontend/Backend/Cli modules
 * Environment
  * _development_ - display debug, always compile template files, always minify assets
  * _staging_ - log debug, notify admin, only checks for changes in the children templates, checks for changes and minify assets

@@ -11,7 +11,7 @@
     <li>Console file</li>
     <li>HMVC support</li>
     <li>Volt template</li>
-    <li>Frontend/Backend modules</li>
+    <li>Frontend/Backend/Cli modules</li>
     <li>Environment
         <ul>
             <li><em>development</em> - display debug, always compile template files, always minify assets</li>

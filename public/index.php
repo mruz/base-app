@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 
 try {
     if (!defined('ROOT_PATH')) {
-        define('ROOT_PATH', dirname(dirname(__FILE__)));
+        define('ROOT_PATH', dirname(__DIR__));
     }
 
     require_once ROOT_PATH . '/app/Bootstrap.php';

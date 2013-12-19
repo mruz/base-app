@@ -18,7 +18,7 @@ class Tool
      *
      * @return  void
      */
-    public function assetsMinification()
+    public static function assetsMinification()
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
 

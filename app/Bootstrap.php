@@ -149,6 +149,22 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
             return $cache;
         });
+        
+        $this->_di->set('viewCache', function() use ($config) {
+            // Cache output view
+            $frontCache = new \Phalcon\Cache\Frontend\Output(array('lifetime' => $config->cache->lifetime));
+            $cache = new \Phalcon\Cache\Backend\File($frontCache, array('cacheDir' => ROOT_PATH . '/app/common/cache/'));
+
+            return $cache;
+        });
+        
+        $this->_di->set('base64Cache', function() use ($config) {
+            // Cache output view
+            $frontCache = new \Phalcon\Cache\Frontend\Base64(array('lifetime' => $config->cache->lifetime));
+            $cache = new \Phalcon\Cache\Backend\File($frontCache, array('cacheDir' => ROOT_PATH . '/app/common/cache/'));
+
+            return $cache;
+        });
     }
 
     protected function url()

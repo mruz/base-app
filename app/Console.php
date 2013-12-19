@@ -2,49 +2,69 @@
 <?php
 /**
  * Console
- * 
+ *
  * @package     base-app
  * @category    CLI
  * @version     1.3
  */
 // Everything is relative to the application root now.
-chdir(dirname(__DIR__));
+if (!defined('ROOT_PATH')) {
+    define('ROOT_PATH', dirname(__DIR__));
+}
+chdir(ROOT_PATH);
 
-// Init loader
-$loader = new \Phalcon\Loader();
-$loader->registerDirs(array(
-    'app/common/tasks/',
-    'app/common/library/',
-    'app/common/models/',
-))->register();
+class Console extends \Phalcon\CLI\Console
+{
 
+    private $_di;
+    private $_config;
 
-// Setup dependency injection
-$di = new Phalcon\DI();
+    public function __construct(\Phalcon\DiInterface $di)
+    {
+        $this->_di = $di;
 
-// Router
-$di->setShared('router', function() {
-            return new Phalcon\CLI\Router();
-        });
+        $loaders = array('config', 'loader', 'db', 'router');
 
-// View component
-$di->set('view', function() {
-            $view = new \Phalcon\Mvc\View();
-            $view->setViewsDir('app/views/');
-            return $view;
-        });
+        // Register services
+        foreach ($loaders as $service)
+            $this->$service();
 
-// Dispatcher
-$di->setShared('dispatcher', function() {
-            return new Phalcon\CLI\Dispatcher();
-        });
+        // Register modules
+        $this->registerModules(array(
+            'cli' => array(
+                'className' => 'Baseapp\Cli\Module',
+                'path' => 'app/cli/Module.php'
+            ),
+        ));
 
-// Load config file
-$config = new \Phalcon\Config\Adapter\Ini('app/config/config.ini');
-$di->set('config', $config);
+        // Sets the parent Di
+        parent::setDI($this->_di);
+    }
 
-// Set DB connectionS
-$di->set('db', function() use ($config) {
+    protected function loader()
+    {
+        // Register an autoloader
+        $loader = new \Phalcon\Loader();
+        $loader->registerNamespaces(array(
+            'Baseapp\Models' => 'app/common/models/',
+        ))->register();
+    }
+
+    protected function config()
+    {
+        // Create the new object
+        $config = new \Phalcon\Config\Adapter\Ini('app/common/config/config.ini');
+
+        // Store it in the Di container
+        $this->_di->set('config', $config);
+        $this->_config = $config;
+    }
+
+    protected function db()
+    {
+        $config = $this->_config;
+        // Set the database service
+        $this->_di->set('db', function() use ($config) {
             return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
                 "host" => $config->database->host,
                 "username" => $config->database->username,
@@ -52,9 +72,44 @@ $di->set('db', function() use ($config) {
                 "dbname" => $config->database->dbname
             ));
         });
+    }
 
-// Run console application
-$console = new \Phalcon\CLI\Console();
-$console->setDI($di);
-$console->handle(array('task' => isset($argv[1]) ? $argv[1] : 'main', 'action' => isset($argv[2]) ? $argv[2] : 'main', 'params' => $argv));
-?>
+    protected function router()
+    {
+        // Setting up the static router
+        $this->_di->set('router', function() {
+            $router = new \Phalcon\CLI\Router();
+            return $router;
+        });
+    }
+
+    public function handle($arguments = NULL)
+    {
+        $params = NULL;
+        switch (count($arguments)) {
+            case 1:
+                $task = 'main';
+                $action = 'main';
+                break;
+            case 2:
+                $task = $arguments[1];
+                $action = 'main';
+                break;
+            case 3:
+                $task = $arguments[1];
+                $action = $arguments[2];
+                break;
+            default:
+                $task = $arguments[1];
+                $action = $arguments[2];
+                $params = array_slice($arguments, 3);
+                break;
+        }
+        parent::handle(array('module' => 'cli', 'task' => $task, 'action' => $action, 'params' => $params));
+    }
+
+}
+
+// Run console
+$console = new Console(new \Phalcon\DI());
+$console->handle($argv);
