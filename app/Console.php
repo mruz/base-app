@@ -47,6 +47,7 @@ class Console extends \Phalcon\CLI\Console
         $loader = new \Phalcon\Loader();
         $loader->registerNamespaces(array(
             'Baseapp\Models' => 'app/common/models/',
+            'Baseapp\Library' => 'app/common/library/',
         ))->register();
     }
 
