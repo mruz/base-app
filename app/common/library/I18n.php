@@ -44,8 +44,8 @@ class I18n
 
     public function lang($lang = NULL)
     {
-        if ($lang)
         // Normalize the language
+        if ($lang)
             $this->_config['lang'] = strtolower(str_replace(array(' ', '_'), '-', $lang));
 
         return $this->_config['lang'];
@@ -53,19 +53,28 @@ class I18n
 
     private function load($lang)
     {
-        if (isset($this->_cache[$lang]))
         // Load from the cache
+        if (isset($this->_cache[$lang]))
             return $this->_cache[$lang];
 
         $parts = explode('-', $lang);
-        $path = implode(DIRECTORY_SEPARATOR, $parts);
+        $subdir = implode(DIRECTORY_SEPARATOR, $parts);
 
-        if (file_exists(ROOT_PATH . $this->_config['dir'] . $path . '.php'))
-            $messages = require ROOT_PATH . $this->_config['dir'] . $path . '.php';
-        elseif (file_exists(ROOT_PATH . $this->_config['dir'] . $lang . '.php'))
-            $messages = require ROOT_PATH . $this->_config['dir'] . $lang . '.php';
-        elseif (file_exists(ROOT_PATH . $this->_config['dir'] . $parts[0] . '.php'))
-            $messages = require ROOT_PATH . $this->_config['dir'] . $parts[0] . '.php';
+        // Search for /en/gb.php, /en-gb.php, /en.php or gb.php
+        foreach (array($subdir, $lang, $parts) as $tail) {
+            if (!is_array($tail))
+                $tail = array($tail);
+
+            foreach ($tail as $found) {
+                $path = ROOT_PATH . $this->_config['dir'] . $found . '.php';
+                if (file_exists($path)) {
+                    $messages = require $path;
+
+                    // Stop searching
+                    break;
+                }
+            }
+        }
 
         $translate = new \Phalcon\Translate\Adapter\NativeArray(array(
             "content" => isset($messages) ? $messages : array()
