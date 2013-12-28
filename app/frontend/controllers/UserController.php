@@ -83,7 +83,8 @@ class UserController extends IndexController
     public function signupAction()
     {
         if ($this->request->isPost() == TRUE) {
-            $signup = Users::signup();
+            $user = new Users();
+            $signup = $user->signup();
 
             if ($signup === TRUE) {
                 $this->flashSession->notice(

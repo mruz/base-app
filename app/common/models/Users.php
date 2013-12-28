@@ -82,17 +82,16 @@ class Users extends \Phalcon\Mvc\Model
         if (count($messages)) {
             return $validation->getMessages();
         } else {
-            $user = new Users();
-            $user->username = $this->request->getPost('username');
-            $user->password = Auth::instance()->hash($this->request->getPost('password'));
-            $user->email = $this->request->getPost('email');
-            $user->logins = 0;
-            $user->create();
+            $this->username = $this->getDI()->getShared('request')->getPost('username');
+            $this->password = Auth::instance()->hash($this->getDI()->getShared('request')->getPost('password'));
+            $this->email = $this->getDI()->getShared('request')->getPost('email');
+            $this->logins = 0;
+            $this->create();
 
-            $hash = md5($user->id . $user->email . $user->password . $this->config->auth->hash_key);
+            $hash = md5($this->id . $this->email . $this->password . $this->config->auth->hash_key);
 
             $email = new Email();
-            $email->prepare(__('Activation'), $this->request->getPost('email'), 'activation', array('username' => $this->request->getPost('username'), 'hash' => $hash));
+            $email->prepare(__('Activation'), $this->getDI()->getShared('request')->getPost('email'), 'activation', array('username' => $this->getDI()->getShared('request')->getPost('username'), 'hash' => $hash));
             $email->Send();
 
             unset($_POST);
