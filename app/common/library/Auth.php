@@ -80,7 +80,7 @@ class Auth
             // Check if user have the role
             if ($this->_config['session_roles']) {
                 // Check in session
-                $role = $user->roles->$role;
+                $role = property_exists($user->roles, $role) ? $user->roles->$role : NULL;
             } else {
                 // Check in db
                 $role = Roles::findFirst(array('name=:role:', 'bind' => array('role' => $role)));
