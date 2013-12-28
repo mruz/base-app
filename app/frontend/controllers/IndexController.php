@@ -37,7 +37,7 @@ class IndexController extends \Phalcon\Mvc\Controller
             I18n::instance()->lang($this->session->get('lang'));
         // Set the language from cookie
         elseif ($this->cookies->has('lang'))
-            I18n::instance()->lang($this->cookies->get('lang')->getValue());
+            I18n::instance()->lang($this->cookies->get('lang')->getValue('string'));
 
         $this->view->setVar('i18n', I18n::instance());
         $this->view->setVar('auth', Auth::instance());
