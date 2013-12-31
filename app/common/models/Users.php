@@ -16,16 +16,6 @@ use \Baseapp\Library\Auth,
 class Users extends \Phalcon\Mvc\Model
 {
 
-    public function validation()
-    {
-        $this->validate(new \Phalcon\Mvc\Model\Validator\Uniqueness(array(
-            'field' => 'username'
-        )));
-        if ($this->validationHasFailed() == true) {
-            return false;
-        }
-    }
-
     /**
      * User initialize
      *
@@ -52,7 +42,7 @@ class Users extends \Phalcon\Mvc\Model
      */
     public function signup()
     {
-        $validation = new \Phalcon\Validation();
+        $validation = new \Baseapp\Extension\Validation();
 
         $validation->add('username', new \Phalcon\Validation\Validator\PresenceOf());
         $validation->add('username', new \Baseapp\Extension\UniqueValidator(array(
