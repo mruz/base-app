@@ -5,7 +5,7 @@
  *
  * @package     Donook
  * @category    Task
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Cli\Tasks;
@@ -17,7 +17,7 @@ class MainTask extends \Phalcon\CLI\Task
      * Initialize
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function initialize()
     {
@@ -28,7 +28,7 @@ class MainTask extends \Phalcon\CLI\Task
      * Main Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function mainAction()
     {
@@ -39,7 +39,7 @@ class MainTask extends \Phalcon\CLI\Task
      * Not found Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function notFoundAction()
     {

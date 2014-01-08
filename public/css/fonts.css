@@ -1,6 +1,6 @@
 /*!
  * fonts.css
- * base-app 1.3
+ * base-app 2.0
  * Ubuntu & Open Sans font family
  */
 
@@ -18,7 +18,7 @@
 }
 
 /* Responsive fonts */
-/* Extra small devices (phones, up to 480px) */
+/* Extra small devices (phones, up to 767px) */
 /* No media query since this is the default in Bootstrap */
 body {
     font-size: 13px;

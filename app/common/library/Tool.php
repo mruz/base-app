@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    Library
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Library;
@@ -34,7 +34,7 @@ class Tool
                     if (!is_dir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath())))
                         mkdir(dirname(ROOT_PATH . '/public/min/' . $resource->getPath()), 0777, TRUE);
 
-                    if ($config->app->env == 'development' || !file_exists(ROOT_PATH . '/public/min/' . $resource->getPath()))
+                    if (!file_exists(ROOT_PATH . '/public/min/' . $resource->getPath()))
                         file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));
                     elseif (md5($min->filter($resource->getContent())) != md5_file(ROOT_PATH . '/public/min/' . $resource->getPath()))
                         file_put_contents(ROOT_PATH . '/public/min/' . $resource->getPath(), $min->filter($resource->getContent()));

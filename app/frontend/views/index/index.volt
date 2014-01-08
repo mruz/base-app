@@ -1,4 +1,4 @@
-{# Home View | base-app | 1.3 #}
+{# Home View | base-app | 2.0 #}
 <h1>{{ __('The base application in PhalconPHP') }}</h1>
 <p>{{ __('Use this application as a way to quick start any new project.') }}</p>
 <p>{{ __('See working :link, user/pass: :users.', [':link' : '<a href="http://mruz.pl/base-app">base-app</a>', ':users' : 'user user, admin admin']) }}
@@ -14,7 +14,7 @@
     <li>Frontend/Backend/Cli modules</li>
     <li>Environment
         <ul>
-            <li><em>development</em> - display debug, always compile template files, always minify assets</li>
+            <li><em>development</em> - display debug, always compile template files, checks for changes and minify assets</li>
             <li><em>staging</em> - log debug, notify admin, only checks for changes in the children templates, checks for changes and minify assets</li>
             <li><em>production</em> - log debug, notify admin, don't check for differences, don't create missing files, compiled and minified files must exist before!</li>
         </ul>
@@ -50,6 +50,10 @@
         </ul>
     </li>
 </ol>
+<h3>{{ __('Links') }}:</h3>
+<ul>
+    <li>Phalcon <strong>2.0.0</strong></li>
+</ul>
 <h3>{{ __('Links') }}:</h3>
 <ul>
     <li><a href="http://phalconphp.com" target="_blank">Phalcon PHP</a></li>

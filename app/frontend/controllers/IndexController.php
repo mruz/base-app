@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    Controller
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Frontend\Controllers;
@@ -17,12 +17,13 @@ class IndexController extends \Phalcon\Mvc\Controller
 {
 
     public $site_desc;
+    public $scripts = array();
 
     /**
      * Initialize
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function initialize()
     {
@@ -47,7 +48,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Before Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function beforeExecuteRoute($dispatcher)
     {
@@ -65,7 +66,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Index Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function indexAction()
     {
@@ -77,13 +78,16 @@ class IndexController extends \Phalcon\Mvc\Controller
      * After Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function afterExecuteRoute($dispatcher)
     {
         // Set final title and description
         $this->tag->appendTitle(' | base-app');
         $this->view->setVar('site_desc', mb_substr($this->filter->sanitize($this->site_desc, 'string'), 0, 200, 'utf-8'));
+        
+        // Set scripts
+        $this->view->setVar('scripts', $this->scripts);
 
         // Minify css and js collection
         \Baseapp\Library\Tool::assetsMinification();
@@ -93,7 +97,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Not found Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function notFoundAction()
     {

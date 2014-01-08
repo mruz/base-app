@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    CLI
- * @version     1.3
+ * @version     2.0
  */
 // Everything is relative to the application root now.
 if (!defined('ROOT_PATH')) {

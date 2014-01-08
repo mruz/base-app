@@ -5,7 +5,7 @@
  *
  * @package     Donook
  * @category    Task
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Cli\Tasks;
@@ -17,7 +17,7 @@ class CronTask extends MainTask
      * Main Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function mainAction()
     {

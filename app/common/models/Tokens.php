@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    Model
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Models;
@@ -21,7 +21,7 @@ class Tokens extends \Phalcon\Mvc\Model
     /**
      * Token initialize
      *
-     * @version     1.3
+     * @version     2.0
      */
     public function initialize()
     {
@@ -41,7 +41,7 @@ class Tokens extends \Phalcon\Mvc\Model
     /**
      * Deletes all expired tokens
      *
-     * @version     1.3
+     * @version     2.0
      */
     public function delete_expired()
     {

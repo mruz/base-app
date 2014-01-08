@@ -5,7 +5,7 @@
  * 
  * @package     base-app
  * @category    Controller
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Frontend\Controllers;
@@ -22,7 +22,7 @@ class UserController extends IndexController
      * Index Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function indexAction()
     {
@@ -45,7 +45,7 @@ class UserController extends IndexController
      * Sign in Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function signinAction()
     {
@@ -78,7 +78,7 @@ class UserController extends IndexController
      * Sign up Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function signupAction()
     {
@@ -105,7 +105,7 @@ class UserController extends IndexController
      * Log out Action 
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function signoutAction()
     {
@@ -117,7 +117,7 @@ class UserController extends IndexController
      * Activation Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function activationAction()
     {

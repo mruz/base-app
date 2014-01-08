@@ -1,4 +1,4 @@
-{# Template View | base-app | 1.3 #}
+{# Template View | base-app | 2.0 #}
 <!DOCTYPE html>
 <html lang="{{ substr(i18n.lang(), 0, 2) }}">
     <head>
@@ -33,7 +33,7 @@
                             <button type="submit" name="submit_signin" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> {{ __('Sign in') }}</button>
                             {{ endForm() }}
                         {% else %}
-                            <ul class="nav navbar-nav pull-right">
+                            <ul class="nav navbar-nav pull-right pull-none">
                                 <li class="dropdown">
                                     {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', auth.get_user().username ~ '<b class="caret"></b>' ]) }}
                                     <ul class="dropdown-menu">
@@ -62,20 +62,20 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#footer-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
                     <p class="navbar-text">
                         {{ linkTo(NULL, config.app.name) }} &copy; {{ date('Y') }}
-                        <span class="text-muted"> | Phalcon {{ version() }}</span>
                     </p>
                 </div>
                 <div class="collapse navbar-collapse" id="footer-collapse">
-                    <ul class="nav navbar-nav pull-left">
+                    <ul class="nav navbar-nav pull-left pull-none">
+                        <li class="disabled"><span class="navbar-text">Phalcon {{ version() }}</span></li>
                         <li>{{ linkTo('user/signup', __('Sign up')) }}</li>
                     </ul>
-                    <ul class="nav navbar-nav pull-right">
+                    <ul class="nav navbar-nav pull-right pull-none">
                         <li class="dropdown">
-                            {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', __('Language') ~ '<b class="caret"></b>' ]) }}
                             <ul class="dropdown-menu">
                                 <li>{{ linkTo('lang/set/en-gb', __('English')) }}</li>
                                 <li>{{ linkTo('lang/set/pl-pl', __('Polish')) }}</li>
                             </ul>
+                            {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', __('Language') ~ '<b class="caret"></b>' ]) }}
                         </li>
                     </ul>
                 </div>
@@ -89,7 +89,9 @@
         <!--[if lt IE 9]>
         {{ javascriptInclude('js/respond.js') }}
         <![endif]-->
-
+        {% for script in scripts %}
+            <script type="text/javascript">{{ script }}</script>
+        {% endfor %}
         {{ assets.outputJs() }}
     </body>
 </html>

@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    Extension
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Extension;
@@ -13,12 +13,10 @@ namespace Baseapp\Extension;
 class Validation extends \Phalcon\Validation
 {
 
-    public function getMessages()
+    public function getDefaultMessage($type)
     {
-        foreach (parent::getMessages() as $message) {
-            $message->setMessage(__($message->getMessage()));
-        }
-        return parent::getMessages();
+        // Translate dafault messages
+        return __($this->_defaultMessages[$type]);
     }
 
 }

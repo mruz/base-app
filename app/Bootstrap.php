@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    Application
- * @version     1.3
+ * @version     2.0
  */
 use \Baseapp\Library\I18n,
     \Baseapp\Library\Debug,
@@ -142,29 +142,22 @@ class Bootstrap extends \Phalcon\Mvc\Application
     protected function cache()
     {
         $config = $this->_config;
-        $this->_di->set('cache', function() use ($config) {
-            // Get the parameters
-            $frontCache = new \Phalcon\Cache\Frontend\Data(array('lifetime' => $config->cache->lifetime));
-            $cache = new \Phalcon\Cache\Backend\File($frontCache, array('cacheDir' => ROOT_PATH . '/app/common/cache/'));
+        // Register all cache services from config
+        foreach ($config->cache->services as $service => $section) {
+            $this->_di->set($service, function() use ($config, $section) {
+                // Load settings for section
+                $frontend = $config->$section;
+                $backend = $config->{$frontend->backend};
+                // Set adapters
+                $adapterFrontend = "\Phalcon\Cache\Frontend\\" . $frontend->adapter;
+                $adapterBackend = "\Phalcon\Cache\Backend\\" . $backend->adapter;
+                // Set cache
+                $frontCache = new $adapterFrontend(get_object_vars($frontend->options));
+                $cache = new $adapterBackend($frontCache, get_object_vars($backend->options));
 
-            return $cache;
-        });
-        
-        $this->_di->set('viewCache', function() use ($config) {
-            // Cache output view
-            $frontCache = new \Phalcon\Cache\Frontend\Output(array('lifetime' => $config->cache->lifetime));
-            $cache = new \Phalcon\Cache\Backend\File($frontCache, array('cacheDir' => ROOT_PATH . '/app/common/cache/'));
-
-            return $cache;
-        });
-        
-        $this->_di->set('base64Cache', function() use ($config) {
-            // Cache output view
-            $frontCache = new \Phalcon\Cache\Frontend\Base64(array('lifetime' => $config->cache->lifetime));
-            $cache = new \Phalcon\Cache\Backend\File($frontCache, array('cacheDir' => ROOT_PATH . '/app/common/cache/'));
-
-            return $cache;
-        });
+                return $cache;
+            });
+        }
     }
 
     protected function url()

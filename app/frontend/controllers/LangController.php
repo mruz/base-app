@@ -5,7 +5,7 @@
  * 
  * @package     base-app
  * @category    Controller
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Frontend\Controllers;
@@ -17,7 +17,7 @@ class LangController extends IndexController
      * Set language Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function setAction($lang)
     {

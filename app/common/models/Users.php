@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    Model
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Models;
@@ -19,7 +19,7 @@ class Users extends \Phalcon\Mvc\Model
     /**
      * User initialize
      *
-     * @version     1.3
+     * @version     2.0
      */
     public function initialize()
     {
@@ -38,15 +38,15 @@ class Users extends \Phalcon\Mvc\Model
     /**
      * Sign up User method
      *
-     * @version     1.3
+     * @version     2.0
      */
     public function signup()
     {
         $validation = new \Baseapp\Extension\Validation();
 
         $validation->add('username', new \Phalcon\Validation\Validator\PresenceOf());
-        $validation->add('username', new \Baseapp\Extension\UniqueValidator(array(
-            'model' => 'Users',
+        $validation->add('username', new \Phalcon\Validation\Validator\Uniqueness(array(
+            'model' => '\Baseapp\Models\Users',
         )));
         $validation->add('username', new \Phalcon\Validation\Validator\StringLength(array(
             'min' => 4,
@@ -54,19 +54,20 @@ class Users extends \Phalcon\Mvc\Model
 
         $validation->add('password', new \Phalcon\Validation\Validator\PresenceOf());
         $validation->add('repeatPassword', new \Phalcon\Validation\Validator\Confirmation(array(
-            'with' => 'password'
+            'with' => 'password',
         )));
 
         $validation->add('email', new \Phalcon\Validation\Validator\PresenceOf());
         $validation->add('email', new \Phalcon\Validation\Validator\Email());
-        $validation->add('email', new \Baseapp\Extension\UniqueValidator(array(
-            'model' => 'Users',
+        $validation->add('email', new \Phalcon\Validation\Validator\Uniqueness(array(
+            'model' => '\Baseapp\Models\Users',
         )));
 
         $validation->add('repeatEmail', new \Phalcon\Validation\Validator\Confirmation(array(
-            'with' => 'email'
+            'with' => 'email',
         )));
 
+        $validation->setLabels(array('username' => __('Username'), 'password' => __('Password'), 'repeatPassword' => __('Repeat password'), 'email' => __('Email'), 'repeatEmail' => __('Repeat email')));
         $messages = $validation->validate($_POST);
 
         if (count($messages)) {

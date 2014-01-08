@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    Model
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Models;
@@ -16,7 +16,7 @@ class RolesUsers extends \Phalcon\Mvc\Model
     /**
      * Roles Users initialize
      *
-     * @version     1.3
+     * @version     2.0
      */
     public function initialize()
     {

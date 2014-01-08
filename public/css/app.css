@@ -1,7 +1,10 @@
 /*!
  * app.css
- * base-app 1.3
+ * base-app 2.0
  */
+#wrap {
+    min-height: 600px;
+}
 
 #wrap > .container {
     padding: 60px 15px 0;
@@ -15,37 +18,61 @@
     position: static;
 }
 
+footer.navbar-default {
+    background-color: #fff;
+}
+
 .navbar-text {
     margin-left: 15px;
 }
 
+/* Extra small devices (phones) */
+@media (max-width: 767px) {
+    .pull-none {
+        float: none!important;
+    }
+}
+
+/* Small devices (tablets, 768px and up) */
 @media (min-width: 768px){
+    /* // Sticky footer
     html,
     body {
         height: 100%;
-        /*The html and body elements cannot have any padding or margin.*/
+        // The html and body elements cannot have any padding or margin.
     }
 
-    /*Wrapper for page content to push down footer*/
+    // Wrapper for page content to push down footer
     #wrap {
         min-height: 100%;
         height: auto !important;
         height: 100%;
-        /*Negative indent footer by its height*/
+        // Negative indent footer by its height
         margin: 0 auto -50px;
-        /*Pad bottom by footer height*/
+        // Pad bottom by footer height
         padding: 0 0 50px;
     }
 
-    /*Set the fixed height of the footer here*/
+    // Set the fixed height of the footer here
     footer {
         height: 50px;
         background-color: #f5f5f5;
+    } // Sticky footer end */
+}
+
+/* Tablet only */
+@media (min-width: 768px) and (max-width: 991px){
+    .navbar-form .form-group {
+        max-width: 135px;
     }
 }
 
-@media (min-width: 768px) and (max-width: 991px){
-    .navbar-form .form-group {
-        width: 135px;
-    }
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
 }

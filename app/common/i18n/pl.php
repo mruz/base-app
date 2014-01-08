@@ -5,20 +5,25 @@
  *
  * @package     base-app
  * @category    Lang
- * @version     1.3
+ * @version     2.0
  */
 return array(
     //Validation
-    ":field PresenceOf" => "Pole <em>:field</em> nie może być puste",
-    ":field Identical :accepted" => "Pole <em>:field</em> musi być takie same jak <em>:accepted</em>",
-    ":field Email" => "Pole <em>:field</em> musi być adresem email",
-    ":field Regex" => "Pole <em>:field</em> nie spełnia wymaganego formatu",
-    ":field StringLength :min" => "Pole <em>:field</em> musi mieć co najmniej <em>:min</em> znaków",
-    ":field StringLength :max" => "Pole <em>:field</em> nie może przekraczać <em>:max</em> znaków",
-    ":field Between :min :max" => "Pole <em>:field</em> musi być pomiędzy <em>:min</em> a <em>:max</em>",
-    ":field Confirmation :with" => "Pole <em>:field</em> musi być takie same jak <em>:with</em>",
-    ":field Unique" => "Field Pole <em>:field</em> musi być unikalne",
-    ":field URL" => "Pole <em>:field</em> musi być adresem url",
+    ":field is not between a valid range" => "<em>:field</em> musi być pomiędzy <em>:min</em> a <em>:max</em>",
+    "Value of :field and :with don't match" => "<em>:field</em> musi być takie same jak <em>:with</em>",
+    "Value of field :field must have a valid e-mail format" => "<em>:field</em> musi być adresem email",
+    "Value of field :field must not be part of list: :domain" => "<em>:field</em> nie może być częścią z listy: <em>:domain</em>",
+    ":field does not have the expected value" => "<em>:field</em> nie ma oczekiwanej wartości",
+    "Value of field :field must be part of list: :domain" => "<em>:field</em> musi być częścią z listy: <em>:domain</em>",
+    ":field is required" => "<em>:field</em> nie może być puste",
+    "Value of field :field doesn't match regular expression" => "<em>:field</em> nie spełnia wymaganego formatu",
+    "Value of field :field exceeds the maximum :max characters" => "<em>:field</em> nie może przekraczać <em>:max</em> znaków",
+    "Value of field :field is less than the minimum :min characters" => "<em>:field</em> musi mieć co najmniej <em>:min</em> znaków",
+    //Model Validation
+    "Value of field :field must be numeric" => "<em>:field</em> musi być liczbą",
+    "Value of field :field is already present in another record" => "<em>:field</em> musi być unikalne",
+    "Value of fields :fields are already present in another record" => "<em>:fields</em> muszą być unikalne",
+    ":field does not have a valid url format" => "<em>:field</em> musi być adresem url",
     //Flash
     "Activation cannot be completed. Invalid username or hash." => "Aktywacja nie może być zakończona. Nieprawidłowa nazwa użytkownika lub hash.",
     "Activation has already been completed." => "Aktywacja została już zakończona.",

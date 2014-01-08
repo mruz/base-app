@@ -5,7 +5,7 @@
  * 
  * @package     base-app
  * @category    Controller
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Backend\Controllers;
@@ -20,7 +20,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Initialize
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function initialize()
     {
@@ -49,7 +49,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Before Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function beforeExecuteRoute($dispatcher)
     {
@@ -65,7 +65,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Index Action 
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function indexAction()
     {
@@ -76,7 +76,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * After Action
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function afterExecuteRoute($dispatcher)
     {
@@ -90,7 +90,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * Not found Action 
      *
      * @package     base-app
-     * @version     1.3
+     * @version     2.0
      */
     public function notfoundAction()
     {

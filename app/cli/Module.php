@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    Module
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Cli;

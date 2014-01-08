@@ -5,7 +5,7 @@
  *
  * @package     base-app
  * @category    Extension
- * @version     1.3
+ * @version     2.0
  */
 
 namespace Baseapp\Extension;

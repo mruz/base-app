@@ -4,7 +4,7 @@
  * index.php
  *
  * @package     base-app
- * @version     1.3
+ * @version     2.0
  */
 error_reporting(E_ALL);
 

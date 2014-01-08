@@ -1,4 +1,4 @@
-{# User View | base-app | 1.3 #}
+{# User View | base-app | 2.0 #}
 <h2>{{ __('Hello :user', [':user' : auth.get_user().username]) }}</h2><hr />
 <p class="muted">{{ __('Have a nice day!') }}</p>
 <p><strong>{{ __('Logins') }}:</strong> {{ auth.get_user().logins }}</p>
