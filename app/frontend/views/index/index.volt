@@ -1,7 +1,7 @@
 {# Home View | base-app | 2.0 #}
-<h1>{{ __('The base application in PhalconPHP') }}</h1>
-<p>{{ __('Use this application as a way to quick start any new project.') }}</p>
-<p>{{ __('See working :link, user/pass: :users.', [':link' : '<a href="http://mruz.pl/base-app">base-app</a>', ':users' : 'user user, admin admin']) }}
+<h1>base-app 2.0</h1>
+<h5>{{ __('The base application in PhalconPHP') }}</h5>
+<p>{{ __('Use this application as a way to quick start any new project.') }} {{ __('See working :link, user/pass: :users.', [':link' : '<a href="http://mruz.pl/base-app">base-app</a>', ':users' : 'user user, admin admin']) }}
 </p>
 <hr />
 <h3>{{ __('Features') }}:</h3>
@@ -50,7 +50,7 @@
         </ul>
     </li>
 </ol>
-<h3>{{ __('Links') }}:</h3>
+<h3>{{ __('Requirements') }}:</h3>
 <ul>
     <li>Phalcon <strong>2.0.0</strong></li>
 </ul>
