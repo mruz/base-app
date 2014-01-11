@@ -13,26 +13,18 @@ namespace Baseapp\Library;
 abstract class Debug
 {
 
-    public static $style = array(
-        'pre' => array('background-color' => '#f1f1f1', 'font-size' => '11px', 'padding' => '10px', 'border' => '1px solid #ccc', 'text-align' => 'left', 'color' => '#222'),
-        'arr' => array('color' => 'red', 'font-weight' => 'bold'),
-        '_arr' => array('color' => 'red'),
-        'bool' => array('color' => 'orange', 'font-weight' => 'bold'),
-        '_bool' => array('color' => 'orange'),
-        'float' => array('color' => 'magenta', 'font-weight' => 'bold'),
-        '_float' => array('color' => 'magenta'),
-        'int' => array('color' => 'blue', 'font-weight' => 'bold'),
-        '_int' => array('color' => 'blue'),
-        'null' => array('color' => 'black', 'font-weight' => 'bold'),
-        'num' => array('color' => 'green', 'font-weight' => 'bold'),
-        '_num' => array('color' => 'gray'),
-        'obj' => array('color' => 'purple', 'font-weight' => 'bold'),
-        '_obj' => array('color' => 'purple'),
-        'other' => array('color' => 'khaki'),
-        'res' => array('color' => 'steelblue', 'font-weight' => 'bold'),
-        '_res' => array('color' => 'steelblue'),
-        'str' => array('color' => 'green', 'font-weight' => 'bold'),
-        '_str' => array('color' => 'gray')
+    public static $_style = array(
+        'pre' => 'background-color:#f3f3f3;font-size:11px;padding:10px; border:1px solid #ccc; text-align:left; color:#333',
+        'arr' => 'color:red;',
+        'bool' => 'color:green;',
+        'float' => 'color:fuchsia',
+        'int' => 'color:blue;',
+        'null' => 'color:black',
+        'num' => 'color:navy',
+        'obj' => 'color:purple;',
+        'other' => 'color:maroon',
+        'res' => 'color:lime',
+        'str' => 'color:teal'
     );
 
     /**
@@ -50,9 +42,9 @@ abstract class Debug
     {
         $vars = func_get_args();
         $out = '';
-        foreach ($vars as $index => $value) {
+        foreach ($vars as $index => $value)
             $out .= self::dump($value, 'var ' . ($index + 1));
-        }
+
         return $out;
     }
 
@@ -65,29 +57,7 @@ abstract class Debug
      */
     public static function dump($var, $name = '')
     {
-        $style = Debug::get_style(self::$style);
-        return '<pre style="' . $style['pre'] . '">' . ($name != '' ? "$name : " : '') . Debug::_get_info_var($var, $name) . '</pre>';
-    }
-
-    /**
-     * Prepare array of styles from style atribute.
-     *
-     * @param   array    array of styles
-     * @return  array
-     */
-    private static function get_style(array $styles)
-    {
-        $arr = array();
-        foreach ($styles as $type => $style) {
-            $str = '';
-            $space = FALSE;
-            foreach ($style as $key => $value) {
-                $str .= ($space ? ' ' : '') . $key . ': ' . $value . ';';
-                $space = TRUE;
-            }
-            $arr[$type] = $str;
-        }
-        return $arr;
+        return '<pre style="' . self::$_style['pre'] . '">' . ($name != '' ? "$name : " : '') . self::_get_info_var($var, $name) . '</pre>';
     }
 
     /**
@@ -105,12 +75,11 @@ abstract class Debug
         $indent_chars = '  ';
         $spc = $indent > 0 ? str_repeat($indent_chars, $indent) : '';
 
-        $style = self::get_style(self::$style);
         $out = '';
-        if (is_array($var)) {
-            $out .= '<span style="' . $style['arr'] . '">Array</span> ' . count($var) . " (\n";
+        if (is_array($var)):
+            $out .= '<b style="' . self::$_style['arr'] . '">Array</b> ' . count($var) . " (\n";
             foreach (array_keys($var) as $key) {
-                $out .= $spc . '  [<span style="' . $style['_arr'] . '">' . $key . '</span>] => ';
+                $out .= $spc . '  [<span style="' . self::$_style['arr'] . '">' . $key . '</span>] => ';
                 if (($indent == 0) && ($name != '') && (!is_int($key)) && ($name == $key)) {
                     $out .= "LOOP\n";
                 } else {
@@ -118,11 +87,12 @@ abstract class Debug
                 }
             }
             $out .= "$spc)";
-        } else if (is_object($var)) {
+            
+        elseif (is_object($var)):
             $class = get_class($var);
-            $out .= '<span style="' . $style['obj'] . '"><b>Object</b></span> ' . $class;
+            $out .= '<b style="' . self::$_style['obj'] . '">Object</b> ' . $class;
             $parent = get_parent_class($var);
-            $out .= $parent != '' ? ' <span style="' . $style['obj'] . '">extends</span> ' . $parent : '';
+            $out .= $parent != '' ? ' <b style="' . self::$_style['obj'] . '">extends</b> ' . $parent : '';
             $out .= " (\n";
 
             $arr = get_object_vars($var);
@@ -130,11 +100,11 @@ abstract class Debug
                 $arr = $var;
 
             while (list($prop, $val) = each($arr)) {
-                $out .= "$spc  " . '-><span style="' . $style['_obj'] . '">' . $prop . '</span> = ';
+                $out .= "$spc  " . '-><span style="' . self::$_style['obj'] . '">' . $prop . '</span> = ';
                 $out .= self::_get_info_var($val, $name != '' ? $prop : '', $indent + 1);
             }
             $arr = get_class_methods($var);
-            $out .= $spc . '  ' . $class . ' <span style="' . $style['obj'] . '">methods</span>: ' . count($arr) . " ";
+            $out .= $spc . '  ' . $class . ' <b style="' . self::$_style['obj'] . '">methods</b>: ' . count($arr) . " ";
             if (in_array($class, $methods)) {
                 $out .= "[already listed]\n";
             } else {
@@ -142,7 +112,7 @@ abstract class Debug
                 $methods[] = $class;
                 while (list($prop, $val) = each($arr)) {
                     if ($val != $class && $val != '__construct') {
-                        $out .= $indent_chars . $spc . '  ' . '-><span style="' . $style['_obj'] . '">' . $val . "</span>();\n";
+                        $out .= $indent_chars . $spc . '  ' . '-><span style="' . self::$_style['obj'] . '">' . $val . "</span>();\n";
                     } else {
                         $out .= $indent_chars . $spc . '  ' . "->$val(); [<b>constructor</b>]\n";
                     }
@@ -150,23 +120,24 @@ abstract class Debug
                 $out .= "$spc  " . ")\n";
             }
             $out .= "$spc)";
-        } else if (is_resource($var)) {
-            $out .= '<span style="' . $style['res'] . '"><b>Resource</b></span> [' . get_resource_type($var) . '] ( <span style="' . $style['_res'] . '">' . $var . '</span> )';
-        } else if (is_int($var)) {
-            $out .= '<span style="' . $style['int'] . '">Integer</span> (<span style="' . $style['_int'] . '">' . $var . '</span>)';
-        } else if (is_float($var)) {
-            $out .= '<span style="' . $style['float'] . '">Float</span> (<span style="' . $style['_float'] . '">' . $var . '</span>)';
-        } else if (is_numeric($var)) {
-            $out .= '<span style="' . $style['num'] . '">Numeric string</span> (' . strlen($var) . ') "<span style="' . $style['_num'] . '">' . $var . '</span>"';
-        } else if (is_string($var)) {
-            $out .= '<span style="' . $style['str'] . '">String</span> (' . strlen($var) . ') "<span style="' . $style['_str'] . '">' . nl2br(htmlentities($var, ENT_IGNORE, 'utf-8')) . '</span>"';
-        } else if (is_bool($var)) {
-            $out .= '<span style="' . $style['bool'] . '">Boolean</span> (<span style="' . $style['_bool'] . '">' . ($var ? 'TRUE' : 'FALSE') . '</span>)';
-        } else if (!isset($var)) {
-            $out .= '<span style="' . $style['null'] . '">NULL</span>';
-        } else {
-            $out .= '<span style="' . $style['other'] . '"> ( ' . $var . ' )';
-        }
+
+        elseif (is_resource($var)):
+            $out .= '<b style="' . self::$_style['res'] . '">Resource</b> [' . get_resource_type($var) . '] ( <span style="' . self::$_style['res'] . '">' . $var . '</span> )';
+        elseif (is_int($var)):
+            $out .= '<b style="' . self::$_style['int'] . '">Integer</b> (<span style="' . self::$_style['int'] . '">' . $var . '</span>)';
+        elseif (is_float($var)):
+            $out .= '<b style="' . self::$_style['float'] . '">Float</b> (<span style="' . self::$_style['float'] . '">' . $var . '</span>)';
+        elseif (is_numeric($var)):
+            $out .= '<b style="' . self::$_style['num'] . '">Numeric string</b> (' . strlen($var) . ') "<span style="' . self::$_style['num'] . '">' . $var . '</span>"';
+        elseif (is_string($var)):
+            $out .= '<b style="' . self::$_style['str'] . '">String</b> (' . strlen($var) . ') "<span style="' . self::$_style['str'] . '">' . nl2br(htmlentities($var, ENT_IGNORE, 'utf-8')) . '</span>"';
+        elseif (is_bool($var)):
+            $out .= '<b style="' . self::$_style['bool'] . '">Boolean</b> (<span style="' . self::$_style['bool'] . '">' . ($var ? 'TRUE' : 'FALSE') . '</span>)';
+        elseif (is_null($var)):
+            $out .= '<b style="' . self::$_style['null'] . '">NULL</b>';
+        else:
+            $out .= '<span style="' . self::$_style['other'] . '"> ( ' . $var . ' )';
+        endif;
 
         return $out . "\n";
     }
