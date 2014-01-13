@@ -3,6 +3,7 @@
 ##### The base application in PhalconPHP
 Use this application as a way to quick start any new project.
 See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin admin.
+#####Migration to 2.0 in progress, demo may not work properly!
 ***
 ### Features:
 * Bootstrap file
