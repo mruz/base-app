@@ -185,7 +185,7 @@ class Tool
         $compiler->addExtension(new \Baseapp\Extension\VoltPHPFunctions());
 
         $compiler->addFunction('debug', function($resolvedArgs) {
-                    return '\Baseapp\Library\Debug::vars(' . $resolvedArgs . ')';
+                    return '(new \Phalcon\Debug\Dump())->vars(' . $resolvedArgs . ')';
                 });
         $compiler->addFilter('isset', function($resolvedArgs) {
                     return '(isset(' . $resolvedArgs . ') ? ' . $resolvedArgs . ' : NULL)';
