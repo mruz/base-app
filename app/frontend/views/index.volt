@@ -56,7 +56,7 @@
                 {{ content() }}
             </div>
         </div>
-        <footer class="navbar navbar-default navbar-fixed-bottom">
+        <footer class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#footer-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
@@ -70,7 +70,7 @@
                         <li>{{ linkTo('user/signup', __('Sign up')) }}</li>
                     </ul>
                     <ul class="nav navbar-nav pull-right pull-none">
-                        <li class="dropdown">
+                        <li class="dropdown dropup">
                             <ul class="dropdown-menu">
                                 <li>{{ linkTo('lang/set/en-gb', __('English')) }}</li>
                                 <li>{{ linkTo('lang/set/pl-pl', __('Polish')) }}</li>

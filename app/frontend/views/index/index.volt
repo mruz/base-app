@@ -14,7 +14,7 @@
     <li>Frontend/Backend/Cli modules</li>
     <li>Environment
         <ul>
-            <li><em>development</em> - display debug, always compile template files, checks for changes and minify assets</li>
+            <li><em>development</em> - display debug, always compile template files, always minify assets</li>
             <li><em>staging</em> - log debug, notify admin, only checks for changes in the children templates, checks for changes and minify assets</li>
             <li><em>production</em> - log debug, notify admin, don't check for differences, don't create missing files, compiled and minified files must exist before!</li>
         </ul>
