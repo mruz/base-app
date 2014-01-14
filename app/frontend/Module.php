@@ -2,7 +2,7 @@
 
 /**
  * Frontend Module
- * 
+ *
  * @package     base-app
  * @category    Module
  * @version     2.0
@@ -13,7 +13,7 @@ namespace Baseapp\Frontend;
 class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
 {
 
-    public function registerAutoloaders()
+    public function registerAutoloaders($di = NULL)
     {
         $loader = new \Phalcon\Loader();
 
