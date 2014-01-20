@@ -303,7 +303,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
         }
     }
 
-    public static function exception(Exception $e)
+    public static function exception(\Exception $e)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
 
