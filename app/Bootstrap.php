@@ -7,6 +7,9 @@
  * @category    Application
  * @version     2.0
  */
+
+namespace Baseapp;
+
 use \Baseapp\Library\I18n,
     \Baseapp\Library\Debug,
     \Baseapp\Library\Email;
@@ -258,7 +261,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
             $dispatcher->setActionName('index');
 
         if (isset($location['params']))
-            if(is_array($location['params']))
+            if (is_array($location['params']))
                 $dispatcher->setParams($location['params']);
             else
                 $dispatcher->setParams((array) $location['params']);
@@ -274,7 +277,33 @@ class Bootstrap extends \Phalcon\Mvc\Application
         return $response;
     }
 
-    public static function log(Exception $e)
+    public static function log($messages)
+    {
+        $config = \Phalcon\DI::getDefault()->getShared('config');
+
+        if ($config->app->env == "development") {
+            foreach ($messages as $key => $message)
+                echo Debug::dump($message, $key);
+            exit();
+        } else {
+            $logger = new \Phalcon\Logger\Adapter\File(ROOT_PATH . '/app/common/logs/' . date('Ymd') . '.log', array('mode' => 'a+'));
+            $email = new Email();
+            $log = '';
+
+            foreach ($messages as $key => $message) {
+                if (in_array($key, array('alert', 'debug', 'error', 'info', 'notice', 'warning')))
+                    $logger->$key($message);
+                else
+                    $logger->log($message);
+                $log .= Debug::dump($message, $key);
+            }
+            $logger->close();
+            $email->prepare(__('Something is wrong!'), $config->app->admin, 'error', array('log' => $log));
+            $email->Send();
+        }
+    }
+
+    public static function exception(Exception $e)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
 
@@ -291,31 +320,14 @@ class Bootstrap extends \Phalcon\Mvc\Application
             $view->registerEngines(\Baseapp\Library\Tool::registerEngines($view, $di));
             echo $view->render('error');
 
-            // Log errors to file
-            $logger = new \Phalcon\Logger\Adapter\File(ROOT_PATH . '/app/common/logs/' . date('Ymd') . '.log', array('mode' => 'a+'));
-            $logger->error(get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage());
-            $logger->info($e->getFile() . '[' . $e->getLine() . ']');
-            $logger->debug("Trace: \n" . $e->getTraceAsString() . "\n");
-            $logger->close();
-
-            // Send email with errors to admin
-            $email = new Email();
-            $log = Debug::dump(get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(), 'Message') .
-                    Debug::dump($e->getFile() . '[' . $e->getLine() . ']', 'File') .
-                    Debug::dump($e->getTrace(), 'Trace');
-            $email->prepare(__('Something is wrong!'), $config->app->admin, 'error', array('log' => $log));
-            $email->Send();
+            // Log errors to file and send email with errors to admin
+            $errors = array(
+                'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
+                'info' => $e->getFile() . '[' . $e->getLine() . ']',
+                'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
+            );
+            \Baseapp\Bootstrap::log($errors);
         }
-    }
-
-}
-
-// Global translation function
-if (!function_exists('__')) {
-
-    function __($string, array $values = NULL)
-    {
-        return \Baseapp\Library\I18n::instance()->_($string, $values);
     }
 
 }

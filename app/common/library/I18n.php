@@ -91,7 +91,7 @@ class I18n
     public function _($string, array $values = NULL)
     {
         $translate = $this->load($this->_config['lang']);
-        $string = $translate->_($string, $values);
+        $string = $translate->query($string, $values);
 
         return empty($values) ? $string : strtr($string, $values);
     }

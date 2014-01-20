@@ -77,16 +77,20 @@ class Users extends \Phalcon\Mvc\Model
             $this->password = Auth::instance()->hash($this->getDI()->getShared('request')->getPost('password'));
             $this->email = $this->getDI()->getShared('request')->getPost('email');
             $this->logins = 0;
-            $this->create();
 
-            $hash = md5($this->id . $this->email . $this->password . $this->config->auth->hash_key);
+            if ($this->create() === true) {
+                $hash = md5($this->id . $this->email . $this->password . $this->config->auth->hash_key);
 
-            $email = new Email();
-            $email->prepare(__('Activation'), $this->getDI()->getShared('request')->getPost('email'), 'activation', array('username' => $this->getDI()->getShared('request')->getPost('username'), 'hash' => $hash));
-            $email->Send();
+                $email = new Email();
+                $email->prepare(__('Activation'), $this->getDI()->getShared('request')->getPost('email'), 'activation', array('username' => $this->getDI()->getShared('request')->getPost('username'), 'hash' => $hash));
+                $email->Send();
 
-            unset($_POST);
-            return TRUE;
+                unset($_POST);
+                return TRUE;
+            } else {
+                \Baseapp\Bootstrap::log($this->getMessages());
+                return $this->getMessages();
+            }
         }
     }
 
