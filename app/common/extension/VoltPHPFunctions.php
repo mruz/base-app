@@ -20,6 +20,11 @@ class VoltPHPFunctions
         }
     }
 
-}
+    public function compileFilter($name, $arguments)
+    {
+        if ($name == 'isset') {
+            return '(isset(' . $arguments . ') ? ' . $arguments . ' : NULL)';
+        }
+    }
 
-?>
+}

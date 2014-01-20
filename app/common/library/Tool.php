@@ -182,17 +182,8 @@ class Tool
         ));
 
         $compiler = $volt->getCompiler();
+        $compiler->addExtension(new \Baseapp\Extension\VoltLibraryClasses());
         $compiler->addExtension(new \Baseapp\Extension\VoltPHPFunctions());
-
-        $compiler->addFunction('debug', function($resolvedArgs) {
-                    return '(new \Phalcon\Debug\Dump())->vars(' . $resolvedArgs . ')';
-                });
-        $compiler->addFilter('isset', function($resolvedArgs) {
-                    return '(isset(' . $resolvedArgs . ') ? ' . $resolvedArgs . ' : NULL)';
-                });
-        $compiler->addFilter('label', function($resolvedArgs) {
-                    return '\Baseapp\Library\Tool::label(' . $resolvedArgs . ')';
-                });
 
         return array(
             // Try to load .phtml file from ViewsDir first,
