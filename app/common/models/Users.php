@@ -45,7 +45,7 @@ class Users extends \Phalcon\Mvc\Model
         $validation = new \Baseapp\Extension\Validation();
 
         $validation->add('username', new \Phalcon\Validation\Validator\PresenceOf());
-        $validation->add('username', new \Phalcon\Validation\Validator\Uniqueness(array(
+        $validation->add('username', new \Baseapp\Extension\Uniqueness(array(
             'model' => '\Baseapp\Models\Users',
         )));
         $validation->add('username', new \Phalcon\Validation\Validator\StringLength(array(
@@ -59,7 +59,7 @@ class Users extends \Phalcon\Mvc\Model
 
         $validation->add('email', new \Phalcon\Validation\Validator\PresenceOf());
         $validation->add('email', new \Phalcon\Validation\Validator\Email());
-        $validation->add('email', new \Phalcon\Validation\Validator\Uniqueness(array(
+        $validation->add('email', new \Baseapp\Extension\Uniqueness(array(
             'model' => '\Baseapp\Models\Users',
         )));
 
@@ -67,7 +67,7 @@ class Users extends \Phalcon\Mvc\Model
             'with' => 'email',
         )));
 
-        $validation->setLabels(array('username' => __('Username'), 'password' => __('Password'), 'repeatPassword' => __('Repeat password'), 'email' => __('Email'), 'repeatEmail' => __('Repeat email')));
+        //$validation->setLabels(array('username' => __('Username'), 'password' => __('Password'), 'repeatPassword' => __('Repeat password'), 'email' => __('Email'), 'repeatEmail' => __('Repeat email')));
         $messages = $validation->validate($_POST);
 
         if (count($messages)) {
