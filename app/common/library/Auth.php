@@ -12,7 +12,6 @@ namespace Baseapp\Library;
 
 use \Baseapp\Models\Users,
     \Baseapp\Models\Roles,
-    \Baseapp\Models\RolesUsers,
     \Baseapp\Models\Tokens;
 
 class Auth
