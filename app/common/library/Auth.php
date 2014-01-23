@@ -23,7 +23,7 @@ class Auth
         'hash_key' => 'secret_key',
         'lifetime' => 1209600,
         'session_key' => 'auth_user',
-        'session_roles' => TRUE,
+        'session_roles' => 'auth_user_roles',
     );
     private static $_instance;
     private $_cookies;
@@ -77,14 +77,14 @@ class Auth
             if (!$role)
                 return TRUE;
 
-            // Check if user have the role
+            // Check if user has the role
             if ($this->_config['session_roles']) {
                 // Check in session
-                $role = property_exists($user->roles, $role) ? $user->roles->$role : NULL;
+                $role = isset($this->_config['session_roles'][$role]) ? $this->_config['session_roles'][$role] : NULL;
             } else {
                 // Check in db
                 $role = Roles::findFirst(array('name=:role:', 'bind' => array('role' => $role)));
-                $role = RolesUsers::findFirst(array('user_id=:user: AND role_id=:role:', 'bind' => array('user' => $user->id, 'role' => $role->id)));
+                $role = $user->getRoles(array('role_id=:role:', 'bind' => array('role' => $role->id)));
             }
 
             // Return true if user has role
@@ -103,9 +103,9 @@ class Auth
 
         if ($user) {
             // Find related records for a particular user
-            foreach ($user->getRelated('Baseapp\Models\RolesUsers') as $roleuser) {
+            foreach ($user->getRoles() as $roleuser) {
                 // Get related role
-                $role = $roleuser->getRelated('Baseapp\Models\Roles')->toArray();
+                $role = $roleuser->getRole()->toArray();
                 $roles [$role['name']] = $role['id'];
             }
         }
@@ -151,8 +151,10 @@ class Auth
             session_regenerate_id();
 
             // Store user in session
-            $user = json_decode(json_encode(array_merge(get_object_vars($user), array('roles' => $roles))));
             $this->_session->set($this->_config['session_key'], $user);
+            // Store user's roles in session
+            if ($this->_config['session_roles'])
+                $this->_session->set($this->_config['session_roles'], $roles);
 
             return $user;
         }
@@ -191,7 +193,7 @@ class Auth
             // If the token exists
             if ($token) {
                 // Load the user and his roles
-                $user = $token->getRelated('Baseapp\Models\Users');
+                $user = $token->getUser();
                 $roles = $this->get_roles($user);
 
                 // If user has login role and tokens match, perform a login
@@ -210,8 +212,10 @@ class Auth
                     session_regenerate_id();
 
                     // Store user in session
-                    $user = json_decode(json_encode(array_merge(get_object_vars($user), array('roles' => $roles))));
                     $this->_session->set($this->_config['session_key'], $user);
+                    // Store user's roles in session
+                    if ($this->_config['session_roles'])
+                        $this->_session->set($this->_config['session_roles'], $roles);
 
                     // Automatic login was successful
                     return $user;
@@ -279,8 +283,10 @@ class Auth
                 session_regenerate_id();
 
                 // Store user in session
-                $user = json_decode(json_encode(array_merge(get_object_vars($user), array('roles' => $roles))));
                 $this->_session->set($this->_config['session_key'], $user);
+                // Store user's roles in session
+                if ($this->_config['session_roles'])
+                    $this->_session->set($this->_config['session_roles'], $roles);
 
                 return TRUE;
             } else {
@@ -329,6 +335,9 @@ class Auth
         else {
             // Remove the user from the session
             $this->_session->remove($this->_config['session_key']);
+            // Remove user's roles from the session
+            if ($this->_config['session_roles'])
+                $this->_session->remove($this->_config['session_roles']);
 
             // Regenerate session_id
             session_regenerate_id();

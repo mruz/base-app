@@ -15,7 +15,7 @@ class Tokens extends \Phalcon\Mvc\Model
 
     public function getSource()
     {
-        return "user_tokens";
+        return 'user_tokens';
     }
 
     /**
@@ -25,8 +25,9 @@ class Tokens extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->belongsTo("user_id", __NAMESPACE__ . "\Users", "id", array(
-            "foreignKey" => true
+        $this->belongsTo('user_id', __NAMESPACE__ . '\Users', 'id', array(
+            'alias' => 'User',
+            'foreignKey' => true
         ));
 
         // Do garbage collection

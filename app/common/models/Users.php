@@ -23,12 +23,14 @@ class Users extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany("id", __NAMESPACE__ . "\Tokens", "user_id", array(
+        $this->hasMany('id', __NAMESPACE__ . '\Tokens', 'user_id', array(
+            'alias' => 'Tokens',
             'foreignKey' => array(
                 'action' => \Phalcon\Mvc\Model\Relation::ACTION_CASCADE
             )
         ));
-        $this->hasMany("id", __NAMESPACE__ . "\RolesUsers", "user_id", array(
+        $this->hasMany('id', __NAMESPACE__ . '\RolesUsers', 'user_id', array(
+            'alias' => 'Roles',
             'foreignKey' => array(
                 'action' => \Phalcon\Mvc\Model\Relation::ACTION_CASCADE
             )
