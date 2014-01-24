@@ -20,6 +20,24 @@ class IndexController extends \Phalcon\Mvc\Controller
     public $scripts = array();
 
     /**
+     * Before Action
+     *
+     * @package     base-app
+     * @version     2.0
+     */
+    public function beforeExecuteRoute($dispatcher)
+    {
+        // Set default title and description
+        $this->tag->setTitle('Default');
+        $this->site_desc = 'Default';
+
+        // Add css and js to assets collection
+        $this->assets->addCss('css/fonts.css');
+        $this->assets->addCss('css/app.css');
+        $this->assets->addJs('js/plugins/flashclose.js');
+    }
+
+    /**
      * Initialize
      *
      * @package     base-app
@@ -45,24 +63,6 @@ class IndexController extends \Phalcon\Mvc\Controller
     }
 
     /**
-     * Before Action
-     *
-     * @package     base-app
-     * @version     2.0
-     */
-    public function beforeExecuteRoute($dispatcher)
-    {
-        // Set default title and description
-        $this->tag->setTitle('Default');
-        $this->site_desc = 'Default';
-
-        // Add css and js to assets collection
-        $this->assets->addCss('css/fonts.css');
-        $this->assets->addCss('css/app.css');
-        $this->assets->addJs('js/plugins/flashclose.js');
-    }
-
-    /**
      * Index Action
      *
      * @package     base-app
@@ -85,7 +85,7 @@ class IndexController extends \Phalcon\Mvc\Controller
         // Set final title and description
         $this->tag->appendTitle(' | base-app');
         $this->view->setVar('site_desc', mb_substr($this->filter->sanitize($this->site_desc, 'string'), 0, 200, 'utf-8'));
-        
+
         // Set scripts
         $this->view->setVar('scripts', $this->scripts);
 
