@@ -77,9 +77,10 @@ class Auth
                 return TRUE;
 
             // Check if user has the role
-            if ($this->_config['session_roles']) {
+            if ($this->_config['session_roles'] && $this->_session->has($this->_config['session_roles'])) {
                 // Check in session
-                $role = isset($this->_config['session_roles'][$role]) ? $this->_config['session_roles'][$role] : NULL;
+                $roles = $this->_session->get($this->_config['session_roles']);
+                $role = isset($roles[$role]) ? $roles[$role] : NULL;
             } else {
                 // Check in db
                 $role = Roles::findFirst(array('name=:role:', 'bind' => array('role' => $role)));
