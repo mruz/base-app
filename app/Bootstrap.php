@@ -306,11 +306,17 @@ class Bootstrap extends \Phalcon\Mvc\Application
     public static function exception(\Exception $e)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
+        $errors = array(
+            'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
+            'info' => $e->getFile() . '[' . $e->getLine() . ']',
+            'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
+        );
 
         if ($config->app->env == "development") {
             // Display debug output
-            $debug = new \Phalcon\Debug();
-            $debug->onUncaughtException($e);
+            \Baseapp\Bootstrap::log($errors);
+            //$debug = new \Phalcon\Debug();
+            //$debug->onUncaughtException($e);
         } else {
             // Display pretty view of the error
             $di = new \Phalcon\DI\FactoryDefault();
@@ -321,11 +327,6 @@ class Bootstrap extends \Phalcon\Mvc\Application
             echo $view->render('error');
 
             // Log errors to file and send email with errors to admin
-            $errors = array(
-                'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
-                'info' => $e->getFile() . '[' . $e->getLine() . ']',
-                'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
-            );
             \Baseapp\Bootstrap::log($errors);
         }
     }
