@@ -8,7 +8,7 @@
         <meta name="description" content="{{ site_desc }}">
 
         {{ stylesheetLink('css/bootstrap.min.css') }}
-        {{ assets.outputCss() }}
+        {{ this.assets.outputCss() }}
 
         <!-- Fav and touch icons -->
         <link rel="shortcut icon" href="{{ url.getStatic('favicon.ico') }}">
@@ -87,6 +87,6 @@
         {{ javascriptInclude('js/respond.js') }}
         <![endif]-->
 
-        {{ assets.outputJs() }}
+        {{ this.assets.outputJs() }}
     </body>
 </html>

@@ -8,7 +8,7 @@
         <meta name="description" content="{{ site_desc }}">
 
         {{ stylesheetLink('css/bootstrap.min.css') }}
-        {{ assets.outputCss() }}
+        {{ this.assets.outputCss() }}
 
         <!-- Fav and touch icons -->
         <link rel="icon" type="image/x-icon" href="{{ url.getStatic('favicon.ico') }}">
@@ -92,6 +92,6 @@
         {% for script in scripts %}
             <script type="text/javascript">{{ script }}</script>
         {% endfor %}
-        {{ assets.outputJs() }}
+        {{ this.assets.outputJs() }}
     </body>
 </html>
