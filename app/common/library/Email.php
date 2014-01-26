@@ -33,9 +33,10 @@ class Email extends \PHPMailer
 
     public function getTemplate($name, $params = array())
     {
-        return \Phalcon\DI::getDefault()->getShared('view')->getRender('email', $name, $params, function($view) {
-                    $view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
-                });
+        $view = \Phalcon\DI::getDefault()->getShared('view');
+        $view->getRender('email', $name, $params, function($callback) {
+            $callback->setRenderLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
+        });
         return $view->getContent();
     }
 
