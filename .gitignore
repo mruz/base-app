@@ -2,3 +2,4 @@
 *~
 !.htaccess
 !.gitignore
+/nbproject/private/

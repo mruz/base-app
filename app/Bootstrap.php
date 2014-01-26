@@ -250,29 +250,19 @@ class Bootstrap extends \Phalcon\Mvc\Application
     {
         $dispatcher = clone $this->getDI()->get('dispatcher');
 
-        if (isset($location['controller']))
-            $dispatcher->setControllerName($location['controller']);
-        else
-            $dispatcher->setControllerName('index');
+        $dispatcher->setControllerName($controller = isset($location['controller']) ? $location['controller'] : 'index');
+        $dispatcher->setActionName($action = isset($location['action']) ? $location['action'] : 'index');
+        $dispatcher->setParams($params = isset($location['params']) ? (array) $location['params'] : array());
 
-        if (isset($location['action']))
-            $dispatcher->setActionName($location['action']);
-        else
-            $dispatcher->setActionName('index');
-
-        if (isset($location['params']))
-            if (is_array($location['params']))
-                $dispatcher->setParams($location['params']);
-            else
-                $dispatcher->setParams((array) $location['params']);
-        else
-            $dispatcher->setParams(array());
 
         $dispatcher->dispatch();
 
         $response = $dispatcher->getReturnedValue();
         if ($response instanceof \Phalcon\Http\ResponseInterface)
             return $response->getContent();
+
+        if ($response instanceof \Phalcon\Mvc\View)
+            return $response->render($controller, $action, $params);
 
         return $response;
     }
