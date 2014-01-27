@@ -18,7 +18,7 @@ class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Valid
         if (!$this->isSetOption('model'))
             return FALSE;
 
-        $model = '\Baseapp\Models\\' . ucfirst($this->getOption('model'));
+        $model = ucfirst($this->getOption('model'));        
         $value = $validator->getValue($attribute);
 
         $filtered = $model::findFirst(array($attribute . '=:atribute:', 'bind' => array('atribute' => $value)));
