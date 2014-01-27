@@ -66,7 +66,7 @@ class UserController extends IndexController
             } else {
                 $referer = $this->request->getHTTPReferer();
 
-                if (!empty($referer)) {
+                if (!empty($referer) && strpos($referer, $this->request->getHttpHost() . "/") !== FALSE) {
                     return $this->response->setHeader("Location", $referer);
                 } else {
                     return $this->dispatcher->forward(array('controller' => 'index', 'action' => 'index'));
