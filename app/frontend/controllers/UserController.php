@@ -65,7 +65,8 @@ class UserController extends IndexController
                         __("Please correct the errors."));
             } else {
                 $referer = $this->request->getHTTPReferer();
-                if (strpos($referer, $this->request->getHttpHost() . "/") !== FALSE && $this->router->getControllerName() != 'user' && $this->router->getActionName() != 'signin') {
+
+                if (!empty($referer)) {
                     return $this->response->setHeader("Location", $referer);
                 } else {
                     return $this->dispatcher->forward(array('controller' => 'index', 'action' => 'index'));
