@@ -168,7 +168,7 @@ class Tool
             // Don't check on 'production' for differences between the template file and its compiled path
             // Compile always on 'development', on 'staging' only checks for changes in the children templates
             'stat' => $config->app->env == 'production' ? FALSE : TRUE,
-            'compileAlways' => $config->app->env == 'delelopment' ? TRUE : FALSE,
+            'compileAlways' => $config->app->env == 'development' ? TRUE : FALSE,
             'compiledPath' => function($templatePath) {
                 list($junk, $path) = explode(ROOT_PATH, $templatePath);
                 $dir = dirname($path);
