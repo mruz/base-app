@@ -26,7 +26,7 @@
                             <li class="active">{{ linkTo(NULL, '<span class="glyphicon glyphicon-home"></span> ' ~ __('Home')) }}</li>
                         </ul>
                         {% if ! auth.logged_in() %}
-                            {{ form('user/signin', 'class' : 'navbar-form form-inline pull-right') }}
+                            {{ form('user/signin', 'class' : 'navbar-form form-inline pull-right pull-none') }}
                             <div class="form-group">{{ textField([ 'username', 'class' : 'form-control', 'placeholder' : __('Username') ]) }}</div>
                             <div class="form-group">{{ passwordField([ 'password', 'class' : 'form-control', 'placeholder' : __('Password') ]) }}</div>
                             <div class="checkbox"><label><input type="checkbox"> {{ __('Remember me') }}</label></div>
