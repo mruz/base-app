@@ -13,7 +13,7 @@ namespace Baseapp\Frontend;
 class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
 {
 
-    public function registerAutoloaders()
+    public function registerAutoloaders($dependencyInjector = NULL)
     {
         $loader = new \Phalcon\Loader();
 
