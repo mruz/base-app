@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Frontend User Controller
- * 
- * @package     base-app
- * @category    Controller
- * @version     2.0
- */
-
 namespace Baseapp\Frontend\Controllers;
 
 use \Baseapp\Library\Auth,
@@ -15,6 +7,13 @@ use \Baseapp\Library\Auth,
     \Baseapp\Models\Roles,
     \Baseapp\Models\RolesUsers;
 
+/**
+ * Frontend User Controller
+ *
+ * @package     base-app
+ * @category    Controller
+ * @version     2.0
+ */
 class UserController extends IndexController
 {
 
@@ -28,16 +27,16 @@ class UserController extends IndexController
     {
         //$this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
         if (Auth::instance()->logged_in()) {
-            
+
         } else {
             $this->view->pick('msg');
             $this->tag->setTitle(__('No access'));
             $this->view->setVar('title', __('No access'));
             $this->view->setVar('redirect', 'user/signin');
             $this->flashSession->error(
-                $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
-                '<strong>' . __('Error') . '!</strong> ' .
-                __("Please log in to access."));
+                    $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                    '<strong>' . __('Error') . '!</strong> ' .
+                    __("Please log in to access."));
         }
     }
 
@@ -60,16 +59,18 @@ class UserController extends IndexController
 
                 $this->view->setVar('errors', $errors);
                 $this->flashSession->warning(
-                    $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
-                    '<strong>' . __('Warning') . '!</strong> ' .
-                    __("Please correct the errors."));
+                        $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                        '<strong>' . __('Warning') . '!</strong> ' .
+                        __("Please correct the errors."));
             } else {
                 $referer = $this->request->getHTTPReferer();
-                $need_back_redirect = !empty($referer) &&
-                    strpos(parse_url($referer, PHP_URL_PATH), '/user/signin') !== 0 &&
-                    parse_url($referer, PHP_URL_HOST) == $this->request->getHttpHost();
+                $needBackRedirect = !empty($referer) && strpos(parse_url($referer, PHP_URL_PATH), '/user/signin') !== 0 && parse_url($referer, PHP_URL_HOST) == $this->request->getHttpHost();
 
-                return $this->response->setHeader("Location", $need_back_redirect ? $referer : '/');
+                if ($needBackRedirect) {
+                    return $this->response->setHeader("Location", $needBackRedirect);
+                } else {
+                    return $this->dispatcher->forward(array('controller' => 'index', 'action' => 'index'));
+                }
             }
         }
     }
@@ -88,21 +89,21 @@ class UserController extends IndexController
 
             if ($signup === TRUE) {
                 $this->flashSession->notice(
-                    $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
-                    '<strong>' . __('Success') . '!</strong> ' .
-                    __("Check Email to activate your account."));
+                        $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                        '<strong>' . __('Success') . '!</strong> ' .
+                        __("Check Email to activate your account."));
             } else {
                 $this->view->setVar('errors', $signup);
                 $this->flashSession->warning(
-                    $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
-                    '<strong>' . __('Warning') . '!</strong> ' .
-                    __("Please correct the errors."));
+                        $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                        '<strong>' . __('Warning') . '!</strong> ' .
+                        __("Please correct the errors."));
             }
         }
     }
 
     /**
-     * Log out Action 
+     * Log out Action
      *
      * @package     base-app
      * @version     2.0
@@ -133,9 +134,9 @@ class UserController extends IndexController
 
             if ($roles['login']) {
                 $this->flashSession->notice(
-                    $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
-                    '<strong>' . __('Notice') . '!</strong> ' .
-                    __("Activation has already been completed."));
+                        $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                        '<strong>' . __('Notice') . '!</strong> ' .
+                        __("Activation has already been completed."));
             } else {
                 $role = new RolesUsers();
                 $role->user_id = $user->id;
@@ -143,17 +144,17 @@ class UserController extends IndexController
                 $role->create();
 
                 $this->flashSession->success(
-                    $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
-                    '<strong>' . __('Success') . '!</strong> ' .
-                    __("Activation completed. Please log in."));
+                        $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                        '<strong>' . __('Success') . '!</strong> ' .
+                        __("Activation completed. Please log in."));
 
                 $this->view->setVar('redirect', 'user/signin');
             }
         } else {
             $this->flashSession->error(
-                $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
-                '<strong>' . __('Error') . '!</strong> ' .
-                __("Activation cannot be completed. Invalid username or hash."));
+                    $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
+                    '<strong>' . __('Error') . '!</strong> ' .
+                    __("Activation cannot be completed. Invalid username or hash."));
         }
     }
 
