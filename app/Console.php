@@ -1,5 +1,11 @@
 #!/usr/bin/php
 <?php
+// Everything is relative to the application root now.
+if (!defined('ROOT_PATH')) {
+    define('ROOT_PATH', dirname(__DIR__));
+}
+chdir(ROOT_PATH);
+
 /**
  * Console
  *
@@ -7,12 +13,6 @@
  * @category    CLI
  * @version     2.0
  */
-// Everything is relative to the application root now.
-if (!defined('ROOT_PATH')) {
-    define('ROOT_PATH', dirname(__DIR__));
-}
-chdir(ROOT_PATH);
-
 class Console extends \Phalcon\CLI\Console
 {
 

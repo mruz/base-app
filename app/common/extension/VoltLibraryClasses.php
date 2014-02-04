@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Extension;
+
 /**
  * Library Classes in Volt
  *
@@ -7,9 +9,6 @@
  * @category    Library
  * @version     2.0
  */
-
-namespace Baseapp\Extension;
-
 class VoltLibraryClasses
 {
 

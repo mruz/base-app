@@ -1,15 +1,14 @@
 <?php
 
+namespace Baseapp\Frontend\Controllers;
+
 /**
  * Frontend Lang Controller
- * 
+ *
  * @package     base-app
  * @category    Controller
  * @version     2.0
  */
-
-namespace Baseapp\Frontend\Controllers;
-
 class LangController extends IndexController
 {
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Library;
+
 /**
  * Lang Library
  *
@@ -7,9 +9,6 @@
  * @category    Library
  * @version     2.0
  */
-
-namespace Baseapp\Library;
-
 class I18n
 {
 
@@ -39,7 +38,7 @@ class I18n
 
     private function __clone()
     {
-
+        
     }
 
     public function lang($lang = NULL)

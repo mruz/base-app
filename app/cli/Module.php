@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Cli;
+
 /**
  * Cli Module
  *
@@ -7,9 +9,6 @@
  * @category    Module
  * @version     2.0
  */
-
-namespace Baseapp\Cli;
-
 class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
 {
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Cli\Tasks;
+
 /**
  * Cron CLI Task
  *
@@ -7,9 +9,6 @@
  * @category    Task
  * @version     2.0
  */
-
-namespace Baseapp\Cli\Tasks;
-
 class CronTask extends MainTask
 {
 
@@ -23,7 +22,7 @@ class CronTask extends MainTask
     {
         echo "cronTask/mainAction\n";
     }
-    
+
     public function testAction()
     {
         echo "cronTask/testAction\n";

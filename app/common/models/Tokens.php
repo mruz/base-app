@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Models;
+
 /**
  * Token Model
  *
@@ -7,9 +9,6 @@
  * @category    Model
  * @version     2.0
  */
-
-namespace Baseapp\Models;
-
 class Tokens extends \Phalcon\Mvc\Model
 {
 

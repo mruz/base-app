@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Extension;
+
 /**
  * Uniqueness Validator
  *
@@ -7,9 +9,6 @@
  * @category    Extension
  * @version     2.0
  */
-
-namespace Baseapp\Extension;
-
 class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Validation\ValidatorInterface
 {
 
@@ -18,7 +17,7 @@ class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Valid
         if (!$this->isSetOption('model'))
             return FALSE;
 
-        $model = ucfirst($this->getOption('model'));        
+        $model = ucfirst($this->getOption('model'));
         $value = $validator->getValue($attribute);
 
         $filtered = $model::findFirst(array($attribute . '=:atribute:', 'bind' => array('atribute' => $value)));

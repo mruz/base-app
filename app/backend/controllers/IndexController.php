@@ -1,5 +1,10 @@
 <?php
 
+namespace Baseapp\Backend\Controllers;
+
+use \Baseapp\Library\Auth,
+    \Baseapp\Library\I18n;
+
 /**
  * Backend Index Controller
  *
@@ -7,12 +12,6 @@
  * @category    Controller
  * @version     2.0
  */
-
-namespace Baseapp\Backend\Controllers;
-
-use \Baseapp\Library\Auth,
-    \Baseapp\Library\I18n;
-
 class IndexController extends \Phalcon\Mvc\Controller
 {
 

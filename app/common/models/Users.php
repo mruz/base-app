@@ -1,5 +1,10 @@
 <?php
 
+namespace Baseapp\Models;
+
+use \Baseapp\Library\Auth,
+    \Baseapp\Library\Email;
+
 /**
  * User Model
  *
@@ -7,12 +12,6 @@
  * @category    Model
  * @version     2.0
  */
-
-namespace Baseapp\Models;
-
-use \Baseapp\Library\Auth,
-    \Baseapp\Library\Email;
-
 class Users extends \Phalcon\Mvc\Model
 {
 

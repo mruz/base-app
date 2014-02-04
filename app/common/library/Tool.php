@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Library;
+
 /**
  * Tool Library
  *
@@ -7,9 +9,6 @@
  * @category    Library
  * @version     2.0
  */
-
-namespace Baseapp\Library;
-
 class Tool
 {
 
@@ -170,15 +169,15 @@ class Tool
             'stat' => $config->app->env == 'production' ? FALSE : TRUE,
             'compileAlways' => $config->app->env == 'development' ? TRUE : FALSE,
             'compiledPath' => function($templatePath) {
-                list($junk, $path) = explode(ROOT_PATH, $templatePath);
-                $dir = dirname($path);
-                $file = basename($path, '.volt');
+        list($junk, $path) = explode(ROOT_PATH, $templatePath);
+        $dir = dirname($path);
+        $file = basename($path, '.volt');
 
-                if (!is_dir(ROOT_PATH . '/app/common/cache/volt' . $dir)) {
-                    mkdir(ROOT_PATH . '/app/common/cache/volt' . $dir, 0777, TRUE);
-                }
-                return ROOT_PATH . '/app/common/cache/volt' . $dir . '/' . $file . '.phtml';
-            }
+        if (!is_dir(ROOT_PATH . '/app/common/cache/volt' . $dir)) {
+            mkdir(ROOT_PATH . '/app/common/cache/volt' . $dir, 0777, TRUE);
+        }
+        return ROOT_PATH . '/app/common/cache/volt' . $dir . '/' . $file . '.phtml';
+    }
         ));
 
         $compiler = $volt->getCompiler();

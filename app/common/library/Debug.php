@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Library;
+
 /**
  * Debug Library
  *
@@ -7,9 +9,6 @@
  * @category    Library
  * @version     1.3
  */
-
-namespace Baseapp\Library;
-
 abstract class Debug
 {
 

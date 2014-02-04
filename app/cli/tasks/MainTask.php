@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Cli\Tasks;
+
 /**
  * Main CLI Task
  *
@@ -7,9 +9,6 @@
  * @category    Task
  * @version     2.0
  */
-
-namespace Baseapp\Cli\Tasks;
-
 class MainTask extends \Phalcon\CLI\Task
 {
 

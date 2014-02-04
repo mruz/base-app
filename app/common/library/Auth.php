@@ -1,5 +1,11 @@
 <?php
 
+namespace Baseapp\Library;
+
+use \Baseapp\Models\Users,
+    \Baseapp\Models\Roles,
+    \Baseapp\Models\Tokens;
+
 /**
  * Auth Library
  *
@@ -7,13 +13,6 @@
  * @category    Library
  * @version     2.0
  */
-
-namespace Baseapp\Library;
-
-use \Baseapp\Models\Users,
-    \Baseapp\Models\Roles,
-    \Baseapp\Models\Tokens;
-
 class Auth
 {
 

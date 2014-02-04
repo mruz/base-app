@@ -1,5 +1,9 @@
 <?php
 
+namespace Baseapp\Library;
+
+require_once __DIR__ . '/Email/class.phpmailer.php';
+
 /**
  * Email Library
  *
@@ -7,11 +11,6 @@
  * @category    Library
  * @version     2.0
  */
-
-namespace Baseapp\Library;
-
-require_once __DIR__ . '/Email/class.phpmailer.php';
-
 class Email extends \PHPMailer
 {
 

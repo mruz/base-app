@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Frontend;
+
 /**
  * Frontend Module
  *
@@ -7,9 +9,6 @@
  * @category    Module
  * @version     2.0
  */
-
-namespace Baseapp\Frontend;
-
 class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
 {
 

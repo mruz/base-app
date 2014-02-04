@@ -1,5 +1,7 @@
 <?php
 
+namespace Baseapp\Extension;
+
 /**
  * Validation
  *
@@ -7,9 +9,6 @@
  * @category    Extension
  * @version     2.0
  */
-
-namespace Baseapp\Extension;
-
 class Validation extends \Phalcon\Validation
 {
 

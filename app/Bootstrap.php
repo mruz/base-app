@@ -1,5 +1,11 @@
 <?php
 
+namespace Baseapp;
+
+use \Baseapp\Library\I18n,
+    \Baseapp\Library\Debug,
+    \Baseapp\Library\Email;
+
 /**
  * Bootstrap
  *
@@ -7,13 +13,6 @@
  * @category    Application
  * @version     2.0
  */
-
-namespace Baseapp;
-
-use \Baseapp\Library\I18n,
-    \Baseapp\Library\Debug,
-    \Baseapp\Library\Email;
-
 class Bootstrap extends \Phalcon\Mvc\Application
 {
 
