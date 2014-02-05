@@ -67,7 +67,7 @@ class UserController extends IndexController
                 $needBackRedirect = !empty($referer) && strpos(parse_url($referer, PHP_URL_PATH), '/user/signin') !== 0 && parse_url($referer, PHP_URL_HOST) == $this->request->getHttpHost();
 
                 if ($needBackRedirect) {
-                    return $this->response->setHeader("Location", $needBackRedirect);
+                    return $this->response->setHeader("Location", $referer);
                 } else {
                     return $this->dispatcher->forward(array('controller' => 'index', 'action' => 'index'));
                 }
