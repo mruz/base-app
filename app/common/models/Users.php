@@ -37,15 +37,20 @@ class Users extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Get user's role method
+     * Get user's role relation
      *
      * @version     2.0
+     * @param string $role role to get RolesUsers
+     *
+     * @return mixed
      */
     public function getRole($role = 'login')
     {
         $role = Roles::findFirst(array('name=:role:', 'bind' => array('role' => $role)));
+        // Return null if role does not exist
         if (!$role)
             return NULL;
+        // Return the role if user has the role otherwise false
         return $this->getRoles(array('role_id=:role:', 'bind' => array('role' => $role->id)))->getFirst();
     }
 
