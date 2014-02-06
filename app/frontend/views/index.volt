@@ -11,7 +11,7 @@
         {{ this.assets.outputCss() }}
 
         <!-- Fav and touch icons -->
-        <link rel="icon" type="image/x-icon" href="{{ url.getStatic('favicon.ico') }}">
+        <link rel="icon" type="image/x-icon" href="{{ this.url.getStatic('favicon.ico') }}">
     </head>
     <body>
         <div id="wrap">
@@ -19,7 +19,7 @@
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                        {{ linkTo([NULL, config.app.name, 'class' : 'navbar-brand']) }}
+                        {{ linkTo([NULL, this.config.app.name, 'class' : 'navbar-brand']) }}
                     </div>
                     <div class="collapse navbar-collapse" id="header-collapse">
                         <ul class="nav navbar-nav">
@@ -61,7 +61,7 @@
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#footer-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
                     <p class="navbar-text">
-                        {{ linkTo(NULL, config.app.name) }} &copy; {{ date('Y') }}
+                        {{ linkTo(NULL, this.config.app.name) }} &copy; {{ date('Y') }}
                     </p>
                 </div>
                 <div class="collapse navbar-collapse" id="footer-collapse">
