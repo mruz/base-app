@@ -3,9 +3,7 @@
 namespace Baseapp\Frontend\Controllers;
 
 use \Baseapp\Library\Auth,
-    \Baseapp\Models\Users,
-    \Baseapp\Models\Roles,
-    \Baseapp\Models\RolesUsers;
+    \Baseapp\Models\Users;
 
 /**
  * Frontend User Controller
@@ -130,19 +128,14 @@ class UserController extends IndexController
         $user = Users::findFirst(array('username=:user:', 'bind' => array('user' => $params[0])));
 
         if ($user && md5($user->id . $user->email . $user->password . $this->config->auth->hash_key) == $params[1]) {
-            $roles = Auth::instance()->get_roles($user);
+            $activation = $user->activation();
 
-            if ($roles['login']) {
+            if ($activation === NULL) {
                 $this->flashSession->notice(
                         $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
                         '<strong>' . __('Notice') . '!</strong> ' .
                         __("Activation has already been completed."));
-            } else {
-                $role = new RolesUsers();
-                $role->user_id = $user->id;
-                $role->role_id = Roles::findFirst(array('name="login"'))->id;
-                $role->create();
-
+            } elseif ($activation === TRUE) {
                 $this->flashSession->success(
                         $this->tag->linkTo(array('#', 'class' => 'close', 'title' => __("Close"), '×')) .
                         '<strong>' . __('Success') . '!</strong> ' .

@@ -37,6 +37,30 @@ class Users extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Activation User method
+     *
+     * @version     2.0
+     */
+    public function activation()
+    {
+        if ($this->getRole()) {
+            // This user has login role, activation has already been completed
+            return NULL;
+        } else {
+            // Add login role
+            $role = new RolesUsers();
+            $role->user_id = $this->id;
+            $role->role_id = Roles::findFirst(array('name="login"'))->id;
+            if ($role->create() === true) {
+                return TRUE;
+            } else {
+                \Baseapp\Bootstrap::log($this->getMessages());
+                return $this->getMessages();
+            }
+        }
+    }
+    
+    /**
      * Get user's role relation
      *
      * @version     2.0
