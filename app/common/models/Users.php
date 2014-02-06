@@ -37,6 +37,19 @@ class Users extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Get user's role method
+     *
+     * @version     2.0
+     */
+    public function getRole($role = 'login')
+    {
+        $role = Roles::findFirst(array('name=:role:', 'bind' => array('role' => $role)));
+        if (!$role)
+            return NULL;
+        return $this->getRoles(array('role_id=:role:', 'bind' => array('role' => $role->id)))->getFirst();
+    }
+
+    /**
      * Sign up User method
      *
      * @version     2.0

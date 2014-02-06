@@ -82,8 +82,7 @@ class Auth
                 $role = isset($roles[$role]) ? $roles[$role] : NULL;
             } else {
                 // Check in db
-                $role = Roles::findFirst(array('name=:role:', 'bind' => array('role' => $role)));
-                $role = $user->getRoles(array('role_id=:role:', 'bind' => array('role' => $role->id)));
+                $role = $user->getRole($role);
             }
 
             // Return true if user has role
