@@ -15,13 +15,17 @@ class VoltLibraryClasses
     public function compileFunction($name, $arguments)
     {
         if (strpos($name, '__')) {
-            list($class, $function) = explode('__', $name);
+            $path = explode('_', str_replace('__', '::', $name));
+            if ($path) {
+                array_walk($path, create_function('&$value', '$value = ucfirst($value);'));
+                list($class, $function) = explode('::', array_pop($path));
 
-            if (isset($class) && isset($function)) {
-                $class = '\Baseapp\Library\\' . ucfirst($class);
+                if (isset($class) && isset($function)) {
+                $class = '\Baseapp\\' . implode('\\', $path) . '\\' . $class;
 
-                if (method_exists($class, $function)) {
-                    return $class . '::' . $function . '(' . $arguments . ')';
+                    if (method_exists($class, $function)) {
+                        return $class . '::' . $function . '(' . $arguments . ')';
+                    }
                 }
             }
         }

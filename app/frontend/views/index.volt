@@ -51,7 +51,6 @@
                     </div>
                 </div>
             </header>
-
             <div class="container">
                 {{ content() }}
             </div>
