@@ -22,10 +22,11 @@
     {% endif %}
     </div>
 </div>
+{% set field = 'rememberMe' %}
 <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
         <label class="checkbox">
-            {{ checkField([ 'remember' ]) }} {{ __('Remember me') }}
+            {{ checkField(_POST[field]|isset and _POST[field] == 'on' ? [ field, 'value': 'on', 'checked': 'checked' ] : [ field, 'value': 'on' ]) }} {{ __(field|label) }}
         </label>
     </div>
 </div>

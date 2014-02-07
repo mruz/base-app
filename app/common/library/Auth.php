@@ -3,7 +3,6 @@
 namespace Baseapp\Library;
 
 use \Baseapp\Models\Users,
-    \Baseapp\Models\Roles,
     \Baseapp\Models\Tokens;
 
 /**
@@ -270,8 +269,10 @@ class Auth
                     $token->expires = time() + $this->_config['lifetime'];
                     $token->create();
 
-                    // Set the autologin cookie
-                    $this->_cookies->set('authautologin', $token->token, time() + $this->_config['lifetime']);
+                    if ($token->create() === true) {
+                        // Set the autologin cookie
+                        $this->_cookies->set('authautologin', $token->token, time() + $this->_config['lifetime']);
+                    }
                 }
 
                 // Finish the login

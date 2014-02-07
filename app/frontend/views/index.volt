@@ -29,7 +29,7 @@
                             {{ form('user/signin', 'class' : 'navbar-form form-inline pull-right pull-none') }}
                             <div class="form-group">{{ textField([ 'username', 'class' : 'form-control', 'placeholder' : __('Username') ]) }}</div>
                             <div class="form-group">{{ passwordField([ 'password', 'class' : 'form-control', 'placeholder' : __('Password') ]) }}</div>
-                            <div class="checkbox"><label><input type="checkbox"> {{ __('Remember me') }}</label></div>
+                            <div class="checkbox"><label>{% set field = 'rememberMe' %}{{ checkField(_POST[field]|isset and _POST[field] == 'on' ? [ field, 'value': 'on', 'checked': 'checked' ] : [ field, 'value': 'on' ]) }} {{ __(field|label) }}</label></div>
                             <button type="submit" name="submit_signin" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> {{ __('Sign in') }}</button>
                             {{ endForm() }}
                         {% else %}
