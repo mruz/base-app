@@ -44,7 +44,7 @@ class IndexController extends \Phalcon\Mvc\Controller
             $this->response->redirect('');
 
         // Check the session lifetime
-        if ($this->session->has('last_active') && time() - $this->session->get('last_active') > $this->config->session->lifetime)
+        if ($this->session->has('last_active') && time() - $this->session->get('last_active') > $this->config->session->options->lifetime)
             $this->session->destroy();
 
         $this->session->set('last_active', time());
