@@ -48,20 +48,20 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 
 ### Example volt usage:
 ##### auth in views 
-```volt
+```php
 {% if auth.logged_in() %}
     {{ auth.get_user().username }}
 {% endif %}
 ```
 
 ##### easy translation with __() function
-```volt
+```php
 {% if auth.logged_in('admin') %}
     {{ __('Hello :user', [':user' : auth.get_user().username]) }}
 {% endif %}
 ```
 
 ##### use clases in volt
-```volt
+```php
 {{ library_debug__vars('string', 1, 2.5, TRUE, NULL, ['key': 'value'], models_users__findFirst(1)) }}
 ```
