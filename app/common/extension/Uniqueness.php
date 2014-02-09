@@ -17,14 +17,11 @@ class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Valid
         if (!$this->isSetOption('model'))
             return FALSE;
 
-        $model = ucfirst($this->getOption('model'));
+        $model = $this->getOption('model');
         $value = $validator->getValue($attribute);
+        $count = $model::count(array($attribute . '=:atribute:', 'bind' => array('atribute' => $value)));
 
-        $filtered = $model::findFirst(array($attribute . '=:atribute:', 'bind' => array('atribute' => $value)));
-
-
-        if ($filtered) {
-
+        if ($count) {
             $message = $this->getOption('message');
             if (!$message) {
                 $message = __(':field must be unique', array(':field' => ucfirst($attribute)));
