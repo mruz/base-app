@@ -37,7 +37,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
  * `/public/min`
 
 ### Requirements:
-* Phalcon **2.0.0**
+* Phalcon **2.0.0** (temporarily works on 1.3.0)
 
 ### Links:
 * [Phalcon PHP](https://phalconphp.com)
