@@ -112,5 +112,5 @@ class Console extends \Phalcon\CLI\Console
 }
 
 // Run console
-$console = new Console(new \Phalcon\DI());
+$console = new Console(new \Phalcon\DI\FactoryDefault\CLI());
 $console->handle($argv);
