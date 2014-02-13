@@ -14,7 +14,7 @@ try {
 
         function __($string, array $values = NULL)
         {
-            return \Mateball\Library\I18n::instance()->_($string, $values);
+            return \Baseapp\Library\I18n::instance()->_($string, $values);
         }
 
     }
