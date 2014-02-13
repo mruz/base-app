@@ -1,10 +1,6 @@
-#!/usr/bin/php
 <?php
-// Everything is relative to the application root now.
-if (!defined('ROOT_PATH')) {
-    define('ROOT_PATH', dirname(__DIR__));
-}
-chdir(ROOT_PATH);
+
+namespace Baseapp;
 
 /**
  * Console
@@ -33,7 +29,7 @@ class Console extends \Phalcon\CLI\Console
         $this->registerModules(array(
             'cli' => array(
                 'className' => 'Baseapp\Cli\Module',
-                'path' => 'app/cli/Module.php'
+                'path' => ROOT_PATH . '/app/cli/Module.php'
             ),
         ));
 
@@ -46,15 +42,15 @@ class Console extends \Phalcon\CLI\Console
         // Register an autoloader
         $loader = new \Phalcon\Loader();
         $loader->registerNamespaces(array(
-            'Baseapp\Models' => 'app/common/models/',
-            'Baseapp\Library' => 'app/common/library/',
+            'Baseapp\Models' => ROOT_PATH . '/app/common/models/',
+            'Baseapp\Library' => ROOT_PATH . '/app/common/library/',
         ))->register();
     }
 
     protected function config()
     {
         // Create the new object
-        $config = new \Phalcon\Config\Adapter\Ini('app/common/config/config.ini');
+        $config = new \Phalcon\Config\Adapter\Ini(ROOT_PATH . '/app/common/config/config.ini');
 
         // Store it in the Di container
         $this->_di->set('config', $config);
@@ -111,7 +107,3 @@ class Console extends \Phalcon\CLI\Console
     }
 
 }
-
-// Run console
-$console = new Console(new \Phalcon\DI\FactoryDefault\CLI());
-$console->handle($argv);
