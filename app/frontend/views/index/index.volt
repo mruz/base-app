@@ -35,7 +35,7 @@
             <li>Auth schema mysql</li>
         </ul>
     </li>
-    <li>Twitter Bootstrap 3.1.0</li>
+    <li>Twitter Bootstrap 3.1.1</li>
 </ul>
 <br />
 <h3>{{ __('Configuration') }}:</h3>
