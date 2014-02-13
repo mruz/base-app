@@ -86,7 +86,7 @@ class Console extends \Phalcon\CLI\Console
 
     public function handle($arguments = NULL)
     {
-        $params = NULL;
+        $params = array();
         switch (count($arguments)) {
             case 1:
                 $task = 'main';
@@ -106,7 +106,8 @@ class Console extends \Phalcon\CLI\Console
                 $params = array_slice($arguments, 3);
                 break;
         }
-        parent::handle(array('module' => 'cli', 'task' => $task, 'action' => $action, 'params' => $params));
+        $arguments = array_merge(array('module' => 'cli', 'task' => $task, 'action' => $action), $params);
+        parent::handle($arguments);
     }
 
 }
