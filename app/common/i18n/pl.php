@@ -8,32 +8,34 @@
  * @version     2.0
  */
 return array(
-    //Validation
-    "Field :field must contain only letters and numbers" => "Pole <em>:field</em> może zawierać tylko litery i cyfry",
-    "Field :field must contain only letters" => "Pole <em>:field</em> może zawierać tylko litery",
-    "Field :field must be within the range of :min to :max" => "Pole <em>:field</em> musi zawierać się w przedziale <em>:min</em> do <em>:max</em>",
-    "Field :field must be the same as :with" => "Pole <em>:field</em> musi być takie samo jak <em>:with</em>",
-    "Field :field must be numeric" => "Pole <em>:field</em> musi być numeryczne",
-    "Field :field must be an email address" => "Pole <em>:field</em> musi być adresem e-mail",
-    "Field :field must not be a part of list: :domain" => "Pole <em>:field</em> nie może być częścią z listy: <em>:domeny</em>",
-    "Field :field must not be empty" => "Pole <em>:field</em> nie może być puste",
-    "File :field exceeds the maximum file size" => "Plik <em>:field</em> przekracza maksymalny rozmiar pliku",
-    "File :field must not exceed :max resolution" => "Plik <em>:field</em> nie może przekraczać rozdzielczości <em>:max</em>",
-    "File :field must be at least :min resolution" => "Plik <em>:field</em> musi być co najmniej rozdzielczości <em>:min</em>",
-    "File :field exceeds the size of :max" => "Plik <em>:field</em> przekracza rozmiar <em>:max</em>",
-    "File :field must be of type: :types" => "Plik <em>:field</em> musi być typu: <em>:types</em>",
-    "Field :field is not valid" => "Pole <em>:field</em> jest nieprawidłowe",
-    "Field :field does not have the expected value" => "Pole <em>:field</em> nie ma oczekiwanej wartości",
-    "Field :field must be a part of list: :domain" => "Field <em>:field</em> musi być częścią z listy: <em>:domain</em>",
-    "Field :field is required" => "Pole <em>:field</em> jest wymagane",
-    "Field :field does not match the required format" => "Pole <em>:field</em> nie spełnia wymaganego formatu",
-    "Field :field must not exceed :max characters long" => "Pole <em>:field</em> nie może przekraczać <em>:max</em> znaków",
-    "Field :field must be at least :min characters long" => "Pole <em>:field</em> musi mieć co najmniej <em>:min</em> znaków",
-    "Field :field must be unique" => "Pole <em>:field</em> musi być unikalne",
-    "Field :field must be a url" => "Pole <em>:field musi</em> być adresem url",
+    // Phalcon 2.0 Validation
+    /* Alnum */ "Field :field must contain only letters and numbers" => "Pole <em>:field</em> może zawierać tylko litery i cyfry",
+    /* Alpha */ "Field :field must contain only letters" => "Pole <em>:field</em> może zawierać tylko litery",
+    /* Between */ "Field :field must be within the range of :min to :max" => "Pole <em>:field</em> musi zawierać się w przedziale <em>:min</em> do <em>:max</em>",
+    /* Confirmation */ "Field :field must be the same as :with" => "Pole <em>:field</em> musi być takie samo jak <em>:with</em>",
+    /* Digit */ "Field :field must be numeric" => "Pole <em>:field</em> musi być numeryczne",
+    /* Email */ "Field :field must be an email address" => "Pole <em>:field</em> musi być adresem e-mail",
+    /* ExclusionIn */ "Field :field must not be a part of list: :domain" => "Pole <em>:field</em> nie może być częścią z listy: <em>:domeny</em>",
+    /* FileEmpty */ "Field :field must not be empty" => "Pole <em>:field</em> nie może być puste",
+    /* FileIniSize */ "File :field exceeds the maximum file size" => "Plik <em>:field</em> przekracza maksymalny rozmiar pliku",
+    /* FileMaxResolution */ "File :field must not exceed :max resolution" => "Plik <em>:field</em> nie może przekraczać rozdzielczości <em>:max</em>",
+    /* FileMinResolution */ "File :field must be at least :min resolution" => "Plik <em>:field</em> musi być co najmniej rozdzielczości <em>:min</em>",
+    /* FileSize */ "File :field exceeds the size of :max" => "Plik <em>:field</em> przekracza rozmiar <em>:max</em>",
+    /* FileType */ "File :field must be of type: :types" => "Plik <em>:field</em> musi być typu: <em>:types</em>",
+    /* FileValid */ "Field :field is not valid" => "Pole <em>:field</em> jest nieprawidłowe",
+    /* Identical */ "Field :field does not have the expected value" => "Pole <em>:field</em> nie ma oczekiwanej wartości",
+    /* InclusionIn */ "Field :field must be a part of list: :domain" => "Field <em>:field</em> musi być częścią z listy: <em>:domain</em>",
+    /* PresenceOf */ "Field :field is required" => "Pole <em>:field</em> jest wymagane",
+    /* Regex */ "Field :field does not match the required format" => "Pole <em>:field</em> nie spełnia wymaganego formatu",
+    /* TooLong */ "Field :field must not exceed :max characters long" => "Pole <em>:field</em> nie może przekraczać <em>:max</em> znaków",
+    /* TooShort */ "Field :field must be at least :min characters long" => "Pole <em>:field</em> musi mieć co najmniej <em>:min</em> znaków",
+    /* Uniqueness */ "Field :field must be unique" => "Pole <em>:field</em> musi być unikalne",
+    /* Url */ "Field :field must be a url" => "Pole <em>:field musi</em> być adresem url",
+    // Additional messages
     "Field :field is incorrect" => "Pole <em>:field</em> jest nieprawidłowe",
     "Field :field is reserved" => "Pole <em>:field</em> jest zarezerwowane",
-    //Flash
+    // App
+    // Flash
     "Activation cannot be completed. Invalid username or hash." => "Aktywacja nie może być zakończona. Nieprawidłowa nazwa użytkownika lub hash.",
     "Activation has already been completed." => "Aktywacja została już zakończona.",
     "Activation completed. Please log in." => "Aktywacja zakończona. Zaloguj się.",
@@ -50,7 +52,7 @@ return array(
     "Success" => "Sukces",
     "Warning" => "Ostrzeżenie",
     "You don't have access to this page." => "Nie masz dostępu do tej strony.",
-    //Labels and forms
+    // Labels and forms
     "Add" => "Dodaj",
     "Edit" => "Edytuj",
     "Content" => "Zawartość",
@@ -70,11 +72,11 @@ return array(
     "Sign up" => "Zarejestruj",
     "Title" => "Tytuł",
     "Username" => "Nazwa użytkownika",
-    //Lang
+    // Lang
     "English" => "Angielski",
     "Language" => "Język",
     "Polish" => "Polski",
-    //App
+    // Other
     "Account" => "Konto",
     "Activation" => "Aktywacja",
     "Admin panel" => "Panel administratora",
