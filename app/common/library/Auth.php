@@ -2,8 +2,8 @@
 
 namespace Baseapp\Library;
 
-use \Baseapp\Models\Users,
-    \Baseapp\Models\Tokens;
+use Baseapp\Models\Users;
+use Baseapp\Models\Tokens;
 
 /**
  * Auth Library

@@ -2,9 +2,9 @@
 
 namespace Baseapp;
 
-use \Baseapp\Library\I18n,
-    \Baseapp\Library\Debug,
-    \Baseapp\Library\Email;
+use Baseapp\Library\I18n;
+use Baseapp\Library\Debug;
+use Baseapp\Library\Email;
 
 /**
  * Bootstrap

@@ -38,7 +38,7 @@ class I18n
 
     private function __clone()
     {
-        
+
     }
 
     public function lang($lang = NULL)

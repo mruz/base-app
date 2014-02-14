@@ -2,8 +2,8 @@
 
 namespace Baseapp\Backend\Controllers;
 
-use \Baseapp\Library\Auth,
-    \Baseapp\Library\I18n;
+use Baseapp\Library\Auth;
+use Baseapp\Library\I18n;
 
 /**
  * Backend Index Controller

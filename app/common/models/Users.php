@@ -2,8 +2,8 @@
 
 namespace Baseapp\Models;
 
-use \Baseapp\Library\Auth,
-    \Baseapp\Library\Email;
+use Baseapp\Library\Auth;
+use Baseapp\Library\Email;
 
 /**
  * User Model
@@ -59,7 +59,7 @@ class Users extends \Phalcon\Mvc\Model
             }
         }
     }
-    
+
     /**
      * Get user's role relation
      *

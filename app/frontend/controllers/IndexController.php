@@ -2,8 +2,8 @@
 
 namespace Baseapp\Frontend\Controllers;
 
-use \Baseapp\Library\I18n,
-    \Baseapp\Library\Auth;
+use Baseapp\Library\I18n;
+use Baseapp\Library\Auth;
 
 /**
  * Frontend Index Controller

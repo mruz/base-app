@@ -2,8 +2,8 @@
 
 namespace Baseapp\Frontend\Controllers;
 
-use \Baseapp\Library\Auth,
-    \Baseapp\Models\Users;
+use Baseapp\Library\Auth;
+use Baseapp\Models\Users;
 
 /**
  * Frontend User Controller
