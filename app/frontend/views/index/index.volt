@@ -8,9 +8,9 @@
 <ul>
     <li>Bootstrap file</li>
     <li>Config file</li>
-    <li>Console file</li>
+    <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/CLI', 'CLI', 'local': false, 'target': '_blank'])}} and Console file</li>
     <li>HMVC support</li>
-    <li>Volt template</li>
+    <li>{{ linkTo(['http://docs.phalconphp.com/en/latest/reference/volt.html', 'Volt', 'local': false, 'target': '_blank']) }} template</li>
     <li>Frontend/Backend/Cli modules</li>
     <li>Environment
         <ul>
@@ -21,12 +21,12 @@
     </li>
     <li>Library
         <ul>
-            <li><a href="https://github.com/mruz/base-app/wiki/Arr" target="_blank">Arr</a></li>
-            <li><a href="https://github.com/mruz/base-app/wiki/Auth" target="_blank">Auth</a></li>
-            <li><a href="https://github.com/mruz/base-app/wiki/Debug" target="_blank">Debug</a></li>
-            <li><a href="https://github.com/mruz/base-app/wiki/Email" target="_blank">Email</a></li>
-            <li><a href="https://github.com/mruz/base-app/wiki/I18n" target="_blank">I18n</a></li>
-            <li><a href="https://github.com/mruz/base-app/wiki/Tool" target="_blank">Tool</a></li>
+            <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/Arr', 'Arr', 'local': false, 'target': '_blank']) }}</li>
+            <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/Auth', 'Auth', 'local': false, 'target': '_blank']) }}</li>
+            <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/Debug', 'Debug', 'local': false, 'target': '_blank']) }}</li>
+            <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/Email', 'Email', 'local': false, 'target': '_blank']) }}</li>
+            <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/I18n', 'I18n', 'local': false, 'target': '_blank']) }}</li>
+            <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/Tool', 'Tool', 'local': false, 'target': '_blank']) }}</li>
         </ul>
     </li>
     <li>User
@@ -56,10 +56,9 @@
 </ul>
 <h3>{{ __('Links') }}:</h3>
 <ul>
-    <li><a href="http://phalconphp.com" target="_blank">Phalcon PHP</a></li>
-    <li><a href="https://github.com/mruz/base-app" target="_blank">Github repo</a></li>
-    <li><a href="https://github.com/mruz/base-app/issues" target="_blank">Issues</a></li>
-    <li><a href="http://mruz.pl/base-app" target="_blank">Example</a></li>
-    <li><a href="http://getbootstrap.com" target="_blank">Twitter Bootstrap</a></li>
+    <li>{{ linkTo(['http://phalconphp.com', 'Phalcon PHP', 'local': false, 'target': '_blank']) }}</li>
+    <li>{{ linkTo(['https://github.com/mruz/base-app', 'Base-app', 'local': false, 'target': '_blank']) }}</li>
+    <li>{{ linkTo(['http://mruz.pl/base-app', 'Demo', 'local': false, 'target': '_blank']) }}</li>
+    <li>{{ linkTo(['http://getbootstrap.com', 'Twitter Bootstrap', 'local': false, 'target': '_blank']) }}</li>
 </ul>
 <hr />

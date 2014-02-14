@@ -8,9 +8,9 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 ### Features:
 * Bootstrap file
 * Config file
-* Console file
+* [CLI](https://github.com/mruz/base-app/wiki/CLI) and Console file
 * HMVC support
-* Volt template
+* [Volt](http://docs.phalconphp.com/en/latest/reference/volt.html) template
 * Frontend/Backend/Cli modules
 * Environment
  * _development_ - display debug, always compile template files, always minify assets
@@ -41,9 +41,8 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 
 ### Links:
 * [Phalcon PHP](https://phalconphp.com)
-* [Github repo](https://github.com/mruz/base-app)
-* [Issues](https://github.com/mruz/base-app/issues)
-* [Example](http://mruz.pl/base-app)
+* [Base-app](https://github.com/mruz/base-app)
+* [Demo](http://mruz.pl/base-app)
 * [Twitter Bootstrap](http://getbootstrap.com)
 
 ### Example volt usage:
