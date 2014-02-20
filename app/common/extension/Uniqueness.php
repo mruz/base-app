@@ -12,22 +12,27 @@ namespace Baseapp\Extension;
 class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Validation\ValidatorInterface
 {
 
-    public function validate($validator, $attribute)
+    public function validate($validator, $field)
     {
         if (!$this->isSetOption('model'))
             return FALSE;
 
+        $attribute = $this->getOption('attribute');
+
+        if (empty($attribute))
+            $attribute = $field;
+
         $model = $this->getOption('model');
-        $value = $validator->getValue($attribute);
-        $count = $model::count(array($attribute . '=:atribute:', 'bind' => array('atribute' => $value)));
+        $value = $validator->getValue($field);
+        $count = $model::count(array($attribute . '=:attribute:', 'bind' => array(':attribute' => $value)));
 
         if ($count) {
             $message = $this->getOption('message');
             if (!$message) {
-                $message = __(':field must be unique', array(':field' => ucfirst($attribute)));
+                $message = __(':field must be unique', array(':field' => ucfirst($field)));
             }
 
-            $validator->appendMessage(new \Phalcon\Validation\Message($message, $attribute, 'Unique'));
+            $validator->appendMessage(new \Phalcon\Validation\Message($message, $field, 'Unique'));
 
             return false;
         }
