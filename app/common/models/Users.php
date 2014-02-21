@@ -122,7 +122,7 @@ class Users extends \Phalcon\Mvc\Model
             $this->logins = 0;
 
             if ($this->create() === true) {
-                $hash = md5($this->id . $this->email . $this->password . $this->config->auth->hash_key);
+                $hash = md5($this->id . $this->email . $this->password . $this->getDI()->getShared('config')->auth->hash_key);
 
                 $email = new Email();
                 $email->prepare(__('Activation'), $this->getDI()->getShared('request')->getPost('email'), 'activation', array('username' => $this->getDI()->getShared('request')->getPost('username'), 'hash' => $hash));
