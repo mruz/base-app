@@ -14,22 +14,39 @@ require_once __DIR__ . '/Email/class.phpmailer.php';
 class Email extends \PHPMailer
 {
 
-    private $_config = array();
-
-    public function __construct($config = array())
+    /**
+     * Email constructor
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return object PHPMailer
+     */
+    public function __construct()
     {
         $email = new \PHPMailer();
 
-        if ($_config = \Phalcon\DI::getDefault()->getShared('config')->email)
-            foreach ($_config as $key => $value)
-                $this->_config[$key] = $value;
-
-        foreach (array_merge($this->_config, $config) as $key => $value)
-            $this->$key = $value;
+        // Load email config from config.ini
+        if ($config = \Phalcon\DI::getDefault()->getShared('config')->email) {
+            foreach ($config as $key => $value) {
+                $this->$key = $value;
+            }
+        }
 
         return $email;
     }
 
+    /**
+     * Get email template and load view with params
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param string $view view name to load
+     * @param array $params params to send to the view
+     *
+     * @return string
+     */
     public function getTemplate($name, $params = array())
     {
         $view = \Phalcon\DI::getDefault()->getShared('view');
@@ -39,13 +56,26 @@ class Email extends \PHPMailer
         return $view->getContent();
     }
 
+    /**
+     * Prepare email - set title, recipment and body
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param string $subject email subject
+     * @param string $to email recipment
+     * @param string $view view name to load
+     * @param array $params params to send to the view
+     *
+     * @return string
+     */
     public function prepare($subject, $to, $view, $params = array())
     {
         $this->Subject = $subject;
         $this->AddAddress($to);
 
+        // Load email content from template and view
         $body = $this->getTemplate($view, $params);
-
         $this->MsgHTML($body);
 
         return $body;
