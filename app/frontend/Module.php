@@ -12,7 +12,17 @@ namespace Baseapp\Frontend;
 class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
 {
 
-    public function registerAutoloaders($di = NULL)
+    /**
+     * Register a specific autoloader for the module
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param mixed $di dependency Injector
+     *
+     * @return void
+     */
+    public function registerAutoloaders($di = null)
     {
         $loader = new \Phalcon\Loader();
 
@@ -23,6 +33,16 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $loader->register();
     }
 
+    /**
+     * Register specific services for the module
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param object $di dependency Injector
+     *
+     * @return void
+     */
     public function registerServices($di)
     {
         //Registering a dispatcher
