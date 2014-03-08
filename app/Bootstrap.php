@@ -20,19 +20,23 @@ class Bootstrap extends \Phalcon\Mvc\Application
     private $_config;
 
     /**
-     * Constructor
+     * Bootstrap constructor - set the dependency Injector
      *
-     * @param $di
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param \Phalcon\DiInterface $di
      */
     public function __construct(\Phalcon\DiInterface $di)
     {
         $this->_di = $di;
 
-        $loaders = array('config', 'loader', 'timezone', 'lang', 'db', 'flash', 'crypt', 'session', 'cookie', 'cache', 'url', 'router');
+        $loaders = array('config', 'loader', 'timezone', 'lang', 'db', 'filter', 'flash', 'crypt', 'session', 'cookie', 'cache', 'url', 'router');
 
         // Register services
-        foreach ($loaders as $service)
+        foreach ($loaders as $service) {
             $this->$service();
+        }
 
         // Register modules
         $this->registerModules(array(
@@ -49,13 +53,20 @@ class Bootstrap extends \Phalcon\Mvc\Application
         // Register the app itself as a service
         $this->_di->set('app', $this);
 
-        // Sets the parent Di
-        parent::setDI($this->_di);
+        // Set the dependency Injector
+        parent::__construct($this->_di);
     }
 
+    /**
+     * Register an autoloader
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function loader()
     {
-        // Register an autoloader
         $loader = new \Phalcon\Loader();
         $loader->registerNamespaces(array(
             'Baseapp\Models' => ROOT_PATH . '/app/common/models/',
@@ -64,30 +75,76 @@ class Bootstrap extends \Phalcon\Mvc\Application
         ))->register();
     }
 
+    /**
+     * Set the config service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function config()
     {
-        // Create the new object
         $config = new \Phalcon\Config\Adapter\Ini(ROOT_PATH . '/app/common/config/config.ini');
-
-        // Store it in the Di container
         $this->_di->set('config', $config);
         $this->_config = $config;
     }
 
+    /**
+     * Set the time zone
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function timezone()
     {
         date_default_timezone_set($this->_config->app->timezone);
     }
 
+    /**
+     * Set the language
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function lang()
     {
         I18n::instance()->lang();
     }
 
+    /**
+     * Set the security service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
+    protected function security()
+    {
+        $config = $this->_config;
+        $this->_di->set('security', function() use ($config) {
+            $security = new \Phalcon\Security();
+            $security->setDefaultHash($config->security->key);
+            return $security;
+        });
+    }
+
+    /**
+     * Set the crypt service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function crypt()
     {
         $config = $this->_config;
-
         $this->_di->set('crypt', function() use ($config) {
             $crypt = new \Phalcon\Crypt();
             $crypt->setKey($config->crypt->key);
@@ -95,6 +152,31 @@ class Bootstrap extends \Phalcon\Mvc\Application
         });
     }
 
+    /**
+     * Set the filter service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
+    protected function filter()
+    {
+        $this->_di->set('filter', function() {
+            $filter = new \Phalcon\Filter();
+            $filter->add('repeat', new Extension\Repeat());
+            return $filter;
+        });
+    }
+
+    /**
+     * Set the cookie service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function cookie()
     {
         $this->_di->set('cookies', function() {
@@ -103,10 +185,17 @@ class Bootstrap extends \Phalcon\Mvc\Application
         });
     }
 
+    /**
+     * Set the database service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function db()
     {
         $config = $this->_config;
-        // Set the database service
         $this->_di->set('db', function() use ($config) {
             return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
                 "host" => $config->database->host,
@@ -117,6 +206,14 @@ class Bootstrap extends \Phalcon\Mvc\Application
         });
     }
 
+    /**
+     * Set the flash service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function flash()
     {
         $this->_di->set('flashSession', function() {
@@ -131,38 +228,60 @@ class Bootstrap extends \Phalcon\Mvc\Application
         });
     }
 
+    /**
+     * Set the session service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function session()
     {
-        $config = $this->_config;
-        // Start the session the first time some component request the session service
-        $this->_di->set('session', function() use ($config) {
-            $session = new \Phalcon\Session\Adapter\Files(get_object_vars($config->session->options));
+        $this->_di->set('session', function() {
+            $session = new \Phalcon\Session\Adapter\Files();
             $session->start();
             return $session;
         });
     }
 
+    /**
+     * Set the cache service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function cache()
     {
         $config = $this->_config;
-        // Register all cache services from config
         foreach ($config->cache->services as $service => $section) {
             $this->_di->set($service, function() use ($config, $section) {
-                // Load settings for section
+                // Load settings for some section
                 $frontend = $config->$section;
                 $backend = $config->{$frontend->backend};
+
                 // Set adapters
                 $adapterFrontend = "\Phalcon\Cache\Frontend\\" . $frontend->adapter;
                 $adapterBackend = "\Phalcon\Cache\Backend\\" . $backend->adapter;
-                // Set cache
-                $frontCache = new $adapterFrontend(get_object_vars($frontend->options));
-                $cache = new $adapterBackend($frontCache, get_object_vars($backend->options));
 
+                // Set cache
+                $frontCache = new $adapterFrontend($frontend->options->toArray());
+                $cache = new $adapterBackend($frontCache, $backend->options->toArray());
                 return $cache;
             });
         }
     }
 
+    /**
+     * Set the url service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function url()
     {
         $config = $this->_config;
@@ -174,16 +293,22 @@ class Bootstrap extends \Phalcon\Mvc\Application
         });
     }
 
+    /**
+     * Set the static router service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function router()
     {
-        // Setting up the static router
         $this->_di->set('router', function() {
             $router = new \Phalcon\Mvc\Router(FALSE);
 
             $router->setDefaultModule('frontend');
             $router->setDefaultController('index');
             $router->setDefaultAction('index');
-
 
             $router->add('/:controller/:action/:params', array(
                 'module' => 'frontend',
@@ -240,29 +365,47 @@ class Bootstrap extends \Phalcon\Mvc\Application
     }
 
     /**
-     * Does a HMVC request in the application
+     * HMVC request in the application
      *
-     * @param array $location
-     * @param array $data
-     * @return mixed
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param array $location location to run the request
+     *
+     * @return mixed response
      */
-    public function request($location, $data = null)
+    public function request($location)
     {
         $dispatcher = clone $this->getDI()->get('dispatcher');
 
-        $dispatcher->setControllerName($controller = isset($location['controller']) ? $location['controller'] : 'index');
-        $dispatcher->setActionName($action = isset($location['action']) ? $location['action'] : 'index');
-        $dispatcher->setParams($params = isset($location['params']) ? (array) $location['params'] : array());
+        if (isset($location['controller'])) {
+            $dispatcher->setControllerName($location['controller']);
+        } else {
+            $dispatcher->setControllerName('index');
+        }
 
+        if (isset($location['action'])) {
+            $dispatcher->setActionName($location['action']);
+        } else {
+            $dispatcher->setActionName('index');
+        }
+
+        if (isset($location['params'])) {
+            if (is_array($location['params'])) {
+                $dispatcher->setParams($location['params']);
+            } else {
+                $dispatcher->setParams((array) $location['params']);
+            }
+        } else {
+            $dispatcher->setParams(array());
+        }
 
         $dispatcher->dispatch();
 
         $response = $dispatcher->getReturnedValue();
-        if ($response instanceof \Phalcon\Http\ResponseInterface)
+        if ($response instanceof \Phalcon\Http\ResponseInterface) {
             return $response->getContent();
-
-        if ($response instanceof \Phalcon\Mvc\View)
-            return $response->render($controller, $action, $params);
+        }
 
         return $response;
     }
@@ -272,41 +415,40 @@ class Bootstrap extends \Phalcon\Mvc\Application
         $config = \Phalcon\DI::getDefault()->getShared('config');
 
         if ($config->app->env == "development") {
-            foreach ($messages as $key => $message)
+            foreach ($messages as $key => $message) {
                 echo Debug::dump($message, $key);
+            }
             exit();
         } else {
             $logger = new \Phalcon\Logger\Adapter\File(ROOT_PATH . '/app/common/logs/' . date('Ymd') . '.log', array('mode' => 'a+'));
-            $email = new Email();
             $log = '';
 
             foreach ($messages as $key => $message) {
-                if (in_array($key, array('alert', 'debug', 'error', 'info', 'notice', 'warning')))
+                if (in_array($key, array('alert', 'debug', 'error', 'info', 'notice', 'warning'))) {
                     $logger->$key($message);
-                else
+                } else {
                     $logger->log($message);
+                }
                 $log .= Debug::dump($message, $key);
             }
             $logger->close();
-            $email->prepare(__('Something is wrong!'), $config->app->admin, 'error', array('log' => $log));
-            $email->Send();
+
+            if ($config->app->env != "testing") {
+                $email = new Email();
+                $email->prepare(__('Something is wrong!'), $config->app->admin, 'error', array('log' => $log));
+                $email->Send();
+            }
         }
     }
 
     public static function exception(\Exception $e)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
-        $errors = array(
-            'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
-            'info' => $e->getFile() . '[' . $e->getLine() . ']',
-            'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
-        );
 
         if ($config->app->env == "development") {
             // Display debug output
-            \Baseapp\Bootstrap::log($errors);
-            //$debug = new \Phalcon\Debug();
-            //$debug->onUncaughtException($e);
+            $debug = new \Phalcon\Debug();
+            $debug->onUncaughtException($e);
         } else {
             // Display pretty view of the error
             $di = new \Phalcon\DI\FactoryDefault();
@@ -314,9 +456,14 @@ class Bootstrap extends \Phalcon\Mvc\Application
             $view->setDI($di);
             $view->setViewsDir(ROOT_PATH . '/app/frontend/views/');
             $view->registerEngines(\Baseapp\Library\Tool::registerEngines($view, $di));
-            echo $view->render('error');
+            echo $view->render('error', array('i18n' => I18n::instance(), 'config' => $config));
 
             // Log errors to file and send email with errors to admin
+            $errors = array(
+                'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
+                'info' => $e->getFile() . '[' . $e->getLine() . ']',
+                'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
+            );
             \Baseapp\Bootstrap::log($errors);
         }
     }
