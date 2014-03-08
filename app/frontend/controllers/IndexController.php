@@ -45,20 +45,27 @@ class IndexController extends \Phalcon\Mvc\Controller
     public function initialize()
     {
         // Check the session lifetime
-        if ($this->session->has('last_active') && time() - $this->session->get('last_active') > $this->config->session->options->lifetime)
+        if ($this->session->has('last_active') && time() - $this->session->get('last_active') > $this->config->session->options->lifetime) {
             $this->session->destroy();
+        }
 
         $this->session->set('last_active', time());
 
         // Set the language from session
-        if ($this->session->has('lang'))
+        if ($this->session->has('lang')) {
             I18n::instance()->lang($this->session->get('lang'));
-        // Set the language from cookie
-        elseif ($this->cookies->has('lang'))
+            // Set the language from cookie
+        } elseif ($this->cookies->has('lang')) {
             I18n::instance()->lang($this->cookies->get('lang')->getValue('string'));
+        }
 
-        $this->view->setVar('i18n', I18n::instance());
-        $this->view->setVar('auth', Auth::instance());
+        // Send i18n, auth and langs to the view
+        $this->view->setVars(array(
+            'auth' => Auth::instance(),
+            'i18n' => I18n::instance(),
+            // Translate langs before
+            'siteLangs' => array_map('__', $this->config->i18n->langs->toArray())
+        ));
     }
 
     /**
@@ -103,6 +110,7 @@ class IndexController extends \Phalcon\Mvc\Controller
         // Send a HTTP 404 response header
         $this->response->setStatusCode(404, "Not Found");
         $this->view->setMainView('404');
+        $this->assets->addCss('css/fonts.css');
     }
 
 }

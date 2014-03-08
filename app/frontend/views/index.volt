@@ -71,8 +71,9 @@
                     <ul class="nav navbar-nav pull-right pull-none">
                         <li class="dropdown dropup">
                             <ul class="dropdown-menu">
-                                <li>{{ linkTo('lang/set/en-gb', __('English')) }}</li>
-                                <li>{{ linkTo('lang/set/pl-pl', __('Polish')) }}</li>
+                                {% for lang, language in siteLangs %}
+                                <li>{{ linkTo('lang/set/' ~ lang, language) }}</li>
+                                {% endfor %}
                             </ul>
                             {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', __('Language') ~ '<b class="caret"></b>' ]) }}
                         </li>
