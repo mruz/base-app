@@ -12,6 +12,17 @@ namespace Baseapp\Extension;
 class VoltPHPFunctions
 {
 
+    /**
+     * Compile any function call in a template
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param string $name function name
+     * @param mixed $arguments function args
+     *
+     * @return string compiled function
+     */
     public function compileFunction($name, $arguments)
     {
         if (function_exists($name)) {
@@ -19,10 +30,21 @@ class VoltPHPFunctions
         }
     }
 
+    /**
+     * Compile isset as a filter
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param string $name filter name
+     * @param mixed $arguments filter args
+     *
+     * @return string compiled filter
+     */
     public function compileFilter($name, $arguments)
     {
         if ($name == 'isset') {
-            return '(isset(' . $arguments . ') ? ' . $arguments . ' : NULL)';
+            return '(isset(' . $arguments . ') ? ' . $arguments . ' : null)';
         }
     }
 
