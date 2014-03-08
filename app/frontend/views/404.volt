@@ -1,9 +1,9 @@
-{# Error 404 View | mateball | 2.0 #}
+{# Error 404 View | base-app | 2.0 #}
 <!DOCTYPE html>
 <html lang="{{ substr(i18n.lang(), 0, 2) }}">
     <head>
         <meta charset="utf-8">
-        <title>{{ __('Error :code', [':code' : 404]) ~ ' | ' ~ config.app.domain }}</title>
+        <title>{{ __('Error :code', [':code' : 404]) ~ ' | ' ~ config.app.name }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="{{ __('Error :code', [':code' : 404]) }} - {{ __('Page not found.') }}">
         {{ stylesheetLink('css/bootstrap.min.css') }}
