@@ -12,31 +12,56 @@ namespace Baseapp\Extension;
 class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Validation\ValidatorInterface
 {
 
-    public function validate($validator, $field)
+    /**
+     * Executes the validation
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param object $validation Phalcon\Validation
+     * @param string $field field name
+     *
+     * @return boolean
+     *
+     * @throws \Phalcon\Validation\Exception
+     */
+    public function validate($validation, $field)
     {
-        if (!$this->isSetOption('model'))
-            return FALSE;
+        $value = $validation->getValue($field);
+        $model = $this->getOption("model");
+        $attribute = $this->getOption("attribute");
 
-        $attribute = $this->getOption('attribute');
-
-        if (empty($attribute))
-            $attribute = $field;
-
-        $model = $this->getOption('model');
-        $value = $validator->getValue($field);
-        $count = $model::count(array($attribute . '=:attribute:', 'bind' => array(':attribute' => $value)));
-
-        if ($count) {
-            $message = $this->getOption('message');
-            if (!$message) {
-                $message = __(':field must be unique', array(':field' => ucfirst($field)));
-            }
-
-            $validator->appendMessage(new \Phalcon\Validation\Message($message, $field, 'Unique'));
-
-            return false;
+        if (empty($model)) {
+            throw new \Phalcon\Validation\Exception("Model must be set");
         }
 
+        if (empty($attribute)) {
+            $attribute = $field;
+        }
+
+        $number = $model::count(array($attribute . "=:value:", "bind" => array("value" => $value)));
+
+        if ($number) {
+            $label = $this->getOption("label");
+
+            if (empty($label)) {
+                $label = $validation->getLabel($field);
+
+                if (empty($label)) {
+                    $label = $field;
+                }
+            }
+
+            $message = $this->getOption("message");
+            $replacePairs = array(":field" => $label);
+
+            if (empty($message)) {
+                $message = $validation->getDefaultMessage("Uniqueness");
+            }
+
+            $validation->appendMessage(new \Phalcon\Validation\Message(strtr($message, $replacePairs), $field, "Uniqueness"));
+            return false;
+        }
         return true;
     }
 
