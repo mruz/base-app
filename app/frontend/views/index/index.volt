@@ -15,6 +15,7 @@
     <li>Environment
         <ul>
             <li><em>development</em> - display debug, always compile template files, always minify assets</li>
+            <li><em>testing</em> - log debug, only checks for changes in the children templates, checks for changes and minify assets</li>
             <li><em>staging</em> - log debug, notify admin, only checks for changes in the children templates, checks for changes and minify assets</li>
             <li><em>production</em> - log debug, notify admin, don't check for differences, don't create missing files, compiled and minified files must exist before!</li>
         </ul>
@@ -52,7 +53,7 @@
 </ol>
 <h3>{{ __('Requirements') }}:</h3>
 <ul>
-    <li>Phalcon <strong>2.0.0</strong></li>
+    <li>Phalcon <strong>2.0.0</strong> (temporarily works on 1.3.0)</li>
 </ul>
 <h3>{{ __('Links') }}:</h3>
 <ul>

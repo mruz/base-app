@@ -14,6 +14,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 * Frontend/Backend/Cli modules
 * Environment
  * _development_ - display debug, always compile template files, always minify assets
+ * _testing_ - log debug, only checks for changes in the children templates, checks for changes and minify assets
  * _staging_ - log debug, notify admin, only checks for changes in the children templates, checks for changes and minify assets
  * _production_ - log debug, notify admin, don't check for differences, don't create missing files, compiled and minified files must exist before!
 * Library
