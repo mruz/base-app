@@ -15,6 +15,14 @@ class Console extends \Phalcon\CLI\Console
     private $_di;
     private $_config;
 
+    /**
+     * Console constructor - set the dependency Injector
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param \Phalcon\DiInterface $di
+     */
     public function __construct(\Phalcon\DiInterface $di)
     {
         $this->_di = $di;
@@ -22,8 +30,9 @@ class Console extends \Phalcon\CLI\Console
         $loaders = array('config', 'loader', 'db', 'router');
 
         // Register services
-        foreach ($loaders as $service)
+        foreach ($loaders as $service) {
             $this->$service();
+        }
 
         // Register modules
         $this->registerModules(array(
@@ -33,34 +42,54 @@ class Console extends \Phalcon\CLI\Console
             ),
         ));
 
-        // Sets the parent Di
-        parent::setDI($this->_di);
+        // Set the dependency Injector
+        parent::__construct($this->_di);
     }
 
+    /**
+     * Register an autoloader
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function loader()
     {
-        // Register an autoloader
         $loader = new \Phalcon\Loader();
         $loader->registerNamespaces(array(
             'Baseapp\Models' => ROOT_PATH . '/app/common/models/',
             'Baseapp\Library' => ROOT_PATH . '/app/common/library/',
+            'Baseapp\Extension' => ROOT_PATH . '/app/common/extension/'
         ))->register();
     }
 
+    /**
+     * Set the config service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function config()
     {
-        // Create the new object
         $config = new \Phalcon\Config\Adapter\Ini(ROOT_PATH . '/app/common/config/config.ini');
-
-        // Store it in the Di container
         $this->_di->set('config', $config);
         $this->_config = $config;
     }
 
+    /**
+     * Set the database service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function db()
     {
         $config = $this->_config;
-        // Set the database service
         $this->_di->set('db', function() use ($config) {
             return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
                 "host" => $config->database->host,
@@ -71,16 +100,31 @@ class Console extends \Phalcon\CLI\Console
         });
     }
 
+    /**
+     * Set the static router service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
     protected function router()
     {
-        // Setting up the static router
         $this->_di->set('router', function() {
             $router = new \Phalcon\CLI\Router();
             return $router;
         });
     }
 
-    public function handle($arguments = NULL)
+    /**
+     * Handle the command-line arguments
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param mixed $arguments
+     */
+    public function handle($arguments = null)
     {
         $params = array();
         switch (count($arguments)) {
