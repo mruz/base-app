@@ -18,6 +18,7 @@ class Users extends \Phalcon\Mvc\Model
     /**
      * User initialize
      *
+     * @package     base-app
      * @version     2.0
      */
     public function initialize()
@@ -39,6 +40,7 @@ class Users extends \Phalcon\Mvc\Model
     /**
      * Activation User method
      *
+     * @package     base-app
      * @version     2.0
      */
     public function activation()
@@ -51,6 +53,7 @@ class Users extends \Phalcon\Mvc\Model
             $role = new RolesUsers();
             $role->user_id = $this->id;
             $role->role_id = Roles::findFirst(array('name="login"'))->id;
+
             if ($role->create() === true) {
                 return TRUE;
             } else {
@@ -63,19 +66,20 @@ class Users extends \Phalcon\Mvc\Model
     /**
      * Get user's role relation
      *
+     * @package     base-app
      * @version     2.0
-     * @param string $role role to get RolesUsers
      *
-     * @return mixed
+     * @param string $role role to get one RolesUsers
      */
     public function getRole($role = 'login')
     {
-        $role = Roles::findFirst(array('name=:role:', 'bind' => array('role' => $role)));
+        $role = Roles::findFirst(array('name=:role:', 'bind' => array(':role' => $role)));
         // Return null if role does not exist
-        if (!$role)
-            return NULL;
+        if (!$role) {
+            return null;
+        }
         // Return the role if user has the role otherwise false
-        return $this->getRoles(array('role_id=:role:', 'bind' => array('role' => $role->id)))->getFirst();
+        return $this->getRoles(array('role_id=:role:', 'bind' => array(':role' => $role->id)))->getFirst();
     }
 
     /**
@@ -93,19 +97,17 @@ class Users extends \Phalcon\Mvc\Model
         )));
         $validation->add('username', new \Phalcon\Validation\Validator\StringLength(array(
             'min' => 4,
+            'max' => 24,
         )));
-
         $validation->add('password', new \Phalcon\Validation\Validator\PresenceOf());
         $validation->add('repeatPassword', new \Phalcon\Validation\Validator\Confirmation(array(
             'with' => 'password',
         )));
-
         $validation->add('email', new \Phalcon\Validation\Validator\PresenceOf());
         $validation->add('email', new \Phalcon\Validation\Validator\Email());
         $validation->add('email', new \Baseapp\Extension\Uniqueness(array(
             'model' => '\Baseapp\Models\Users',
         )));
-
         $validation->add('repeatEmail', new \Phalcon\Validation\Validator\Confirmation(array(
             'with' => 'email',
         )));
@@ -129,7 +131,7 @@ class Users extends \Phalcon\Mvc\Model
                 $email->Send();
 
                 unset($_POST);
-                return TRUE;
+                return true;
             } else {
                 \Baseapp\Bootstrap::log($this->getMessages());
                 return $this->getMessages();

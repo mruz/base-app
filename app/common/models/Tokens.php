@@ -12,6 +12,12 @@ namespace Baseapp\Models;
 class Tokens extends \Phalcon\Mvc\Model
 {
 
+    /**
+     * Set correct db table
+     *
+     * @package     base-app
+     * @version     2.0
+     */
     public function getSource()
     {
         return 'user_tokens';
@@ -20,6 +26,7 @@ class Tokens extends \Phalcon\Mvc\Model
     /**
      * Token initialize
      *
+     * @package     base-app
      * @version     2.0
      */
     public function initialize()
@@ -30,23 +37,25 @@ class Tokens extends \Phalcon\Mvc\Model
         ));
 
         // Do garbage collection
-        if (mt_rand(1, 100) === 1)
+        if (mt_rand(1, 100) === 1) {
             $this->delete_expired();
+        }
 
         // This object has expired
-        if (property_exists($this, 'expires') && $this->expires < time())
+        if (property_exists($this, 'expires') && $this->expires < time()) {
             $this->delete();
+        }
     }
 
     /**
      * Deletes all expired tokens
      *
+     * @package     base-app
      * @version     2.0
      */
     public function delete_expired()
     {
-        foreach ($this->find(array('expires<:time:', 'bind' => array('time' => time()))) as $token)
-            $token->delete();
+        $this->getDI()->getShared('db')->execute('DELETE FROM `user_tokens` WHERE `expires` < :time', array(':time' => time()));
     }
 
 }

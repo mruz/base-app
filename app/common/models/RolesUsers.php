@@ -15,6 +15,7 @@ class RolesUsers extends \Phalcon\Mvc\Model
     /**
      * Roles Users initialize
      *
+     * @package     base-app
      * @version     2.0
      */
     public function initialize()
