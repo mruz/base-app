@@ -181,7 +181,7 @@ class Tool
         ));
 
         $compiler = $volt->getCompiler();
-        $compiler->addExtension(new \Baseapp\Extension\VoltStaticClasses());
+        $compiler->addExtension(new \Baseapp\Extension\VoltStaticFunctions());
         $compiler->addExtension(new \Baseapp\Extension\VoltPHPFunctions());
 
         return array(
