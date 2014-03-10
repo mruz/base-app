@@ -23,7 +23,19 @@ class PrepareTask extends MainTask
      */
     public function assetAction()
     {
-        
+        foreach (array('css', 'js') as $asset) {
+            foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(ROOT_PATH . '/public/' . $asset, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item) {
+                if (!$item->isDir() && ($item->getExtension() == 'css' || $item->getExtension() == 'js')) {
+                    $subPath = $iterator->getSubPathName();
+                    $dir = strstr($subPath, $item->getFilename(), true);
+                    $add = 'add' . ucfirst($asset);
+                    $this->assets->$add($asset . '/' . $dir . $item->getFilename());
+                }
+            }
+        }
+
+        // Minify css and js collection
+        \Mateball\Library\Tool::assetsMinification();
     }
 
     /**
@@ -42,6 +54,20 @@ class PrepareTask extends MainTask
 
         foreach ($dirs as $dir) {
             chmod(ROOT_PATH . $dir, 0777);
+        }
+    }
+
+    /**
+     * Remove data from public folder
+     *
+     * @package     base-app
+     * @version     2.0
+     */
+    public function rmAction()
+    {
+        if ($this->config->app->env == 'development' || $this->config->app->env == 'testing') {
+            exec('rm -R ' . ROOT_PATH . '/app/common/cache/*');
+            exec('rm -R ' . ROOT_PATH . '/public/min/*');
         }
     }
 
