@@ -35,7 +35,7 @@ class PrepareTask extends MainTask
         }
 
         // Minify css and js collection
-        \Mateball\Library\Tool::assetsMinification();
+        \Baseapp\Library\Tool::assetsMinification();
     }
 
     /**
