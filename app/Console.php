@@ -27,7 +27,7 @@ class Console extends \Phalcon\CLI\Console
     {
         $this->_di = $di;
 
-        $loaders = array('config', 'loader', 'db', 'router');
+        $loaders = array('config', 'loader', 'assets', 'db', 'router');
 
         // Register services
         foreach ($loaders as $service) {
@@ -77,6 +77,21 @@ class Console extends \Phalcon\CLI\Console
         $config = new \Phalcon\Config\Adapter\Ini(ROOT_PATH . '/app/common/config/config.ini');
         $this->_di->set('config', $config);
         $this->_config = $config;
+    }
+
+    /** Set the assets service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
+    protected function assets()
+    {
+        $this->_di->set('assets', function() {
+            $assets = new \Phalcon\Assets\Manager();
+            return $assets;
+        });
     }
 
     /**

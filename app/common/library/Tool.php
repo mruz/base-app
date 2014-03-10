@@ -27,9 +27,10 @@ class Tool
         foreach (array('Css', 'Js') as $asset) {
             $get = 'get' . $asset;
             $filter = '\Phalcon\Assets\Filters\\' . $asset . 'min';
-            foreach (\Phalcon\DI::getDefault()->getShared('assets')->$get() as $resource) {
 
+            foreach (\Phalcon\DI::getDefault()->getShared('assets')->$get() as $resource) {
                 $min = new $filter();
+                $resource->setSourcePath(ROOT_PATH . '/public/' . $resource->getPath());
                 $resource->setTargetUri('min/' . $resource->getPath());
 
                 if ($config->app->env != 'production') {
