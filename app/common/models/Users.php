@@ -112,7 +112,7 @@ class Users extends \Phalcon\Mvc\Model
             'with' => 'email',
         )));
 
-        //$validation->setLabels(array('username' => __('Username'), 'password' => __('Password'), 'repeatPassword' => __('Repeat password'), 'email' => __('Email'), 'repeatEmail' => __('Repeat email')));
+        $validation->setLabels(array('username' => __('Username'), 'password' => __('Password'), 'repeatPassword' => __('Repeat password'), 'email' => __('Email'), 'repeatEmail' => __('Repeat email')));
         $messages = $validation->validate($_POST);
 
         if (count($messages)) {

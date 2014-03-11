@@ -50,10 +50,11 @@ class UserController extends IndexController
             $login = Auth::instance()->login($this->request->getPost('username'), $this->request->getPost('password'), $this->request->getPost('remember') ? TRUE : FALSE);
             if (!$login) {
                 $errors = new \Phalcon\Validation\Message\Group();
-                if ($login === NULL)
-                    $errors->appendMessage(new \Phalcon\Validation\Message(__('Incorrect username'), 'username', 'NotFound'));
-                else
-                    $errors->appendMessage(new \Phalcon\Validation\Message(__('Incorrect password'), 'password', 'Identical'));
+                if ($login === NULL) {
+                    $errors->appendMessage(new \Phalcon\Validation\Message(__('Field :field is incorrect', array(':field' => __('Username'))), 'username', 'Incorrect'));
+                } else {
+                    $errors->appendMessage(new \Phalcon\Validation\Message(__('Field :field is incorrect', array(':field' => __('Password'))), 'password', 'Incorrect'));
+                }
 
                 $this->view->setVar('errors', $errors);
                 $this->flashSession->warning(
