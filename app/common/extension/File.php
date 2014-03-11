@@ -86,7 +86,7 @@ class File extends \Phalcon\Validation\Validator implements \Phalcon\Validation\
             $unit = "B";
             preg_match("/^([0-9]+(?:\\.[0-9]+)?)(" . implode("|", array_keys($byteUnits)) . ")?$/Di", $maxSize, $matches);
 
-            if (isset($$matches[2])) {
+            if (isset($matches[2])) {
                 $unit = $matches[2];
             }
             $bytes = floatval($matches[1]) * pow(2, $byteUnits[$unit]);
