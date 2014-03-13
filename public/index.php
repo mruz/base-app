@@ -36,7 +36,6 @@ try {
     require_once ROOT_PATH . '/app/Bootstrap.php';
 
     $app = new \Baseapp\Bootstrap(new \Phalcon\DI\FactoryDefault());
-
     echo $app->handle()->getContent();
 } catch (\Phalcon\Exception $e) {
     \Baseapp\Bootstrap::exception($e);

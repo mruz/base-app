@@ -1,6 +1,5 @@
 #!/usr/bin/php
 <?php
-
 /**
  * index.php for CLI
  *
@@ -34,14 +33,15 @@ try {
         define('ROOT_PATH', dirname(__DIR__));
     }
 
+    require_once ROOT_PATH . '/app/Bootstrap.php';
     require_once ROOT_PATH . '/app/Console.php';
 
     $console = new \Baseapp\Console(new \Phalcon\DI\FactoryDefault\CLI());
     $console->handle($argv);
 } catch (\Phalcon\Exception $e) {
-    echo $e->getMessage();
+    \Baseapp\Console::exception($e);
 } catch (\PDOException $e) {
-    echo $e->getMessage();
+    \Baseapp\Console::exception($e);
 } catch (\Exception $e) {
-    echo $e->getMessage();
+    \Baseapp\Console::exception($e);
 }

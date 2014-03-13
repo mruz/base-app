@@ -410,6 +410,14 @@ class Bootstrap extends \Phalcon\Mvc\Application
         return $response;
     }
 
+    /**
+     * Log message into file, notify the admin on stagging/production
+     * 
+     * @package     base-app
+     * @version     2.0
+     * 
+     * @param mixed $messages messages to log
+     */
     public static function log($messages)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
@@ -441,6 +449,14 @@ class Bootstrap extends \Phalcon\Mvc\Application
         }
     }
 
+    /**
+     * Catch the exception and log it, display pretty view
+     * 
+     * @package     base-app
+     * @version     2.0
+     * 
+     * @param \Exception $e
+     */
     public static function exception(\Exception $e)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');

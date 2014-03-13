@@ -165,4 +165,30 @@ class Console extends \Phalcon\CLI\Console
         parent::handle($arguments);
     }
 
+    /**
+     * Catch the exception and log it
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param \Exception $e
+     */
+    public static function exception(\Exception $e)
+    {
+        $config = \Phalcon\DI::getDefault()->getShared('config');
+
+        if ($config->app->env == "development") {
+            // Display debug output
+            print_r($e);
+        } else {
+            // Log errors to file and send email with errors to admin
+            $errors = array(
+                'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
+                'info' => $e->getFile() . '[' . $e->getLine() . ']',
+                'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
+            );
+            \Baseapp\Bootstrap::log($errors);
+        }
+    }
+
 }
