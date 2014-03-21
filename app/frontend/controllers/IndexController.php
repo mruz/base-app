@@ -109,6 +109,7 @@ class IndexController extends \Phalcon\Mvc\Controller
     {
         // Send a HTTP 404 response header
         $this->response->setStatusCode(404, "Not Found");
+        $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
         $this->view->setMainView('404');
         $this->assets->addCss('css/fonts.css');
     }
