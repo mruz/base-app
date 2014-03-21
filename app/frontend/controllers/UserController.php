@@ -47,7 +47,7 @@ class UserController extends IndexController
     public function signinAction()
     {
         if ($this->request->hasPost('submit_signin') && $this->request->hasPost('username') && $this->request->hasPost('password')) {
-            $login = Auth::instance()->login($this->request->getPost('username'), $this->request->getPost('password'), $this->request->getPost('remember') ? TRUE : FALSE);
+            $login = Auth::instance()->login($this->request->getPost('username'), $this->request->getPost('password'), $this->request->getPost('rememberMe') ? TRUE : FALSE);
             if (!$login) {
                 $errors = new \Phalcon\Validation\Message\Group();
                 if ($login === NULL) {
