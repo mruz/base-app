@@ -329,6 +329,12 @@ class Bootstrap extends \Phalcon\Mvc\Application
                 'controller' => 1,
                 'action' => 'index'
             ));
+            
+            $router->add('/{action:(buy|contact)}[/]?', array(
+                'module' => 'frontend',
+                'controller' => 'static',
+                'action' => 'action'
+            ));
 
             $router->add('/', array(
                 'module' => 'frontend',

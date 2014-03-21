@@ -17,11 +17,11 @@
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                        {{ linkTo([NULL, this.config.app.name, 'class' : 'navbar-brand']) }}
+                        {{ linkTo([null, image('src': 'img/logo.png', 'alt': config.app.name), 'class' : 'navbar-brand']) }}
                     </div>
                     <div class="collapse navbar-collapse" id="header-collapse">
                         <ul class="nav navbar-nav">
-                            <li class="active">{{ linkTo(NULL, '<span class="glyphicon glyphicon-home"></span> ' ~ __('Home')) }}</li>
+                            <li>{{ linkTo('buy', '<span class="glyphicon glyphicon-gift"></span> ' ~ __('Donate')) }}</li>
                         </ul>
                         {% if ! auth.logged_in() %}
                             {{ form('user/signin', 'class' : 'navbar-form form-inline pull-right pull-none') }}

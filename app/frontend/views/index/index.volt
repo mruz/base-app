@@ -28,6 +28,12 @@
             <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/Email', 'Email', 'local': false, 'target': '_blank']) }}</li>
             <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/I18n', 'I18n', 'local': false, 'target': '_blank']) }}</li>
             <li>{{ linkTo(['https://github.com/mruz/base-app/wiki/Tool', 'Tool', 'local': false, 'target': '_blank']) }}</li>
+            <li>Payment
+                <ul>
+                    <li>{{ linkTo(['http://www.paypal.com', 'PayPal', 'local': false, 'target': '_blank']) }}</li>
+                    <li>{{ linkTo(['http://www.dotpay.pl', 'dotpay', 'local': false, 'target': '_blank']) }}</li>
+                </ul>
+            </li>
         </ul>
     </li>
     <li>User

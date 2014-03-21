@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS `payments` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `firstname` varchar(100) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `quantity` int(5) NOT NULL DEFAULT '1',
+  `amount` float NOT NULL,
+  `total` float NOT NULL,
+  `total_response` float DEFAULT NULL,
+  `control` varchar(32) DEFAULT NULL,
+  `note` text,
+  `state` text,
+  `response` text,
+  `date` datetime NOT NULL,
+  `date_update` datetime DEFAULT NULL,
+  `ip` varchar(16) DEFAULT NULL,
+  `user_agent` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
