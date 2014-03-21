@@ -6,10 +6,8 @@
         {{ getTitle() }}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="{{ site_desc }}">
-
         {{ stylesheetLink('css/bootstrap.min.css') }}
         {{ this.assets.outputCss() }}
-
         <!-- Fav and touch icons -->
         <link rel="icon" type="image/x-icon" href="{{ this.url.getStatic('favicon.ico') }}">
     </head>
@@ -81,17 +79,17 @@
                 </div>
             </div>
         </footer>
-
         {{ javascriptInclude('js/jquery.min.js') }}
         {{ javascriptInclude('js/bootstrap.min.js') }}
-
         <!-- Enable responsive features in IE8 -->
         <!--[if lt IE 9]>
         {{ javascriptInclude('js/respond.js') }}
         <![endif]-->
-        {% for script in scripts %}
-            <script type="text/javascript">{{ script }}</script>
-        {% endfor %}
         {{ this.assets.outputJs() }}
+        {% if count(scripts) %}
+            {% for script in scripts %}
+            <script type="text/javascript">{{ script }}</script>
+            {% endfor %}
+        {% endif %}
     </body>
 </html>

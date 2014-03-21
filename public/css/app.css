@@ -41,6 +41,9 @@ footer.navbar-default {
     .navbar-form .form-group {
         max-width: 135px;
     }
+    .navbar-form .form-group input {
+        width: 100%;
+    }
 }
 
 /* Medium devices (desktops, 992px and up) */
