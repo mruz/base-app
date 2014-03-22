@@ -25,8 +25,8 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
  * [I18n](https://github.com/mruz/base-app/wiki/I18n)
  * [Tool](https://github.com/mruz/base-app/wiki/Tool)
  * Payment
-  * [PayPal](http://www.paypal.com)
-  * [dotpay](http://www.dotpay.pl)
+    * [PayPal](http://www.paypal.com)
+    * [dotpay](http://www.dotpay.pl)
 * User
  * Models
  * Auth schema mysql
