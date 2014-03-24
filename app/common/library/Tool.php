@@ -133,8 +133,8 @@ class Tool
             $links[$i] = $i;
         }
 
-        //prepare div and ul
-        $html = '<div class="' . $class . '"><ul>';
+        //prepare ul
+        $html = '<ul class="' . $class . '">';
 
         //prepare First button
         if ($page->current != $page->first) {
@@ -178,8 +178,8 @@ class Tool
             $html .= '<li class="disabled"><span>' . __('Last') . '</span></li>';
         }
 
-        //close ul and div
-        $html .= '</ul></div>';
+        //close ul
+        $html .= '</ul>';
 
         return $html;
     }
