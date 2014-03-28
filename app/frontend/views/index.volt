@@ -84,7 +84,7 @@
         {{ javascriptInclude('js/bootstrap.min.js') }}
         <!-- Enable responsive features in IE8 -->
         <!--[if lt IE 9]>
-        {{ javascriptInclude('js/respond.js') }}
+        {{ javascriptInclude('js/respond.min.js') }}
         <![endif]-->
         {{ this.assets.outputJs() }}
         {% if count(scripts) %}

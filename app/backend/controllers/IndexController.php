@@ -15,6 +15,8 @@ use Baseapp\Library\I18n;
 class IndexController extends \Phalcon\Mvc\Controller
 {
 
+    public $scripts = array();
+
     /**
      * Before Action
      *
@@ -87,7 +89,11 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function afterExecuteRoute($dispatcher)
     {
+        // Set final title
         $this->tag->appendTitle(' | admin');
+
+        // Set scripts
+        $this->view->setVar('scripts', $this->scripts);
 
         // Minify css and js collection
         \Baseapp\Library\Tool::assetsMinification();
@@ -103,7 +109,9 @@ class IndexController extends \Phalcon\Mvc\Controller
     {
         // Send a HTTP 404 response header
         $this->response->setStatusCode(404, "Not Found");
+        $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
         $this->view->setMainView('404');
+        $this->assets->addCss('css/fonts.css');
     }
 
 }
