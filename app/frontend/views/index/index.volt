@@ -3,7 +3,6 @@
 <h5>{{ __('The base application in PhalconPHP') }}</h5>
 <p>{{ __('Use this application as a way to quick start any new project.') }} {{ __('See working :link, user/pass: :users.', [':link' : '<a href="http://mruz.pl/base-app">base-app</a>', ':users' : 'user user, admin admin']) }}
 </p>
-{{ dump(_SESSION, _POST, _COOKIE) }}
 <hr />
 <h3>{{ __('Features') }}:</h3>
 <ul>
