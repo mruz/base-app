@@ -90,7 +90,8 @@ class IndexController extends \Phalcon\Mvc\Controller
     public function afterExecuteRoute($dispatcher)
     {
         // Set final title
-        $this->tag->appendTitle(' | admin');
+        $this->tag->setTitleSeparator(' | ');
+        $this->tag->appendTitle($this->config->app->name);
 
         // Set scripts
         $this->view->setVar('scripts', $this->scripts);

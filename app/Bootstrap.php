@@ -3,8 +3,8 @@
 namespace Baseapp;
 
 use Baseapp\Library\I18n;
-use Baseapp\Library\Debug;
 use Baseapp\Library\Email;
+use Phalcon\Debug\Dump;
 
 /**
  * Bootstrap
@@ -329,7 +329,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
                 'controller' => 1,
                 'action' => 'index'
             ));
-            
+
             $router->add('/{action:(buy|contact)}[/]?', array(
                 'module' => 'frontend',
                 'controller' => 'static',
@@ -418,10 +418,10 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
     /**
      * Log message into file, notify the admin on stagging/production
-     * 
+     *
      * @package     base-app
      * @version     2.0
-     * 
+     *
      * @param mixed $messages messages to log
      */
     public static function log($messages)
@@ -430,7 +430,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
         if ($config->app->env == "development") {
             foreach ($messages as $key => $message) {
-                echo Debug::dump($message, $key);
+                echo (new Dump())->dump($message, $key);
             }
             exit();
         } else {
@@ -443,7 +443,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
                 } else {
                     $logger->log($message);
                 }
-                $log .= Debug::dump($message, $key);
+                $log .= (new Dump())->dump($message, $key);
             }
             $logger->close();
 
@@ -457,20 +457,24 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
     /**
      * Catch the exception and log it, display pretty view
-     * 
+     *
      * @package     base-app
      * @version     2.0
-     * 
+     *
      * @param \Exception $e
      */
     public static function exception(\Exception $e)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
+        $errors = array(
+            'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
+            'info' => $e->getFile() . '[' . $e->getLine() . ']',
+            'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
+        );
 
         if ($config->app->env == "development") {
             // Display debug output
-            $debug = new \Phalcon\Debug();
-            $debug->onUncaughtException($e);
+            echo (new Dump())->vars($errors);
         } else {
             // Display pretty view of the error
             $di = new \Phalcon\DI\FactoryDefault();
@@ -481,11 +485,6 @@ class Bootstrap extends \Phalcon\Mvc\Application
             echo $view->render('error', array('i18n' => I18n::instance(), 'config' => $config));
 
             // Log errors to file and send email with errors to admin
-            $errors = array(
-                'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
-                'info' => $e->getFile() . '[' . $e->getLine() . ']',
-                'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
-            );
             \Baseapp\Bootstrap::log($errors);
         }
     }

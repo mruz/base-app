@@ -20,7 +20,6 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 * Library
  * [Arr](https://github.com/mruz/base-app/wiki/Arr)
  * [Auth](https://github.com/mruz/base-app/wiki/Auth)
- * [Debug](https://github.com/mruz/base-app/wiki/Debug)
  * [Email](https://github.com/mruz/base-app/wiki/Email)
  * [I18n](https://github.com/mruz/base-app/wiki/I18n)
  * [Tool](https://github.com/mruz/base-app/wiki/Tool)
@@ -66,5 +65,5 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 
 ##### use clases in volt
 ```php
-{{ library_debug__vars('string', 1, 2.5, TRUE, NULL, ['key': 'value'], models_users__findFirst(1)) }}
+{{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], models_users__findFirst(1)) }}
 ```

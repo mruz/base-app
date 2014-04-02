@@ -89,7 +89,8 @@ class IndexController extends \Phalcon\Mvc\Controller
     public function afterExecuteRoute($dispatcher)
     {
         // Set final title and description
-        $this->tag->appendTitle(' | base-app');
+        $this->tag->setTitleSeparator(' | ');
+        $this->tag->appendTitle($this->config->app->name);
         $this->view->setVar('site_desc', mb_substr($this->filter->sanitize($this->site_desc, 'string'), 0, 200, 'utf-8'));
 
         // Set scripts
