@@ -430,11 +430,10 @@ class Bootstrap extends \Phalcon\Mvc\Application
     public static function log($messages)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
-        $dump = new Dump();
 
         if ($config->app->env == "development") {
             foreach ($messages as $key => $message) {
-                echo $dump->dump($message, $key);
+                echo Dump::one($message, $key);
             }
             exit();
         } else {
@@ -447,7 +446,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
                 } else {
                     $logger->log($message);
                 }
-                $log .= $dump->dump($message, $key);
+                $log .= Dump::one($message, $key);
             }
             $logger->close();
 
@@ -478,8 +477,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
         if ($config->app->env == "development") {
             // Display debug output
-            $dump = new Dump();
-            echo $dump->vars($errors);
+            echo Dump::all($errors);
         } else {
             // Display pretty view of the error
             $di = new \Phalcon\DI\FactoryDefault();
