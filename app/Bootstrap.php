@@ -165,6 +165,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
         $this->_di->set('filter', function() {
             $filter = new \Phalcon\Filter();
             $filter->add('repeat', new Extension\Repeat());
+            $filter->add('escape', new Extension\Escape());
             return $filter;
         });
     }
