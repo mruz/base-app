@@ -24,7 +24,7 @@ class Escape
      */
     public function filter($string)
     {
-        return htmlentities((string) $string, ENT_QUOTES);
+        return htmlspecialchars((string) $string, ENT_QUOTES);
     }
 
 }
