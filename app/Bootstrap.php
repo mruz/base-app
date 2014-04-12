@@ -449,13 +449,17 @@ class Bootstrap extends \Phalcon\Mvc\Application
                 }
                 $log .= Dump::one($message, $key);
             }
-            $logger->close();
 
             if ($config->app->env != "testing") {
                 $email = new Email();
                 $email->prepare(__('Something is wrong!'), $config->app->admin, 'error', array('log' => $log));
-                $email->Send();
+
+                if ($email->Send() !== true) {
+                    $logger->log($email->ErrorInfo);
+                }
             }
+
+            $logger->close();
         }
     }
 

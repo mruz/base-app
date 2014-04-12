@@ -128,10 +128,14 @@ class Users extends \Phalcon\Mvc\Model
 
                 $email = new Email();
                 $email->prepare(__('Activation'), $this->getDI()->getShared('request')->getPost('email'), 'activation', array('username' => $this->getDI()->getShared('request')->getPost('username'), 'hash' => $hash));
-                $email->Send();
 
-                unset($_POST);
-                return true;
+                if ($email->Send() === true) {
+                    unset($_POST);
+                    return true;
+                } else {
+                    \Baseapp\Bootstrap::log($email->ErrorInfo);
+                    return false;
+                }
             } else {
                 \Baseapp\Bootstrap::log($this->getMessages());
                 return $this->getMessages();
