@@ -28,12 +28,8 @@ class File extends \Phalcon\Validation\Validator implements \Phalcon\Validation\
     public function validate($validation, $field)
     {
         $value = $validation->getValue($field);
-
-        if ($this->isSetOption("allowEmpty") && empty($value)) {
-            return true;
-        }
-
         $label = $this->getOption("label");
+
         if (empty($label)) {
             $label = $validation->getLabel($field);
 
@@ -53,6 +49,10 @@ class File extends \Phalcon\Validation\Validator implements \Phalcon\Validation\
 
             $validation->appendMessage(new \Phalcon\Validation\Message(strtr($message, $replacePairs), $field, "FileIniSize"));
             return false;
+        }
+
+        if ($this->isSetOption("allowEmpty") && isset($value) && $value["error"] === UPLOAD_ERR_NO_FILE) {
+            return true;
         }
 
         if (!isset($value["error"]) || !isset($value["tmp_name"]) || $value["error"] !== UPLOAD_ERR_OK || !is_uploaded_file($value["tmp_name"])) {
