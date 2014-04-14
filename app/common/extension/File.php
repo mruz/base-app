@@ -51,7 +51,7 @@ class File extends \Phalcon\Validation\Validator implements \Phalcon\Validation\
             return false;
         }
 
-        if ($this->isSetOption("allowEmpty") && isset($value) && $value["error"] === UPLOAD_ERR_NO_FILE) {
+        if ($this->isSetOption("allowEmpty") && isset($value["error"]) && $value["error"] === UPLOAD_ERR_NO_FILE) {
             return true;
         }
 
