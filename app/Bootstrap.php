@@ -441,13 +441,18 @@ class Bootstrap extends \Phalcon\Mvc\Application
             $logger = new \Phalcon\Logger\Adapter\File(ROOT_PATH . '/app/common/logs/' . date('Ymd') . '.log', array('mode' => 'a+'));
             $log = '';
 
-            foreach ($messages as $key => $message) {
-                if (in_array($key, array('alert', 'debug', 'error', 'info', 'notice', 'warning'))) {
-                    $logger->$key($message);
-                } else {
-                    $logger->log($message);
+            if (is_array($messages) || $messages instanceof \Countable) {
+                foreach ($messages as $key => $message) {
+                    if (in_array($key, array('alert', 'debug', 'error', 'info', 'notice', 'warning'))) {
+                        $logger->$key($message);
+                    } else {
+                        $logger->log($message);
+                    }
+                    $log .= Dump::one($message, $key);
                 }
-                $log .= Dump::one($message, $key);
+            } else {
+                $logger->log($messages);
+                $log .= Dump::one($messages);
             }
 
             if ($config->app->env != "testing") {
