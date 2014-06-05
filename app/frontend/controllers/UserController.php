@@ -24,7 +24,7 @@ class UserController extends IndexController
     public function indexAction()
     {
         //$this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
-        if (Auth::instance()->logged_in()) {
+        if ($this->auth->logged_in()) {
 
         } else {
             $this->view->pick('msg');
@@ -47,7 +47,7 @@ class UserController extends IndexController
     public function signinAction()
     {
         if ($this->request->hasPost('submit_signin') && $this->request->hasPost('username') && $this->request->hasPost('password')) {
-            $login = Auth::instance()->login($this->request->getPost('username'), $this->request->getPost('password'), $this->request->getPost('rememberMe') ? TRUE : FALSE);
+            $login = $this->auth->login($this->request->getPost('username'), $this->request->getPost('password'), $this->request->getPost('rememberMe') ? TRUE : FALSE);
             if (!$login) {
                 $errors = new \Phalcon\Validation\Message\Group();
                 if ($login === NULL) {
@@ -109,7 +109,7 @@ class UserController extends IndexController
      */
     public function signoutAction()
     {
-        Auth::instance()->logout();
+        $this->auth->logout();
         $this->response->redirect(NULL);
     }
 

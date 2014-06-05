@@ -2,6 +2,7 @@
 
 namespace Baseapp;
 
+use Baseapp\Library\Auth;
 use Baseapp\Library\I18n;
 use Baseapp\Library\Email;
 use Phalcon\Debug\Dump;
@@ -31,7 +32,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
     {
         $this->_di = $di;
 
-        $loaders = array('config', 'loader', 'timezone', 'lang', 'db', 'filter', 'flash', 'crypt', 'session', 'cookie', 'cache', 'url', 'router');
+        $loaders = array('config', 'loader', 'timezone', 'i18n', 'db', 'filter', 'flash', 'crypt', 'auth', 'session', 'cookie', 'cache', 'url', 'router');
 
         // Register services
         foreach ($loaders as $service) {
@@ -104,16 +105,18 @@ class Bootstrap extends \Phalcon\Mvc\Application
     }
 
     /**
-     * Set the language
+     * Set the language service
      *
      * @package     base-app
      * @version     2.0
      *
      * @return void
      */
-    protected function lang()
+    protected function i18n()
     {
-        I18n::instance()->lang();
+        $this->_di->setShared('i18n', function() {
+            return I18n::instance();
+        });
     }
 
     /**
@@ -149,6 +152,21 @@ class Bootstrap extends \Phalcon\Mvc\Application
             $crypt = new \Phalcon\Crypt();
             $crypt->setKey($config->crypt->key);
             return $crypt;
+        });
+    }
+
+    /**
+     * Set the auth service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
+    protected function auth()
+    {
+        $this->_di->setShared('auth', function() {
+            return Auth::instance();
         });
     }
 

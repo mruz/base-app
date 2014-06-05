@@ -2,9 +2,6 @@
 
 namespace Baseapp\Backend\Controllers;
 
-use Baseapp\Library\Auth;
-use Baseapp\Library\I18n;
-
 /**
  * Backend Index Controller
  *
@@ -42,7 +39,7 @@ class IndexController extends \Phalcon\Mvc\Controller
     public function initialize()
     {
         // Redirect to home page if user is not admin
-        if (!Auth::instance()->logged_in('admin')) {
+        if (!$this->auth->logged_in('admin')) {
             $this->response->redirect('');
         }
 
@@ -55,16 +52,16 @@ class IndexController extends \Phalcon\Mvc\Controller
 
         // Set the language from session
         if ($this->session->has('lang')) {
-            I18n::instance()->lang($this->session->get('lang'));
+            $this->i18n->lang($this->session->get('lang'));
             // Set the language from cookie
         } elseif ($this->cookies->has('lang')) {
-            I18n::instance()->lang($this->cookies->get('lang')->getValue('string'));
+            $this->i18n->lang($this->cookies->get('lang')->getValue('string'));
         }
 
         // Send i18n, auth and langs to the view
         $this->view->setVars(array(
-            'auth' => Auth::instance(),
-            'i18n' => I18n::instance(),
+            'auth' => $this->auth,
+            'i18n' => $this->i18n,
             // Translate langs before
             'siteLangs' => array_map('__', $this->config->i18n->langs->toArray())
         ));

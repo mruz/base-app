@@ -96,7 +96,7 @@ class PaymentController extends IndexController
     {
         $params = $this->router->getParams();
 
-        if (Auth::instance()->logged_in() && isset($params[0]) && $adapter = $params[0]) {
+        if ($this->auth->logged_in() && isset($params[0]) && $adapter = $params[0]) {
             if ($checkout = $this->session->get('checkout')) {
 
                 switch ($adapter) {
@@ -121,7 +121,7 @@ class PaymentController extends IndexController
                                 $fields = array(
                                     'currency' => 'USD',
                                     'amount' => number_format($payment->total, 2, '.', ''),
-                                    'lang' => substr(I18n::instance()->lang(), 0, 2),
+                                    'lang' => substr($this->i18n->lang(), 0, 2),
                                     'description' => __('Chocolate') . ' ' . $this->config->app->name,
                                     'control' => $payment->control,
                                     'type' => 3,
@@ -142,7 +142,7 @@ class PaymentController extends IndexController
                                 $fields = array(
                                     'AMT' => $payment->total,
                                     'CURRENCYCODE' => 'USD',
-                                    'LOCALECODE' => substr(I18n::instance()->lang(), 0, 2),
+                                    'LOCALECODE' => substr($this->i18n->lang(), 0, 2),
                                     'NOSHIPPING' => '1',
                                     'HDRIMG' => $this->url->getStatic('img/logo.png'),
                                     'EMAIL' => $this->config->app->admin,

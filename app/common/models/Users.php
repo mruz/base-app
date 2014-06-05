@@ -119,7 +119,7 @@ class Users extends \Phalcon\Mvc\Model
             return $validation->getMessages();
         } else {
             $this->username = $this->getDI()->getShared('request')->getPost('username');
-            $this->password = Auth::instance()->hash($this->getDI()->getShared('request')->getPost('password'));
+            $this->password = $this->getDI()->getShared('auth')->hash($this->getDI()->getShared('request')->getPost('password'));
             $this->email = $this->getDI()->getShared('request')->getPost('email');
             $this->logins = 0;
 

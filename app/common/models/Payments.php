@@ -52,7 +52,7 @@ class Payments extends \Phalcon\Mvc\Model
         if (count($messages)) {
             return $validation->getMessages();
         } else {
-            $this->user_id = Auth::instance()->get_user()->id;
+            $this->user_id = $this->getDI()->getShared('auth')->get_user()->id;
             $this->firstname = $this->getDI()->getShared('request')->getPost('firstname', 'string');
             $this->lastname = $this->getDI()->getShared('request')->getPost('lastname', 'string');
             $this->email = $this->getDI()->getShared('request')->getPost('email');
