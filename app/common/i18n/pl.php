@@ -24,7 +24,7 @@ return array(
     /* FileType */ "File :field must be of type: :types" => "Plik <em>:field</em> musi być typu: <em>:types</em>",
     /* FileValid */ "Field :field is not valid" => "Pole <em>:field</em> jest nieprawidłowe",
     /* Identical */ "Field :field does not have the expected value" => "Pole <em>:field</em> nie ma oczekiwanej wartości",
-    /* InclusionIn */ "Field :field must be a part of list: :domain" => "Field <em>:field</em> musi być częścią z listy: <em>:domain</em>",
+    /* InclusionIn */ "Field :field must be a part of list: :domain" => "Pole <em>:field</em> musi być częścią z listy: <em>:domain</em>",
     /* PresenceOf */ "Field :field is required" => "Pole <em>:field</em> jest wymagane",
     /* Regex */ "Field :field does not match the required format" => "Pole <em>:field</em> nie spełnia wymaganego formatu",
     /* TooLong */ "Field :field must not exceed :max characters long" => "Pole <em>:field</em> nie może przekraczać <em>:max</em> znaków",
