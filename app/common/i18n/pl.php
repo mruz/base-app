@@ -15,7 +15,7 @@ return array(
     /* Confirmation */ "Field :field must be the same as :with" => "Pole <em>:field</em> musi być takie samo jak <em>:with</em>",
     /* Digit */ "Field :field must be numeric" => "Pole <em>:field</em> musi być numeryczne",
     /* Email */ "Field :field must be an email address" => "Pole <em>:field</em> musi być adresem e-mail",
-    /* ExclusionIn */ "Field :field must not be a part of list: :domain" => "Pole <em>:field</em> nie może być częścią z listy: <em>:domeny</em>",
+    /* ExclusionIn */ "Field :field must not be a part of list: :domain" => "Pole <em>:field</em> nie może być częścią z listy: <em>:domain</em>",
     /* FileEmpty */ "Field :field must not be empty" => "Pole <em>:field</em> nie może być puste",
     /* FileIniSize */ "File :field exceeds the maximum file size" => "Plik <em>:field</em> przekracza maksymalny rozmiar pliku",
     /* FileMaxResolution */ "File :field must not exceed :max resolution" => "Plik <em>:field</em> nie może przekraczać rozdzielczości <em>:max</em>",
