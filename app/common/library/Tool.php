@@ -71,8 +71,8 @@ class Tool
      * Prepare HTML pagination.
      * First Previous 1 2 3 ... 22 23 24 25 26 [27] 28 29 30 31 32 ... 48 49 50 Next Last
      *
-     * @package     las
-     * @version     1.0
+     * @package     base-app
+     * @version     2.0
      *
      * @param object $pagination Phalcon Paginator object
      * @param mixed $url URL with pagination
