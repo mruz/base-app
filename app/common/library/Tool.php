@@ -135,7 +135,7 @@ class Tool
         // Detect URL
         $tag = \Phalcon\DI::getDefault()->getShared('tag');
         $query = \Phalcon\DI::getDefault()->getShared('request')->getQuery();
-        $url = $url ? $url : $query['_url'];
+        $url = $url ? $url : substr($query['_url'], 1);
         unset($query['_url']);
 
         // Prepare list
