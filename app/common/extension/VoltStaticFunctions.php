@@ -26,7 +26,7 @@ class VoltStaticFunctions
     public function compileFunction($name, $arguments)
     {
         if (strpos($name, '__')) {
-            $path = explode('_', str_replace('__', '::', $name));
+            $path = explode('_', str_replace('__', '::', $name), 2);
             if ($path) {
                 // Prepare namespace - make first characters uppercase
                 $path = array_map('ucfirst', $path);
