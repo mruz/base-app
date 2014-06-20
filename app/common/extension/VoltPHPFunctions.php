@@ -30,7 +30,7 @@ class VoltPHPFunctions
         }
         
         if ($name == 'dump') {
-            return '(new \Phalcon\Debug\Dump)->all(' . $arguments . ')';
+            return '(new \Phalcon\Debug\Dump())->all(' . $arguments . ')';
         }
     }
 

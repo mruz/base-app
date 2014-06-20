@@ -452,7 +452,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
         if ($config->app->env == "development") {
             foreach ($messages as $key => $message) {
-                echo (new Dump)->one($message, $key);
+                echo (new Dump())->one($message, $key);
             }
             exit();
         } else {
@@ -466,11 +466,11 @@ class Bootstrap extends \Phalcon\Mvc\Application
                     } else {
                         $logger->log($message);
                     }
-                    $log .= (new Dump)->one($message, $key);
+                    $log .= (new Dump())->one($message, $key);
                 }
             } else {
                 $logger->log($messages);
-                $log .= (new Dump)->one($messages);
+                $log .= (new Dump())->one($messages);
             }
 
             if ($config->app->env != "testing") {
@@ -505,7 +505,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
         if ($config->app->env == "development") {
             // Display debug output
-            echo (new Dump)->all($errors);
+            echo (new Dump())->all($errors);
         } else {
             // Display pretty view of the error
             $di = new \Phalcon\DI\FactoryDefault();
