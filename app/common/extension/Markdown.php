@@ -25,7 +25,7 @@ class Markdown extends Engine implements EngineInterface
      */
     public function __construct($view, $dependencyInjector = null)
     {
-        $this->markdown = new \Las\Library\Markdown();
+        $this->markdown = new \Baseapp\Library\Markdown();
 
         parent::__construct($view, $dependencyInjector);
     }
