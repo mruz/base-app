@@ -45,7 +45,7 @@ class Listener
                 }
             }
         }
-        echo Dump::all($statement);
+        echo (new Dump)->all($statement);
     }
 
 }

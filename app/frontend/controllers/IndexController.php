@@ -77,11 +77,6 @@ class IndexController extends \Phalcon\Mvc\Controller
         $this->site_desc = __('Home');
     }
 
-    public function testAction()
-    {
-        var_dump($this->auth->get_user()->username);
-    }
-
     /**
      * After Action
      *
