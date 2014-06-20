@@ -235,6 +235,7 @@ class Tool
             // Try to load .phtml file from ViewsDir first,
             ".phtml" => "Phalcon\Mvc\View\Engine\Php",
             ".volt" => $volt,
+            ".md" => 'Baseapp\Extension\Markdown',
         );
     }
 
