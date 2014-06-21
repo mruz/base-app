@@ -45,15 +45,13 @@ class Bootstrap extends \Phalcon\Mvc\Application
                 'className' => 'Baseapp\Frontend\Module',
                 'path' => ROOT_PATH . '/app/frontend/Module.php'
             ),
-            'backend' => array(
+            'admin' => array(
                 'className' => 'Baseapp\Backend\Module',
                 'path' => ROOT_PATH . '/app/backend/Module.php',
-                'alias' => 'admin'
             ),
             'doc' => array(
                 'className' => 'Baseapp\Documentation\Module',
                 'path' => ROOT_PATH . '/app/documentation/Module.php',
-                'alias' => 'doc'
             )
         ));
 
@@ -334,35 +332,35 @@ class Bootstrap extends \Phalcon\Mvc\Application
         $this->_di->set('router', function() {
             $router = new \Phalcon\Mvc\Router(false);
 
-            $router->setDefaults([
+            $router->setDefaults(array(
                 'module' => 'frontend',
                 'controller' => 'index',
                 'action' => 'index'
-            ]);
+            ));
 
             /*
              * All defined routes are traversed in reverse order until Phalcon\Mvc\Router
              * finds the one that matches the given URI and processes it, while ignoring the rest.
              */
-            $frontend = new \Phalcon\Mvc\Router\Group([
+            $frontend = new \Phalcon\Mvc\Router\Group(array(
                 'module' => 'frontend',
-            ]);
-            $frontend->add('/:controller/:action/:params', [
+            ));
+            $frontend->add('/:controller/:action/:params', array(
                 'controller' => 1,
                 'action' => 2,
                 'params' => 3,
-            ]);
-            $frontend->add('/:controller/:int', [
+            ));
+            $frontend->add('/:controller/:int', array(
                 'controller' => 1,
                 'id' => 2,
-            ]);
-            $frontend->add('/:controller[/]?', [
+            ));
+            $frontend->add('/:controller[/]?', array(
                 'controller' => 1,
-            ]);
-            $frontend->add('/{action:(buy|contact)}[/]?', [
+            ));
+            $frontend->add('/{action:(buy|contact)}[/]?', array(
                 'controller' => 'static',
                 'action' => 'action'
-            ]);
+            ));
             $frontend->add('/');
 
             // Mount a group of routes for frontend
@@ -371,34 +369,34 @@ class Bootstrap extends \Phalcon\Mvc\Application
             /**
              * Define routes for each module
              */
-            foreach ($this->getModules() as $module => $options) {
-                $group = new \Phalcon\Mvc\Router\Group([
+            foreach (array_keys($this->getModules()) as $module) {
+                $group = new \Phalcon\Mvc\Router\Group(array(
                     'module' => $module,
-                ]);
-                $group->setPrefix('/' . (isset($options['alias']) ? $options['alias'] : $module));
+                ));
+                $group->setPrefix('/' . $module);
 
-                $group->add('/:controller/:action/:params', [
+                $group->add('/:controller/:action/:params', array(
                     'controller' => 1,
                     'action' => 2,
                     'params' => 3,
-                ]);
-                $group->add('/:controller/:int', [
+                ));
+                $group->add('/:controller/:int', array(
                     'controller' => 1,
                     'id' => 2,
-                ]);
-                $group->add('/:controller[/]?', [
+                ));
+                $group->add('/:controller[/]?', array(
                     'controller' => 1,
-                ]);
-                $group->add('[/]?', []);
+                ));
+                $group->add('[/]?', array());
 
                 // Mount a group of routes for some module
                 $router->mount($group);
             }
 
-            $router->notFound([
+            $router->notFound(array(
                 'controller' => 'index',
                 'action' => 'notFound'
-            ]);
+            ));
 
             return $router;
         });
