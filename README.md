@@ -10,7 +10,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 * Config file
 * [CLI](https://github.com/mruz/base-app/wiki/CLI) and Console file
 * HMVC support
-* [Volt](http://docs.phalconphp.com/en/latest/reference/volt.html) template
+* [Volt](http://docs.phalconphp.com/en/latest/reference/volt.html), Markdown templates
 * Frontend/Backend/Cli/Documentation modules
 * Environment
  * _development_ - display debug, always compile template files, always minify assets

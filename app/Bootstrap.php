@@ -369,7 +369,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
             /**
              * Define routes for each module
              */
-            foreach (array_keys($this->getModules()) as $module) {
+            foreach (array('admin', 'doc') as $module) {
                 $group = new \Phalcon\Mvc\Router\Group(array(
                     'module' => $module,
                 ));
