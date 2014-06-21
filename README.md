@@ -11,7 +11,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 * [CLI](https://github.com/mruz/base-app/wiki/CLI) and Console file
 * HMVC support
 * [Volt](http://docs.phalconphp.com/en/latest/reference/volt.html) template
-* Frontend/Backend/Cli modules
+* Frontend/Backend/Cli/Documentation modules
 * Environment
  * _development_ - display debug, always compile template files, always minify assets
  * _testing_ - log debug, only checks for changes in the children templates, checks for changes and minify assets
@@ -22,6 +22,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
  * [Auth](https://github.com/mruz/base-app/wiki/Auth)
  * [Email](https://github.com/mruz/base-app/wiki/Email)
  * [I18n](https://github.com/mruz/base-app/wiki/I18n)
+ * Markdown
  * [Tool](https://github.com/mruz/base-app/wiki/Tool)
  * Payment
     * [PayPal](http://www.paypal.com)
