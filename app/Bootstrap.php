@@ -47,7 +47,13 @@ class Bootstrap extends \Phalcon\Mvc\Application
             ),
             'backend' => array(
                 'className' => 'Baseapp\Backend\Module',
-                'path' => ROOT_PATH . '/app/backend/Module.php'
+                'path' => ROOT_PATH . '/app/backend/Module.php',
+                'alias' => 'admin'
+            ),
+            'doc' => array(
+                'className' => 'Baseapp\Documentation\Module',
+                'path' => ROOT_PATH . '/app/documentation/Module.php',
+                'alias' => 'doc'
             )
         ));
 
@@ -326,67 +332,73 @@ class Bootstrap extends \Phalcon\Mvc\Application
     protected function router()
     {
         $this->_di->set('router', function() {
-            $router = new \Phalcon\Mvc\Router(FALSE);
+            $router = new \Phalcon\Mvc\Router(false);
 
-            $router->setDefaultModule('frontend');
-            $router->setDefaultController('index');
-            $router->setDefaultAction('index');
-
-            $router->add('/:controller/:action/:params', array(
+            $router->setDefaults([
                 'module' => 'frontend',
+                'controller' => 'index',
+                'action' => 'index'
+            ]);
+
+            /*
+             * All defined routes are traversed in reverse order until Phalcon\Mvc\Router
+             * finds the one that matches the given URI and processes it, while ignoring the rest.
+             */
+            $frontend = new \Phalcon\Mvc\Router\Group([
+                'module' => 'frontend',
+            ]);
+            $frontend->add('/:controller/:action/:params', [
                 'controller' => 1,
                 'action' => 2,
                 'params' => 3,
-            ));
-
-            $router->add('/:controller/:int', array(
-                'module' => 'frontend',
+            ]);
+            $frontend->add('/:controller/:int', [
                 'controller' => 1,
-                'action' => 'index',
                 'id' => 2,
-            ));
-
-            $router->add('/:controller[/]?', array(
-                'module' => 'frontend',
+            ]);
+            $frontend->add('/:controller[/]?', [
                 'controller' => 1,
-                'action' => 'index'
-            ));
-
-            $router->add('/{action:(buy|contact)}[/]?', array(
-                'module' => 'frontend',
+            ]);
+            $frontend->add('/{action:(buy|contact)}[/]?', [
                 'controller' => 'static',
                 'action' => 'action'
-            ));
+            ]);
+            $frontend->add('/');
 
-            $router->add('/', array(
-                'module' => 'frontend',
-                'controller' => 'index',
-                'action' => 'index'
-            ));
+            // Mount a group of routes for frontend
+            $router->mount($frontend);
 
-            $router->add('/admin/:controller/:action/:params', array(
-                'module' => 'backend',
-                'controller' => 1,
-                'action' => 2,
-                'params' => 3,
-            ));
+            /**
+             * Define routes for each module
+             */
+            foreach ($this->getModules() as $module => $options) {
+                $group = new \Phalcon\Mvc\Router\Group([
+                    'module' => $module,
+                ]);
+                $group->setPrefix('/' . (isset($options['alias']) ? $options['alias'] : $module));
 
-            $router->add('/admin/:controller[/]?', array(
-                'module' => 'backend',
-                'controller' => 1,
-                'action' => 'index',
-            ));
+                $group->add('/:controller/:action/:params', [
+                    'controller' => 1,
+                    'action' => 2,
+                    'params' => 3,
+                ]);
+                $group->add('/:controller/:int', [
+                    'controller' => 1,
+                    'id' => 2,
+                ]);
+                $group->add('/:controller[/]?', [
+                    'controller' => 1,
+                ]);
+                $group->add('[/]?', []);
 
-            $router->add('/admin[/]?', array(
-                'module' => 'backend',
-                'controller' => 'index',
-                'action' => 'index',
-            ));
+                // Mount a group of routes for some module
+                $router->mount($group);
+            }
 
-            $router->notFound(array(
+            $router->notFound([
                 'controller' => 'index',
                 'action' => 'notFound'
-            ));
+            ]);
 
             return $router;
         });
@@ -505,7 +517,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
         if ($config->app->env == "development") {
             // Display debug output
-            echo (new Dump())->all($errors);
+            echo var_dump($errors);
         } else {
             // Display pretty view of the error
             $di = new \Phalcon\DI\FactoryDefault();
