@@ -42,14 +42,14 @@ class RoutingTest extends PHPUnit_Framework_TestCase
             ['/admin/clients/add', ['backend', 'clients', 'add', []]],
             ['/admin/clients/details/2', ['backend', 'clients', 'details', [0 => 2]]],
             
-            ['/doc', ['doc', 'index', 'index', []]],
-            ['/doc/index', ['doc', 'index', 'index', []]],
-            ['/doc/index/index', ['doc', 'index', 'index', []]],
-            ['/doc/index/test', ['doc', 'index', 'test', []]],
+            ['/doc', ['documentation', 'index', 'index', []]],
+            ['/doc/index', ['documentation', 'index', 'index', []]],
+            ['/doc/index/index', ['documentation', 'index', 'index', []]],
+            ['/doc/index/test', ['documentation', 'index', 'test', []]],
             
-            ['/doc/install', ['doc', 'install', 'index', []]],
-            ['/doc/install/requirements', ['doc', 'install', 'requirements', []]],
-            ['/doc/install/requirements/php', ['doc', 'install', 'requirements', [0 => 'php']]],
+            ['/doc/install', ['documentation', 'install', 'index', []]],
+            ['/doc/install/requirements', ['documentation', 'install', 'requirements', []]],
+            ['/doc/install/requirements/php', ['documentation', 'install', 'requirements', [0 => 'php']]],
             
             ['/user/', ['frontend', 'user', 'index', []]],
             ['/user/signup/', ['frontend', 'user', 'signup', []]],

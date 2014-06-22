@@ -45,13 +45,15 @@ class Bootstrap extends \Phalcon\Mvc\Application
                 'className' => 'Baseapp\Frontend\Module',
                 'path' => ROOT_PATH . '/app/frontend/Module.php'
             ),
-            'admin' => array(
+            'backend' => array(
                 'className' => 'Baseapp\Backend\Module',
                 'path' => ROOT_PATH . '/app/backend/Module.php',
+                'alias' => 'admin'
             ),
-            'doc' => array(
+            'documentation' => array(
                 'className' => 'Baseapp\Documentation\Module',
                 'path' => ROOT_PATH . '/app/documentation/Module.php',
+                'alias' => 'doc'
             )
         ));
 
@@ -369,11 +371,12 @@ class Bootstrap extends \Phalcon\Mvc\Application
             /**
              * Define routes for each module
              */
-            foreach (array('admin', 'doc') as $module) {
+            //foreach ($this->getModules() as $module => $options) {
+            foreach (array('backend' => array('alias' => 'admin'), 'documentation' => array('alias' => 'doc')) as $module => $options) {
                 $group = new \Phalcon\Mvc\Router\Group(array(
                     'module' => $module,
                 ));
-                $group->setPrefix('/' . $module);
+                $group->setPrefix('/' . (isset($options['alias']) ? $options['alias'] : $module));
 
                 $group->add('/:controller/:action/:params', array(
                     'controller' => 1,
