@@ -61,4 +61,4 @@
 
 
 ##### use clases in volt
-    {{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], models_users__findFirst(1)) }}
+    {{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], users__findFirst(1)) }}

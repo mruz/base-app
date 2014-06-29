@@ -66,5 +66,5 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 
 ##### use clases in volt
 ```php
-{{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], models_users__findFirst(1)) }}
+{{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], users__findFirst(1)) }}
 ```
