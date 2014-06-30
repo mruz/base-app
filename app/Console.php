@@ -42,6 +42,9 @@ class Console extends \Phalcon\CLI\Console
             ),
         ));
 
+        // Register the app itself as a service
+        $this->_di->set('app', $this);
+
         // Set the dependency Injector
         parent::__construct($this->_di);
     }
@@ -132,6 +135,46 @@ class Console extends \Phalcon\CLI\Console
             $router = new \Phalcon\CLI\Router();
             return $router;
         });
+    }
+
+    /**
+     * HMVC request in the cli
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param array $location location to run the request
+     *
+     * @return mixed response
+     */
+    public function request($location)
+    {
+        $dispatcher = clone $this->getDI()->get('dispatcher');
+
+        if (isset($location['task'])) {
+            $dispatcher->setTaskName($location['task']);
+        } else {
+            $dispatcher->setTaskName('main');
+        }
+
+        if (isset($location['action'])) {
+            $dispatcher->setActionName($location['action']);
+        } else {
+            $dispatcher->setActionName('main');
+        }
+
+        if (isset($location['params'])) {
+            if (is_array($location['params'])) {
+                $dispatcher->setParams($location['params']);
+            } else {
+                $dispatcher->setParams((array) $location['params']);
+            }
+        } else {
+            $dispatcher->setParams(array());
+        }
+
+        $dispatcher->dispatch();
+        return $dispatcher->getReturnedValue();
     }
 
     /**
