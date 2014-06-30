@@ -27,7 +27,7 @@
 * User
  * Models
  * Auth schema mysql
-* Twitter Bootstrap 3.1.1
+* Twitter Bootstrap 3.2.0
 
 ### Configuration:
 1. Set *base_uri* and other settings in */app/common/config/config.ini*
