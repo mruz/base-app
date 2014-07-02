@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         {{ getTitle() }}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="{{ site_desc }}">
+        <meta name="description" content="{{ siteDesc }}">
         {{ stylesheetLink('css/bootstrap.min.css') }}
         {{ this.assets.outputCss() }}
         <!-- Fav and touch icons -->

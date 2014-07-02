@@ -12,7 +12,7 @@ namespace Baseapp\Documentation\Controllers;
 class IndexController extends \Phalcon\Mvc\Controller
 {
 
-    public $site_desc;
+    public $siteDesc;
     public $scripts = array();
 
     /**
@@ -25,7 +25,7 @@ class IndexController extends \Phalcon\Mvc\Controller
     {
         // Set default title and description
         $this->tag->setTitle('Documentation');
-        $this->site_desc = 'Documentation';
+        $this->siteDesc = 'Documentation';
 
         // Add css and js to assets collection
         $this->assets->addCss('css/fonts.css');
@@ -89,7 +89,7 @@ class IndexController extends \Phalcon\Mvc\Controller
         // Set final title and description
         $this->tag->setTitleSeparator(' | ');
         $this->tag->appendTitle($this->config->app->name);
-        $this->view->setVar('site_desc', mb_substr($this->filter->sanitize($this->site_desc, 'string'), 0, 200, 'utf-8'));
+        $this->view->setVar('siteDesc', mb_substr($this->filter->sanitize($this->siteDesc, 'string'), 0, 200, 'utf-8'));
 
         // Set scripts
         $scripts = array('$(document).ready(function() { $("pre").each(function(i, e) {hljs.highlightBlock(e)}); });');
