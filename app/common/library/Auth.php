@@ -78,7 +78,7 @@ class Auth
     private function auto_login()
     {
         if ($this->_cookies->has('authautologin')) {
-            $cookieToken = $this->_cookies->get('authautologin')->getValue('string');
+            $cookieToken = $this->_cookies->get('authautologin')->getValue();
 
             // Load the token
             $token = Tokens::findFirst(array('token=:token:', 'bind' => array(':token' => $cookieToken)));
@@ -357,7 +357,7 @@ class Auth
     public function logout($destroy = false, $logoutAll = false)
     {
         if ($this->_cookies->has('authautologin')) {
-            $cookieToken = $this->_cookies->get('authautologin')->getValue('string');
+            $cookieToken = $this->_cookies->get('authautologin')->getValue();
 
             // Delete the autologin cookie to prevent re-login
             $this->_cookies->set('authautologin', "", time() - 3600);

@@ -157,6 +157,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
         $this->_di->set('crypt', function() use ($config) {
             $crypt = new \Phalcon\Crypt();
             $crypt->setKey($config->crypt->key);
+            $crypt->setPadding(\Phalcon\Crypt::PADDING_ANSI_X_923);
             return $crypt;
         });
     }
