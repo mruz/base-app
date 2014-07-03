@@ -134,14 +134,14 @@ class Users extends \Phalcon\Mvc\Model
 
                 if ($email->Send() === true) {
                     unset($_POST);
-                    return true;
+                    return $this;
                 } else {
                     \Baseapp\Bootstrap::log($email->ErrorInfo);
                     return false;
                 }
             } else {
                 \Baseapp\Bootstrap::log($this->getMessages());
-                return $this->getMessages();
+                return false;
             }
         }
     }
