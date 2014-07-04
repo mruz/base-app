@@ -56,10 +56,8 @@ class IndexController extends \Phalcon\Mvc\Controller
             $this->i18n->lang($this->cookies->get('lang')->getValue());
         }
 
-        // Send i18n, auth and langs to the view
+        // Send langs to the view
         $this->view->setVars(array(
-            'auth' => $this->auth,
-            'i18n' => $this->i18n,
             // Translate langs before
             'siteLangs' => array_map('__', $this->config->i18n->langs->toArray())
         ));
