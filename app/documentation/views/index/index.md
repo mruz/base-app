@@ -61,7 +61,7 @@
     {% endif %}
 ```
 
-##### use clases in volt
+##### use static classes in volt
 ```php
     {{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], users__findFirst(1)) }}
 ```

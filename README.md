@@ -64,7 +64,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 {% endif %}
 ```
 
-##### use clases in volt
+##### use static classes in volt
 ```php
 {{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], users__findFirst(1)) }}
 ```
