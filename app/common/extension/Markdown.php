@@ -25,7 +25,9 @@ class Markdown extends Engine implements EngineInterface
      */
     public function __construct($view, $dependencyInjector = null)
     {
-        $this->markdown = new \Baseapp\Library\Markdown();
+        $parser = new \Baseapp\Library\Markdown\MarkdownExtra();
+        $parser->code_attr_on_pre = true;
+        $this->markdown = $parser;
 
         parent::__construct($view, $dependencyInjector);
     }
