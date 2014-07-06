@@ -49,19 +49,19 @@
 ### Example volt usage:
 ##### auth in views
 ```django
-    {% if auth.logged_in() %}
-        {{ auth.get_user().username }}
-    {% endif %}
+{% if auth.logged_in() %}
+    {{ auth.get_user().username }}
+{% endif %}
 ```
 
 ##### easy translation with __() function
 ```django
-    {% if auth.logged_in('admin') %}
-        {{ __('Hello :user', [':user' : auth.get_user().username]) }}
-    {% endif %}
+{% if auth.logged_in('admin') %}
+    {{ __('Hello :user', [':user' : auth.get_user().username]) }}
+{% endif %}
 ```
 
 ##### use static classes in volt
 ```php
-    {{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], users__findFirst(1)) }}
+{{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], users__findFirst(1)) }}
 ```

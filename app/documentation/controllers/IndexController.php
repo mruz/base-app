@@ -92,7 +92,7 @@ class IndexController extends \Phalcon\Mvc\Controller
         $this->view->setVar('siteDesc', mb_substr($this->filter->sanitize($this->siteDesc, 'string'), 0, 200, 'utf-8'));
 
         // Set scripts
-        $scripts = array('$(document).ready(function() { $("pre").each(function(i, e) {hljs.highlightBlock(e)}); });');
+        $scripts = array('$(document).ready(function() { $("pre code").each(function(i, e) {hljs.highlightBlock(e)}); });');
         $this->view->setVar('scripts', array_merge($this->scripts, $scripts));
 
         // Minify css and js collection
