@@ -62,6 +62,12 @@
 ```
 
 ##### use static classes in volt
+```django
+{% set user = users__findFirst(1) %}
+{{ user.username }}
+```
+
+##### debug variables
 ```php
-{{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], users__findFirst(1)) }}
+{{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], user) }}
 ```
