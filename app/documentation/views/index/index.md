@@ -43,7 +43,7 @@
 ### Links:
 * [Phalcon PHP](https://phalconphp.com)
 * [Base-app](https://github.com/mruz/base-app)
-* [Demo](http://mruz.pl/base-app)
+* [Demo](http://base-app.mruz.pl)
 * [Twitter Bootstrap](http://getbootstrap.com)
 
 ### Example volt usage:

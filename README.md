@@ -2,7 +2,7 @@
 
 ##### The base application in PhalconPHP
 Use this application as a way to quick start any new project.
-See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin admin.
+See working [base-app](http://base-app.mruz.pl), user/pass: user user, admin admin.
 #####Migration to 2.0 in progress, demo may not work properly!
 ***
 ### Features:
@@ -46,7 +46,7 @@ See working [base-app](http://mruz.pl/base-app), user/pass: user user, admin adm
 ### Links:
 * [Phalcon PHP](https://phalconphp.com)
 * [Base-app](https://github.com/mruz/base-app)
-* [Demo](http://mruz.pl/base-app)
+* [Demo](http://base-app.mruz.pl)
 * [Twitter Bootstrap](http://getbootstrap.com)
 
 ### Example volt usage:
