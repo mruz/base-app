@@ -46,9 +46,9 @@ Enter the settings to connect to the database:
 ```ini
 [database]
 host     = "localhost"
-username = "las"
+username = "baseapp"
 password = "password"
-dbname   = "las"
+dbname   = "baseapp"
 ```
 <br />
 Change default hash keys. It is **very important** for safety reasons:
