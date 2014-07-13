@@ -1,6 +1,5 @@
 # Documentation
 
-#####Migration to 2.0 in progress, demo may not work properly!
 ***
 ### Features:
 * Bootstrap file
@@ -29,16 +28,49 @@
  * Auth schema mysql
 * Twitter Bootstrap 3.2.0
 
+***
+
 ### Configuration:
-1. Set *base_uri* and other settings in */app/common/config/config.ini*
-2. Use */auth-schema-mysql.sql* to create required tables
-3. Make sure that these directories are writable by the web server:
- * `/app/common/logs`
- * `/app/common/cache`
- * `/public/min`
+1. Use */auth-schema-mysql.sql* to create required tables
+2. Set *base_uri* and other settings in `/app/common/config/config.ini` config file:
+
+```ini
+[app]
+domain = "example.com"
+base_uri = "/"
+static_uri = "/"
+admin = "admin@example.com"
+```
+<br />
+Enter the settings to connect to the database:
+```ini
+[database]
+host     = "localhost"
+username = "las"
+password = "password"
+dbname   = "las"
+```
+<br />
+Change default hash keys. It is **very important** for safety reasons:
+```ini
+[auth]
+hash_key = "secret_key"
+
+[crypt]
+key = "secret_key"
+```
+<br />
+Prepare the application for the first run:
+```bash
+# go to /path/base-app/private
+php index.php prepare chmod
+```
+***
 
 ### Requirements:
-* Phalcon **2.0.0** (temporarily works on 1.3.0)
+* Phalcon 1.3.2+
+
+***
 
 ### Links:
 * [Phalcon PHP](https://phalconphp.com)
@@ -46,28 +78,34 @@
 * [Demo](http://base-app.mruz.pl)
 * [Twitter Bootstrap](http://getbootstrap.com)
 
+***
+
 ### Example volt usage:
-##### auth in views
+Access to `auth` in the views:
 ```django
 {% if auth.logged_in() %}
     {{ auth.get_user().username }}
 {% endif %}
 ```
-
-##### easy translation with __() function
+<br />
+Easy translation with `__()` function:
 ```django
 {% if auth.logged_in('admin') %}
     {{ __('Hello :user', [':user' : auth.get_user().username]) }}
 {% endif %}
 ```
-
-##### use static classes in volt
+<br />
+Use static classes:
 ```django
+{# access to some model #}
 {% set user = users__findFirst(1) %}
 {{ user.username }}
-```
 
-##### debug variables
+{# access to class in the library #}
+{{ arr__get(_POST, 'username') }}
+```
+<br />
+Debug variables:
 ```php
-{{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value'], user) }}
+{{ dump('string', 1, 2.5, TRUE, NULL, ['key': 'value']) }}
 ```
