@@ -2,7 +2,6 @@
 
 namespace Baseapp\Models;
 
-use Baseapp\Library\Auth;
 use Baseapp\Library\Email;
 
 /**
@@ -14,6 +13,8 @@ use Baseapp\Library\Email;
  */
 class Users extends \Phalcon\Mvc\Model
 {
+
+    public $request;
 
     /**
      * User initialize
@@ -35,6 +36,8 @@ class Users extends \Phalcon\Mvc\Model
                 'action' => \Phalcon\Mvc\Model\Relation::ACTION_CASCADE
             )
         ));
+
+        $this->request = $this->getDI()->getShared('request');
     }
 
     /**
@@ -118,23 +121,27 @@ class Users extends \Phalcon\Mvc\Model
         if (count($messages)) {
             return $validation->getMessages();
         } else {
-            $this->username = $this->getDI()->getShared('request')->getPost('username');
-            $this->password = Auth::instance()->hash($this->getDI()->getShared('request')->getPost('password'));
-            $this->email = $this->getDI()->getShared('request')->getPost('email');
+            $this->username = $this->request->getPost('username');
+            $this->password = $this->getDI()->getShared('auth')->hash($this->request->getPost('password'));
+            $this->email = $this->request->getPost('email');
             $this->logins = 0;
 
             if ($this->create() === true) {
                 $hash = md5($this->id . $this->email . $this->password . $this->getDI()->getShared('config')->auth->hash_key);
 
                 $email = new Email();
-                $email->prepare(__('Activation'), $this->getDI()->getShared('request')->getPost('email'), 'activation', array('username' => $this->getDI()->getShared('request')->getPost('username'), 'hash' => $hash));
-                $email->Send();
+                $email->prepare(__('Activation'), $this->request->getPost('email'), 'activation', array('username' => $this->request->getPost('username'), 'hash' => $hash));
 
-                unset($_POST);
-                return true;
+                if ($email->Send() === true) {
+                    unset($_POST);
+                    return $this;
+                } else {
+                    \Baseapp\Bootstrap::log($email->ErrorInfo);
+                    return false;
+                }
             } else {
                 \Baseapp\Bootstrap::log($this->getMessages());
-                return $this->getMessages();
+                return false;
             }
         }
     }

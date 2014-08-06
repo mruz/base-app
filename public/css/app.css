@@ -24,6 +24,10 @@ footer.navbar-default {
     margin-left: 15px;
 }
 
+pre {
+    padding: 0;
+}
+
 /* Extra small devices (phones) */
 @media (max-width: 767px) {
     .pull-none {

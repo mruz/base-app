@@ -26,32 +26,27 @@ class VoltStaticFunctions
     public function compileFunction($name, $arguments)
     {
         if (strpos($name, '__')) {
-            $path = explode('_', str_replace('__', '::', $name));
-            if ($path) {
-                // Prepare namespace - make first characters uppercase
-                $path = array_map('ucfirst', $path);
+            // Get property
+            $property = substr(strstr($name, '__'), 2);
+            // Prepare namespace; replace _\ to \, make first characters uppercase
+            $namespace = '\\' . implode('\\', array_map('ucfirst', preg_split('/(\\\\|_)/', strstr($name, '__', true))));
 
-                // Get class name and property
-                list($class, $property) = explode('::', array_pop($path));
+            // Allow to use short syntax for library and models
+            foreach (array('\Baseapp', '\Baseapp\Library', '\Baseapp\Models', '') as $prefix) {
+                $class = $prefix . $namespace;
+                if (method_exists($class, $property)) {
+                    return $class . '::' . $property . '(' . $arguments . ')';
+                }
 
-                if (isset($class) && isset($property)) {
-                    $class = '\Baseapp\\' . implode('\\', $path) . '\\' . $class;
-
-                    // Get static function if exist
-                    if (method_exists($class, $property)) {
-                        return $class . '::' . $property . '(' . $arguments . ')';
+                if (!$arguments) {
+                    // Get constant if exist
+                    if (defined($class . '::' . $property)) {
+                        return $class . '::' . $property;
                     }
 
-                    if (!$arguments) {
-                        // Get constant if exist
-                        if (defined($class . '::' . $property)) {
-                            return $class . '::' . $property;
-                        }
-
-                        // Get static property if exist
-                        if (property_exists($class, $property)) {
-                            return $class . '::$' . $property;
-                        }
+                    // Get static property if exist
+                    if (property_exists($class, $property)) {
+                        return $class . '::$' . $property;
                     }
                 }
             }

@@ -1,4 +1,4 @@
-{# Template View | base-app | 2.0 #}
+{# Doc Template View | base-app | 2.0 #}
 <!DOCTYPE html>
 <html lang="{{ substr(i18n.lang(), 0, 2) }}">
     <head>

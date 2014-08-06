@@ -1,9 +1,9 @@
 <?php
 
-namespace Baseapp\Backend\Controllers;
+namespace Baseapp\Documentation\Controllers;
 
 /**
- * Backend Index Controller
+ * Documentation Index Controller
  *
  * @package     base-app
  * @category    Controller
@@ -12,6 +12,7 @@ namespace Baseapp\Backend\Controllers;
 class IndexController extends \Phalcon\Mvc\Controller
 {
 
+    public $siteDesc;
     public $scripts = array();
 
     /**
@@ -22,12 +23,16 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function beforeExecuteRoute($dispatcher)
     {
-        // Set default title
-        $this->tag->setTitle('Index');
+        // Set default title and description
+        $this->tag->setTitle('Documentation');
+        $this->siteDesc = 'Documentation';
 
         // Add css and js to assets collection
+        $this->assets->addCss('css/fonts.css');
         $this->assets->addCss('css/app.css');
+        $this->assets->addCss('css/highlight.arta.css');
         $this->assets->addJs('js/plugins.js');
+        $this->assets->addJs('js/plugins/highlight.pack.js');
     }
 
     /**
@@ -38,11 +43,6 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function initialize()
     {
-        // Redirect to home page if user is not admin
-        if (!$this->auth->logged_in('admin')) {
-            $this->response->redirect('');
-        }
-
         // Check the session lifetime
         if ($this->session->has('last_active') && time() - $this->session->get('last_active') > $this->config->session->options->lifetime) {
             $this->session->destroy();
@@ -58,8 +58,10 @@ class IndexController extends \Phalcon\Mvc\Controller
             $this->i18n->lang($this->cookies->get('lang')->getValue());
         }
 
-        // Send langs to the view
+        // Send i18n, auth and langs to the view
         $this->view->setVars(array(
+            'auth' => $this->auth,
+            'i18n' => $this->i18n,
             // Translate langs before
             'siteLangs' => array_map('__', $this->config->i18n->langs->toArray())
         ));
@@ -73,7 +75,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function indexAction()
     {
-        $this->tag->setTitle(__('Admin panel'));
+
     }
 
     /**
@@ -84,12 +86,14 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function afterExecuteRoute($dispatcher)
     {
-        // Set final title
+        // Set final title and description
         $this->tag->setTitleSeparator(' | ');
         $this->tag->appendTitle($this->config->app->name);
+        $this->view->setVar('siteDesc', mb_substr($this->filter->sanitize($this->siteDesc, 'string'), 0, 200, 'utf-8'));
 
         // Set scripts
-        $this->view->setVar('scripts', $this->scripts);
+        $scripts = array('$(document).ready(function() { $("pre code").each(function(i, e) {hljs.highlightBlock(e)}); });');
+        $this->view->setVar('scripts', array_merge($this->scripts, $scripts));
 
         // Minify css and js collection
         \Baseapp\Library\Tool::assetsMinification();
@@ -101,7 +105,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * @package     base-app
      * @version     2.0
      */
-    public function notfoundAction()
+    public function notFoundAction()
     {
         // Send a HTTP 404 response header
         $this->response->setStatusCode(404, "Not Found");

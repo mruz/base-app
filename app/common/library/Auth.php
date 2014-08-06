@@ -64,150 +64,7 @@ class Auth
      */
     private function __clone()
     {
-        
-    }
 
-    /**
-     * Checks if a session is active.
-     *
-     * @package     base-app
-     * @version     2.0
-     *
-     * @param mixed $role role name
-     *
-     * @return boolean
-     */
-    public function logged_in($role = null)
-    {
-        // Get the user from the session
-        $user = $this->get_user();
-        if (!$user) {
-            return false;
-        }
-
-        // If user exists in session
-        if ($user) {
-            // If we don't have a roll no further checking is needed
-            if (!$role) {
-                return true;
-            }
-
-            // Check if user has the role
-            if ($this->_config['session_roles'] && $this->_session->has($this->_config['session_roles'])) {
-                // Check in session
-                $roles = $this->_session->get($this->_config['session_roles']);
-                $role = isset($roles[$role]) ? $roles[$role] : null;
-            } else {
-                // Check in db
-                $role = $user->hasRole($role);
-            }
-
-            // Return true if user has role
-            return $role ? true : false;
-        }
-    }
-
-    /**
-     * Gets the roles of user.
-     *
-     * @package     base-app
-     * @version     2.0
-     *
-     * @param object $user user from the model
-     *
-     * @return array
-     */
-    public function get_roles($user)
-    {
-        $roles = array();
-
-        if ($user) {
-            // Find related records for a particular user
-            foreach ($user->getRoles() as $roleuser) {
-                // Get related role
-                $role = $roleuser->getRole()->toArray();
-                $roles [$role['name']] = $role['id'];
-            }
-        }
-
-        return $roles;
-    }
-
-    /**
-     * Gets the currently logged in user from the session.
-     * Returns null if no user is currently logged in.
-     *
-     * @package     base-app
-     * @version     2.0
-     *
-     * @return mixed
-     */
-    public function get_user()
-    {
-        $user = $this->_session->get($this->_config['session_key']);
-
-        // Check for "remembered" login
-        if (!$user) {
-            $user = $this->auto_login();
-        }
-
-        return $user;
-    }
-
-    /**
-     * Refresh user data stored in the session from the database.
-     * Returns null if no user is currently logged in.
-     *
-     * @package     base-app
-     * @version     2.0
-     *
-     * @return mixed
-     */
-    public function refresh_user()
-    {
-        $user = $this->_session->get($this->_config['session_key']);
-
-        if (!$user) {
-            return null;
-        } else {
-            // Get user's data from db
-            $user = Users::findFirst($user->id);
-            $roles = $this->get_roles($user);
-
-            // Regenerate session_id
-            session_regenerate_id();
-
-            // Store user in session
-            $this->_session->set($this->_config['session_key'], $user);
-            // Store user's roles in session
-            if ($this->_config['session_roles']) {
-                $this->_session->set($this->_config['session_roles'], $roles);
-            }
-
-            return $user;
-        }
-    }
-
-    /**
-     * Complete the login for a user by incrementing the logins and saving login timestamp
-     *
-     * @package     base-app
-     * @version     2.0
-     *
-     * @param object $user user from the model
-     *
-     * @return void
-     */
-    private function complete_login($user)
-    {
-        // Update the number of logins
-        $user->logins = $user->logins + 1;
-
-        // Set the last login date
-        $user->last_login = time();
-
-        // Save the user
-        $user->update();
     }
 
     /**
@@ -221,7 +78,7 @@ class Auth
     private function auto_login()
     {
         if ($this->_cookies->has('authautologin')) {
-            $cookieToken = $this->_cookies->get('authautologin')->getValue('string');
+            $cookieToken = $this->_cookies->get('authautologin')->getValue();
 
             // Load the token
             $token = Tokens::findFirst(array('token=:token:', 'bind' => array(':token' => $cookieToken)));
@@ -270,6 +127,150 @@ class Auth
     }
 
     /**
+     * Complete the login for a user by incrementing the logins and saving login timestamp
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param object $user user from the model
+     *
+     * @return void
+     */
+    private function complete_login(Users $user)
+    {
+        // Update the number of logins
+        $user->logins = $user->logins + 1;
+
+        // Set the last login date
+        $user->last_login = time();
+
+        // Save the user
+        $user->update();
+    }
+
+    /**
+     * Create auto login token.
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return  string
+     */
+    protected function create_token()
+    {
+        do {
+            $token = sha1(uniqid(\Phalcon\Text::random(\Phalcon\Text::RANDOM_ALNUM, 32), true));
+        } while (Tokens::findFirst(array('token=:token:', 'bind' => array(':token' => $token))));
+
+        return $token;
+    }
+
+    /**
+     * Gets the roles of user.
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param object $user user from the model
+     *
+     * @return array
+     */
+    public function get_roles($user)
+    {
+        $roles = array();
+
+        if ($user instanceof Users) {
+            // Find related records for a particular user
+            foreach ($user->getRoles() as $roleuser) {
+                // Get related role
+                $role = $roleuser->getRole()->toArray();
+                $roles [$role['name']] = $role['id'];
+            }
+        }
+
+        return $roles;
+    }
+
+    /**
+     * Gets the currently logged in user from the session.
+     * Returns null if no user is currently logged in.
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return mixed
+     */
+    public function get_user()
+    {
+        $user = $this->_session->get($this->_config['session_key']);
+
+        // Check for "remembered" login
+        if (!$user) {
+            $user = $this->auto_login();
+        }
+
+        return $user;
+    }
+
+    /**
+     * Perform a hmac hash, using the configured method.
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param string $str string to hash
+     * @return string
+     */
+    public function hash($str)
+    {
+        if (!$this->_config['hash_key']) {
+            throw new \Phalcon\Exception('A valid hash key must be set in your auth config.');
+        }
+
+        return hash_hmac($this->_config['hash_method'], $str, $this->_config['hash_key']);
+    }
+
+    /**
+     * Checks if a session is active.
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param mixed $role role name
+     *
+     * @return boolean
+     */
+    public function logged_in($role = null)
+    {
+        // Get the user from the session
+        $user = $this->get_user();
+        if (!$user) {
+            return false;
+        }
+
+        // If user exists in session
+        if ($user) {
+            // If we don't have a roll no further checking is needed
+            if (!$role) {
+                return true;
+            }
+
+            // Check if user has the role
+            if ($this->_config['session_roles'] && $this->_session->has($this->_config['session_roles'])) {
+                // Check in session
+                $roles = $this->_session->get($this->_config['session_roles']);
+                $role = isset($roles[$role]) ? $roles[$role] : null;
+            } else {
+                // Check in db
+                $role = $user->hasRole($role);
+            }
+
+            // Return true if user has role
+            return $role ? true : false;
+        }
+    }
+
+    /**
      * Attempt to log in a user by using an ORM object and plain-text password.
      *
      * @package     base-app
@@ -282,7 +283,7 @@ class Auth
      */
     public function login($user, $password, $remember = false)
     {
-        if (!is_object($user)) {
+        if (! $user instanceof Users) {
             $username = $user;
 
             // Username not specified
@@ -356,7 +357,7 @@ class Auth
     public function logout($destroy = false, $logoutAll = false)
     {
         if ($this->_cookies->has('authautologin')) {
-            $cookieToken = $this->_cookies->get('authautologin')->getValue('string');
+            $cookieToken = $this->_cookies->get('authautologin')->getValue();
 
             // Delete the autologin cookie to prevent re-login
             $this->_cookies->set('authautologin', "", time() - 3600);
@@ -397,38 +398,37 @@ class Auth
     }
 
     /**
-     * Perform a hmac hash, using the configured method.
+     * Refresh user data stored in the session from the database.
+     * Returns null if no user is currently logged in.
      *
      * @package     base-app
      * @version     2.0
      *
-     * @param string $hash string to hash
-     * @return string
+     * @return mixed
      */
-    public function hash($str)
+    public function refresh_user()
     {
-        if (!$this->_config['hash_key']) {
-            throw new \Phalcon\Exception('A valid hash key must be set in your auth config.');
+        $user = $this->_session->get($this->_config['session_key']);
+
+        if (!$user) {
+            return null;
+        } else {
+            // Get user's data from db
+            $user = Users::findFirst($user->id);
+            $roles = $this->get_roles($user);
+
+            // Regenerate session_id
+            session_regenerate_id();
+
+            // Store user in session
+            $this->_session->set($this->_config['session_key'], $user);
+            // Store user's roles in session
+            if ($this->_config['session_roles']) {
+                $this->_session->set($this->_config['session_roles'], $roles);
+            }
+
+            return $user;
         }
-
-        return hash_hmac($this->_config['hash_method'], $str, $this->_config['hash_key']);
-    }
-
-    /**
-     * Create auto login token.
-     *
-     * @package     base-app
-     * @version     2.0
-     *
-     * @return  string
-     */
-    protected function create_token()
-    {
-        do {
-            $token = sha1(uniqid(\Phalcon\Text::random(\Phalcon\Text::RANDOM_ALNUM, 32), true));
-        } while (Tokens::findFirst(array('token=:token:', 'bind' => array(':token' => $token))));
-
-        return $token;
     }
 
 }

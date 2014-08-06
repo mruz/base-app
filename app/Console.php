@@ -42,6 +42,9 @@ class Console extends \Phalcon\CLI\Console
             ),
         ));
 
+        // Register the app itself as a service
+        $this->_di->set('app', $this);
+
         // Set the dependency Injector
         parent::__construct($this->_di);
     }
@@ -110,7 +113,10 @@ class Console extends \Phalcon\CLI\Console
                 "host" => $config->database->host,
                 "username" => $config->database->username,
                 "password" => $config->database->password,
-                "dbname" => $config->database->dbname
+                "dbname" => $config->database->dbname,
+                "options" => array(
+                    \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+                )
             ));
         });
     }
@@ -129,6 +135,46 @@ class Console extends \Phalcon\CLI\Console
             $router = new \Phalcon\CLI\Router();
             return $router;
         });
+    }
+
+    /**
+     * HMVC request in the cli
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @param array $location location to run the request
+     *
+     * @return mixed response
+     */
+    public function request($location)
+    {
+        $dispatcher = clone $this->getDI()->get('dispatcher');
+
+        if (isset($location['task'])) {
+            $dispatcher->setTaskName($location['task']);
+        } else {
+            $dispatcher->setTaskName('main');
+        }
+
+        if (isset($location['action'])) {
+            $dispatcher->setActionName($location['action']);
+        } else {
+            $dispatcher->setActionName('main');
+        }
+
+        if (isset($location['params'])) {
+            if (is_array($location['params'])) {
+                $dispatcher->setParams($location['params']);
+            } else {
+                $dispatcher->setParams((array) $location['params']);
+            }
+        } else {
+            $dispatcher->setParams(array());
+        }
+
+        $dispatcher->dispatch();
+        return $dispatcher->getReturnedValue();
     }
 
     /**
@@ -176,17 +222,17 @@ class Console extends \Phalcon\CLI\Console
     public static function exception(\Exception $e)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
+        $errors = array(
+            'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
+            'info' => $e->getFile() . '[' . $e->getLine() . ']',
+            'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
+        );
 
         if ($config->app->env == "development") {
             // Display debug output
             print_r($e);
         } else {
             // Log errors to file and send email with errors to admin
-            $errors = array(
-                'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
-                'info' => $e->getFile() . '[' . $e->getLine() . ']',
-                'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
-            );
             \Baseapp\Bootstrap::log($errors);
         }
     }

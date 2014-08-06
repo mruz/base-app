@@ -74,31 +74,30 @@ class Tool
      * @package     base-app
      * @version     2.0
      *
-     * @param   string   $url       URL with pagination
-     * @param   object   $page      Phalcon Paginator object
-     * @param   string   $hook      Hook in URL to adding, eg #pages
-     * @param   string   $class     CSS class to adding to div
-     * @param   int      $countOut Number of page links in the begin and end of whole range
-     * @param   int      $countIn  Number of page links on each side of current page
+     * @param object $pagination Phalcon Paginator object
+     * @param mixed $url URL with pagination
+     * @param string $class CSS class to adding to div
+     * @param int $countOut Number of page links in the begin and end of whole range
+     * @param int $countIn Number of page links on each side of current page
      *
      * @return  string
      */
-    public static function pagination($url, $page, $hook = '', $class = 'pagination', $countOut = 0, $countIn = 2)
+    public static function pagination($pagination, $url = null, $class = 'pagination', $countOut = 0, $countIn = 2)
     {
-        if ($page->total_pages < 2) {
+        if ($pagination->total_pages < 2) {
             return;
         }
         // Beginning group of pages: $n1...$n2
         $n1 = 1;
-        $n2 = min($countOut, $page->total_pages);
+        $n2 = min($countOut, $pagination->total_pages);
 
         // Ending group of pages: $n7...$n8
-        $n7 = max(1, $page->total_pages - $countOut + 1);
-        $n8 = $page->total_pages;
+        $n7 = max(1, $pagination->total_pages - $countOut + 1);
+        $n8 = $pagination->total_pages;
 
         // Middle group of pages: $n4...$n5
-        $n4 = max($n2 + 1, $page->current - $countIn);
-        $n5 = min($n7 - 1, $page->current + $countIn);
+        $n4 = max($n2 + 1, $pagination->current - $countIn);
+        $n5 = min($n7 - 1, $pagination->current + $countIn);
         $useMiddle = ($n5 >= $n4);
 
         // Point $n3 between $n2 and $n4
@@ -133,52 +132,61 @@ class Tool
             $links[$i] = $i;
         }
 
-        //prepare ul
+        // Detect URL
+        $tag = \Phalcon\DI::getDefault()->getShared('tag');
+        $query = \Phalcon\DI::getDefault()->getShared('request')->getQuery();
+        $url = $url ? $url : substr($query['_url'], 1);
+        unset($query['_url']);
+
+        // Prepare list
         $html = '<ul class="' . $class . '">';
 
-        //prepare First button
-        if ($page->current != $page->first) {
-            $html .= '<li>' . \Phalcon\Tag::linkTo(array($url . $hook, 'rel' => 'first', __('First'))) . '</li>';
+        // Prepare First button
+        if ($pagination->current != $pagination->first) {
+            unset($query['page']);
+            $html .= '<li>' . $tag->linkTo(array($url, 'query' => $query, 'rel' => 'first', __('First'))) . '</li>';
         } else {
             $html .= '<li class="disabled"><span>' . __('First') . '</span></li>';
         }
 
-        $char = strpos($url, '?') !== false ? '&amp;' : '?';
-
-        //prepare Previous button
-        if ($page->current > $page->before) {
-            $html .= '<li>' . \Phalcon\Tag::linkTo(array($url . $char . 'page=' . $page->before . $hook, 'rel' => 'prev', 'title' => __('Previous'), '«')) . '</li>';
+        // Prepare Previous button
+        if ($pagination->current > $pagination->before) {
+            $query['page'] = $pagination->before;
+            $html .= '<li>' . $tag->linkTo(array($url, 'query' => $query, 'rel' => 'prev', 'title' => __('Previous'), '«')) . '</li>';
         } else {
             $html .= '<li class="disabled"><span>«</span></li>';
         }
 
-        //prepare Pages
-        $pages = array();
+        // Prepare Pages
+        $paginations = array();
         foreach ($links as $number => $content) {
-            if ($number === $page->current) {
-                $pages[] = '<li class="active"><span>' . $content . '</span></li>';
+            if ($number === $pagination->current) {
+                $paginations[] = '<li class="active"><span>' . $content . '</span></li>';
             } else {
-                $pages[] = '<li' . ($content == '&hellip;' ? ' class="disabled"' : '') . '>' . \Phalcon\Tag::linkTo(array($url . $char . 'page=' . $number . $hook, $content)) . '</li>';
+                $query['page'] = $number;
+                $paginations[] = '<li' . ($content == '&hellip;' ? ' class="disabled"' : '') . '>' . $tag->linkTo(array($url, 'query' => $query, $content)) . '</li>';
             }
         }
 
-        $html .= implode('', $pages);
+        $html .= implode('', $paginations);
 
-        //prepare Next button
-        if ($page->current < $page->next) {
-            $html .= '<li>' . \Phalcon\Tag::linkTo(array($url . $char . 'page=' . $page->next . $hook, 'rel' => 'next', 'title' => __('Next'), '»')) . '</li>';
+        // Prepare Next button
+        if ($pagination->current < $pagination->next) {
+            $query['page'] = $pagination->next;
+            $html .= '<li>' . $tag->linkTo(array($url, 'query' => $query, 'rel' => 'next', 'title' => __('Next'), '»')) . '</li>';
         } else {
             $html .= '<li class="disabled"><span>»</span></li>';
         }
 
-        //prepare Last button
-        if ($page->current != $page->last) {
-            $html .= '<li>' . \Phalcon\Tag::linkTo(array($url . $char . 'page=' . $page->last . $hook, 'rel' => 'last', __('Last'))) . '</li>';
+        // Prepare Last button
+        if ($pagination->current != $pagination->last) {
+            $query['page'] = $pagination->last;
+            $html .= '<li>' . $tag->linkTo(array($url, 'query' => $query, 'rel' => 'last', __('Last'))) . '</li>';
         } else {
             $html .= '<li class="disabled"><span>' . __('Last') . '</span></li>';
         }
 
-        //close ul
+        // Close list
         $html .= '</ul>';
 
         return $html;
@@ -227,6 +235,7 @@ class Tool
             // Try to load .phtml file from ViewsDir first,
             ".phtml" => "Phalcon\Mvc\View\Engine\Php",
             ".volt" => $volt,
+            ".md" => 'Baseapp\Extension\Markdown',
         );
     }
 

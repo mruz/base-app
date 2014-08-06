@@ -39,7 +39,11 @@ class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Valid
             $attribute = $field;
         }
 
-        $number = $model::count(array($attribute . "=:value:", "bind" => array("value" => $value)));
+        if ($except = $this->getOption('except')) {
+            $number = $model::count(array($attribute . "=:value: AND " . $attribute . "!= :except:", "bind" => array("value" => $value, 'except' => $except)));
+        } else {
+            $number = $model::count(array($attribute . "=:value:", "bind" => array("value" => $value)));
+        }
 
         if ($number) {
             $label = $this->getOption("label");

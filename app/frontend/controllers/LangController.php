@@ -18,11 +18,15 @@ class LangController extends IndexController
      * @package     base-app
      * @version     2.0
      */
-    public function setAction($lang)
+    public function setAction()
     {
-        // Store lang in session and cookie
-        $this->session->set('lang', $lang);
-        $this->cookies->set('lang', $lang, time() + 365 * 86400);
+        $params = $this->router->getParams();
+
+        if ($lang = $params[0]) {
+            // Store lang in session and cookie
+            $this->session->set('lang', $lang);
+            $this->cookies->set('lang', $lang, time() + 365 * 86400);
+        }
 
         // Go to the last place
         $referer = $this->request->getHTTPReferer();

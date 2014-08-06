@@ -2,7 +2,7 @@
 
 namespace Baseapp\Extension;
 
-use Baseapp\Library\Debug;
+use Phalcon\Debug\Dump;
 
 /**
  * SQL Listener
@@ -45,7 +45,7 @@ class Listener
                 }
             }
         }
-        echo Debug::vars($statement);
+        echo (new Dump())->all($statement);
     }
 
 }

@@ -2,9 +2,10 @@
 
 namespace Baseapp;
 
+use Baseapp\Library\Auth;
 use Baseapp\Library\I18n;
-use Baseapp\Library\Debug;
 use Baseapp\Library\Email;
+use Phalcon\Debug\Dump;
 
 /**
  * Bootstrap
@@ -31,7 +32,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
     {
         $this->_di = $di;
 
-        $loaders = array('config', 'loader', 'timezone', 'lang', 'db', 'filter', 'flash', 'crypt', 'session', 'cookie', 'cache', 'url', 'router');
+        $loaders = array('config', 'loader', 'timezone', 'i18n', 'db', 'filter', 'flash', 'crypt', 'auth', 'session', 'cookie', 'cache', 'url', 'router');
 
         // Register services
         foreach ($loaders as $service) {
@@ -46,7 +47,13 @@ class Bootstrap extends \Phalcon\Mvc\Application
             ),
             'backend' => array(
                 'className' => 'Baseapp\Backend\Module',
-                'path' => ROOT_PATH . '/app/backend/Module.php'
+                'path' => ROOT_PATH . '/app/backend/Module.php',
+                'alias' => 'admin'
+            ),
+            'documentation' => array(
+                'className' => 'Baseapp\Documentation\Module',
+                'path' => ROOT_PATH . '/app/documentation/Module.php',
+                'alias' => 'doc'
             )
         ));
 
@@ -104,16 +111,18 @@ class Bootstrap extends \Phalcon\Mvc\Application
     }
 
     /**
-     * Set the language
+     * Set the language service
      *
      * @package     base-app
      * @version     2.0
      *
      * @return void
      */
-    protected function lang()
+    protected function i18n()
     {
-        I18n::instance()->lang();
+        $this->_di->setShared('i18n', function() {
+            return I18n::instance();
+        });
     }
 
     /**
@@ -148,7 +157,23 @@ class Bootstrap extends \Phalcon\Mvc\Application
         $this->_di->set('crypt', function() use ($config) {
             $crypt = new \Phalcon\Crypt();
             $crypt->setKey($config->crypt->key);
+            $crypt->setPadding(\Phalcon\Crypt::PADDING_ZERO);
             return $crypt;
+        });
+    }
+
+    /**
+     * Set the auth service
+     *
+     * @package     base-app
+     * @version     2.0
+     *
+     * @return void
+     */
+    protected function auth()
+    {
+        $this->_di->setShared('auth', function() {
+            return Auth::instance();
         });
     }
 
@@ -165,6 +190,7 @@ class Bootstrap extends \Phalcon\Mvc\Application
         $this->_di->set('filter', function() {
             $filter = new \Phalcon\Filter();
             $filter->add('repeat', new Extension\Repeat());
+            $filter->add('escape', new Extension\Escape());
             return $filter;
         });
     }
@@ -201,7 +227,10 @@ class Bootstrap extends \Phalcon\Mvc\Application
                 "host" => $config->database->host,
                 "username" => $config->database->username,
                 "password" => $config->database->password,
-                "dbname" => $config->database->dbname
+                "dbname" => $config->database->dbname,
+                "options" => array(
+                    \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+                )
             ));
         });
     }
@@ -304,62 +333,69 @@ class Bootstrap extends \Phalcon\Mvc\Application
     protected function router()
     {
         $this->_di->set('router', function() {
-            $router = new \Phalcon\Mvc\Router(FALSE);
+            $router = new \Phalcon\Mvc\Router(false);
 
-            $router->setDefaultModule('frontend');
-            $router->setDefaultController('index');
-            $router->setDefaultAction('index');
-
-            $router->add('/:controller/:action/:params', array(
+            $router->setDefaults(array(
                 'module' => 'frontend',
+                'controller' => 'index',
+                'action' => 'index'
+            ));
+
+            /*
+             * All defined routes are traversed in reverse order until Phalcon\Mvc\Router
+             * finds the one that matches the given URI and processes it, while ignoring the rest.
+             */
+            $frontend = new \Phalcon\Mvc\Router\Group(array(
+                'module' => 'frontend',
+            ));
+            $frontend->add('/:controller/:action/:params', array(
                 'controller' => 1,
                 'action' => 2,
                 'params' => 3,
             ));
-
-            $router->add('/:controller/:int', array(
-                'module' => 'frontend',
+            $frontend->add('/:controller/:int', array(
                 'controller' => 1,
-                'action' => 'index',
                 'id' => 2,
             ));
-
-            $router->add('/:controller[/]?', array(
-                'module' => 'frontend',
+            $frontend->add('/:controller[/]?', array(
                 'controller' => 1,
-                'action' => 'index'
             ));
-            
-            $router->add('/{action:(buy|contact)}[/]?', array(
-                'module' => 'frontend',
+            $frontend->add('/{action:(buy|contact)}[/]?', array(
                 'controller' => 'static',
                 'action' => 'action'
             ));
+            $frontend->add('/');
 
-            $router->add('/', array(
-                'module' => 'frontend',
-                'controller' => 'index',
-                'action' => 'index'
-            ));
+            // Mount a group of routes for frontend
+            $router->mount($frontend);
 
-            $router->add('/admin/:controller/:action/:params', array(
-                'module' => 'backend',
-                'controller' => 1,
-                'action' => 2,
-                'params' => 3,
-            ));
+            /**
+             * Define routes for each module
+             */
+            //foreach ($this->getModules() as $module => $options) {
+            foreach (array('backend' => array('alias' => 'admin'), 'documentation' => array('alias' => 'doc')) as $module => $options) {
+                $group = new \Phalcon\Mvc\Router\Group(array(
+                    'module' => $module,
+                ));
+                $group->setPrefix('/' . (isset($options['alias']) ? $options['alias'] : $module));
 
-            $router->add('/admin/:controller[/]?', array(
-                'module' => 'backend',
-                'controller' => 1,
-                'action' => 'index',
-            ));
+                $group->add('/:controller/:action/:params', array(
+                    'controller' => 1,
+                    'action' => 2,
+                    'params' => 3,
+                ));
+                $group->add('/:controller/:int', array(
+                    'controller' => 1,
+                    'id' => 2,
+                ));
+                $group->add('/:controller[/]?', array(
+                    'controller' => 1,
+                ));
+                $group->add('[/]?', array());
 
-            $router->add('/admin[/]?', array(
-                'module' => 'backend',
-                'controller' => 'index',
-                'action' => 'index',
-            ));
+                // Mount a group of routes for some module
+                $router->mount($group);
+            }
 
             $router->notFound(array(
                 'controller' => 'index',
@@ -418,59 +454,72 @@ class Bootstrap extends \Phalcon\Mvc\Application
 
     /**
      * Log message into file, notify the admin on stagging/production
-     * 
+     *
      * @package     base-app
      * @version     2.0
-     * 
+     *
      * @param mixed $messages messages to log
      */
     public static function log($messages)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
-
+        $dump = new Dump();
         if ($config->app->env == "development") {
             foreach ($messages as $key => $message) {
-                echo Debug::dump($message, $key);
+                echo $dump->one($message, $key);
             }
             exit();
         } else {
             $logger = new \Phalcon\Logger\Adapter\File(ROOT_PATH . '/app/common/logs/' . date('Ymd') . '.log', array('mode' => 'a+'));
             $log = '';
 
-            foreach ($messages as $key => $message) {
-                if (in_array($key, array('alert', 'debug', 'error', 'info', 'notice', 'warning'))) {
-                    $logger->$key($message);
-                } else {
-                    $logger->log($message);
+            if (is_array($messages) || $messages instanceof \Countable) {
+                foreach ($messages as $key => $message) {
+                    if (in_array($key, array('alert', 'debug', 'error', 'info', 'notice', 'warning'))) {
+                        $logger->$key($message);
+                    } else {
+                        $logger->log($message);
+                    }
+                    $log .= $dump->one($message, $key);
                 }
-                $log .= Debug::dump($message, $key);
+            } else {
+                $logger->log($messages);
+                $log .= $dump->one($messages);
             }
-            $logger->close();
 
             if ($config->app->env != "testing") {
                 $email = new Email();
                 $email->prepare(__('Something is wrong!'), $config->app->admin, 'error', array('log' => $log));
-                $email->Send();
+
+                if ($email->Send() !== true) {
+                    $logger->log($email->ErrorInfo);
+                }
             }
+
+            $logger->close();
         }
     }
 
     /**
      * Catch the exception and log it, display pretty view
-     * 
+     *
      * @package     base-app
      * @version     2.0
-     * 
+     *
      * @param \Exception $e
      */
     public static function exception(\Exception $e)
     {
         $config = \Phalcon\DI::getDefault()->getShared('config');
+        $errors = array(
+            'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
+            'info' => $e->getFile() . '[' . $e->getLine() . ']',
+            'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
+        );
 
         if ($config->app->env == "development") {
             // Display debug output
-            $debug = new \Phalcon\Debug();
-            $debug->onUncaughtException($e);
+            echo var_dump($errors);
         } else {
             // Display pretty view of the error
             $di = new \Phalcon\DI\FactoryDefault();
@@ -481,11 +530,6 @@ class Bootstrap extends \Phalcon\Mvc\Application
             echo $view->render('error', array('i18n' => I18n::instance(), 'config' => $config));
 
             // Log errors to file and send email with errors to admin
-            $errors = array(
-                'error' => get_class($e) . '[' . $e->getCode() . ']: ' . $e->getMessage(),
-                'info' => $e->getFile() . '[' . $e->getLine() . ']',
-                'debug' => "Trace: \n" . $e->getTraceAsString() . "\n",
-            );
             \Baseapp\Bootstrap::log($errors);
         }
     }
