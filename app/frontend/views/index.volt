@@ -12,43 +12,59 @@
         <link rel="icon" type="image/x-icon" href="{{ this.url.getStatic('favicon.ico') }}">
     </head>
     <body>
-        <div id="wrap">
-            <header class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                        {{ linkTo([null, image('src': 'img/logo.png', 'alt': config.app.name), 'class' : 'navbar-brand']) }}
-                    </div>
-                    <div class="collapse navbar-collapse" id="header-collapse">
-                        <ul class="nav navbar-nav">
-                            <li>{{ linkTo('buy', '<span class="glyphicon glyphicon-gift"></span> ' ~ __('Donate')) }}</li>
-                        </ul>
-                        {% if ! auth.logged_in() %}
-                            {{ form('user/signin', 'class' : 'navbar-form form-inline pull-right pull-none') }}
-                            <div class="form-group">{{ textField([ 'username', 'class' : 'form-control', 'placeholder' : __('Username') ]) }}</div>
-                            <div class="form-group">{{ passwordField([ 'password', 'class' : 'form-control', 'placeholder' : __('Password') ]) }}</div>
-                            <div class="checkbox"><label>{% set field = 'rememberMe' %}{{ checkField(_POST[field] is defined and _POST[field] == 'on' ? [ field, 'value': 'on', 'checked': 'checked' ] : [ field, 'value': 'on' ]) }} {{ __(field|label) }}</label></div>
-                            <button type="submit" name="submit_signin" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> {{ __('Sign in') }}</button>
-                            {{ endForm() }}
-                        {% else %}
-                            <ul class="nav navbar-nav pull-right pull-none">
-                                <li class="dropdown">
-                                    {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', auth.get_user().username ~ '<b class="caret"></b>' ]) }}
-                                    <ul class="dropdown-menu">
-                                        <li class="dropdown-header">{{ auth.get_user().email }}</li>
-                                        <li>{{ linkTo('user', '<span class="glyphicon glyphicon-user"></span> ' ~ __('Account')) }}</li>
-                                        {% if auth.logged_in('admin') %}
-                                            <li>{{ linkTo('admin', '<span class="glyphicon glyphicon-wrench"></span> ' ~ __('Admin panel')) }}</li>
-                                        {% endif %}
-                                        <li class="divider"></li>
-                                        <li>{{ linkTo('user/signout', '<span class="glyphicon glyphicon-log-out"></span> ' ~ __('Sign out')) }}</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        {% endif%}
-                    </div>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Brand</a>
                 </div>
-            </header>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- /.container-fluid -->
+        </nav>
+        <div class="divide-nav">
+            <div class="container">
+                <p class="divide-text">Some Text Here</p>
+            </div>
+        </div>
+        <nav class="navbar navbar-default navbar-lower" role="navigation">
+            <div class="container">
+                <div class="collapse navbar-collapse collapse-buttons">
+                    <form class="navbar-form navbar-left" role="search">
+                        <button class="btn btn-success">Button</button>
+                        <button class="btn btn-default">Button</button>
+                        <button class="btn btn-default">Button</button>
+                        <button class="btn btn-default">Button</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <div id="wrap">
             <div class="container">
                 {{ content() }}
             </div>
@@ -71,8 +87,8 @@
                         <li class="dropdown dropup">
                             <ul class="dropdown-menu">
                                 {% for lang, language in siteLangs %}
-                                <li>{{ linkTo('lang/set/' ~ lang, language) }}</li>
-                                {% endfor %}
+                                    <li>{{ linkTo('lang/set/' ~ lang, language) }}</li>
+                                    {% endfor %}
                             </ul>
                             {{ linkTo([ '#', 'class' : 'dropdown-togle', 'data-toggle' : 'dropdown', __('Language') ~ '<b class="caret"></b>' ]) }}
                         </li>
@@ -89,7 +105,7 @@
         {{ this.assets.outputJs() }}
         {% if count(scripts) %}
             {% for script in scripts %}
-            <script type="text/javascript">{{ script }}</script>
+                <script type="text/javascript">{{ script }}</script>
             {% endfor %}
         {% endif %}
     </body>

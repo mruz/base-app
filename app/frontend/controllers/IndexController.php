@@ -88,6 +88,7 @@ class IndexController extends \Phalcon\Mvc\Controller
         $this->tag->appendTitle($this->config->app->name);
         $this->view->setVar('siteDesc', mb_substr($this->filter->sanitize($this->siteDesc, 'string'), 0, 200, 'utf-8'));
 
+        $this->scripts[] = "$('.navbar-lower').affix({ offset: {top: 50} });";
         // Set scripts
         $this->view->setVar('scripts', $this->scripts);
 
