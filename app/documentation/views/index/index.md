@@ -75,7 +75,7 @@ php index.php prepare chmod
 ### Links:
 * [Phalcon PHP](https://phalconphp.com)
 * [Base-app](https://github.com/mruz/base-app)
-* [Demo](http://base-app.mruz.pl)
+* [Demo](http://base-app.mruz.me)
 * [Twitter Bootstrap](http://getbootstrap.com)
 
 ***
