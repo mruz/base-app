@@ -22,7 +22,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
      *
      * @return void
      */
-    public function registerAutoloaders($di = null)
+    public function registerAutoloaders(\Phalcon\DiInterface $di = null)
     {
         $loader = new \Phalcon\Loader();
 
@@ -43,7 +43,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
      *
      * @return void
      */
-    public function registerServices($di)
+    public function registerServices(\Phalcon\DiInterface $di)
     {
         //Registering a dispatcher
         $di->set('dispatcher', function() {
