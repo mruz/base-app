@@ -301,10 +301,16 @@ class Auth
             // Create a hashed password
             if (is_string($password)) {
                 $password = $this->hash($password);
+                
+                $passwordControl = Users::findFirst(
+                array('password=:password: AND username=:username:',
+                    'bind' =>
+                        array(':password' => $password, ':username' => $username))
+            );
             }
 
             // If user have login role and the passwords match, perform a login
-            if (isset($roles['login']) && $user->password === $password) {
+            if ($passwordControl && isset($roles['login']) && $user->password === $password) {
                 if ($remember === true) {
                     // Create a new autologin token
                     $token = new Tokens();
