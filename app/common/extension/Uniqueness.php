@@ -2,6 +2,8 @@
 
 namespace Baseapp\Extension;
 
+use Phalcon\Validation;
+
 /**
  * Uniqueness Validator
  *
@@ -9,7 +11,7 @@ namespace Baseapp\Extension;
  * @category    Extension
  * @version     2.0
  */
-class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Validation\ValidatorInterface
+class Uniqueness extends Validation\Validator implements Validation\ValidatorInterface
 {
 
     /**
@@ -25,14 +27,14 @@ class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Valid
      *
      * @throws \Phalcon\Validation\Exception
      */
-    public function validate($validation, $field)
+    public function validate(Validation $validation, $field)
     {
         $value = $validation->getValue($field);
         $model = $this->getOption("model");
         $attribute = $this->getOption("attribute");
 
         if (empty($model)) {
-            throw new \Phalcon\Validation\Exception("Model must be set");
+            throw new Validation\Exception("Model must be set");
         }
 
         if (empty($attribute)) {
@@ -63,7 +65,7 @@ class Uniqueness extends \Phalcon\Validation\Validator implements \Phalcon\Valid
                 $message = $validation->getDefaultMessage("Uniqueness");
             }
 
-            $validation->appendMessage(new \Phalcon\Validation\Message(strtr($message, $replacePairs), $field, "Uniqueness"));
+            $validation->appendMessage(new Validation\Message(strtr($message, $replacePairs), $field, "Uniqueness"));
             return false;
         }
         return true;
