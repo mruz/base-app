@@ -185,7 +185,7 @@ class Console extends \Phalcon\CLI\Console
      *
      * @param mixed $arguments
      */
-    public function handle($arguments = null)
+    public function handle(array $arguments = null)
     {
         $params = array();
         switch (count($arguments)) {
