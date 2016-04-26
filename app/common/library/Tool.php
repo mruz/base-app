@@ -213,7 +213,7 @@ class Tool
             // Compile always on 'development', on 'testing'/'staging' only checks for changes in the children templates
             'stat' => $config->app->env == 'production' ? false : true,
             'compileAlways' => $config->app->env == 'development' ? true : false,
-            'compiledPath' => function($templatePath) {
+            'compiledPath' => function($templatePath) use ($config) {
         list($junk, $path) = explode(ROOT_PATH, $templatePath);
         $dir = dirname($path);
         $file = basename($path, '.volt');
@@ -223,7 +223,7 @@ class Tool
             mkdir($config->view->compiledPath . 'volt' . $dir, 0777, true);
             umask($old);
         }
-        return $config->view->compiledPath . 'volt' . $dir . '/' . $file . $this->config->view->compiledExtension;
+        return $config->view->compiledPath . 'volt' . $dir . '/' . $file . $config->view->compiledExtension;
     }
         ));
 
