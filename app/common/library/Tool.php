@@ -218,12 +218,12 @@ class Tool
         $dir = dirname($path);
         $file = basename($path, '.volt');
 
-        if (!is_dir($this->config->view->compiledPath . 'volt' . $dir)) {
+        if (!is_dir($config->view->compiledPath . 'volt' . $dir)) {
             $old = umask(0);
-            mkdir($this->config->view->compiledPath . 'volt' . $dir, 0777, true);
+            mkdir($config->view->compiledPath . 'volt' . $dir, 0777, true);
             umask($old);
         }
-        return $this->config->view->compiledPath . 'volt' . $dir . '/' . $file . $this->config->view->compiledExtension;
+        return $config->view->compiledPath . 'volt' . $dir . '/' . $file . $this->config->view->compiledExtension;
     }
         ));
 
