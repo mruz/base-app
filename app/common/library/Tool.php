@@ -218,12 +218,12 @@ class Tool
         $dir = dirname($path);
         $file = basename($path, '.volt');
 
-        if (!is_dir(ROOT_PATH . '/app/common/cache/volt' . $dir)) {
+        if (!is_dir($this->config->view->compiledPath . 'volt' . $dir)) {
             $old = umask(0);
-            mkdir(ROOT_PATH . '/app/common/cache/volt' . $dir, 0777, true);
+            mkdir($this->config->view->compiledPath . 'volt' . $dir, 0777, true);
             umask($old);
         }
-        return ROOT_PATH . '/app/common/cache/volt' . $dir . '/' . $file . '.phtml';
+        return $this->config->view->compiledPath . 'volt' . $dir . '/' . $file . $this->config->view->compiledExtension;
     }
         ));
 
